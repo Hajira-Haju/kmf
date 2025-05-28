@@ -13,7 +13,7 @@ class SplashScreen extends GetView<SplashController> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Image.asset('assets/the-associates_logo.png', width: 200.w),
+        child: Hero(tag: 'logo', child: Image.asset('assets/the-associates_logo.png', width: 150.w)),
       ),
     );
   }

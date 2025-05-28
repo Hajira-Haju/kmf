@@ -20,14 +20,14 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: GetMaterialApp(
-        title: 'Association',
+        title: 'KMF',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         ),
         getPages: PageList.pages,
         initialRoute: AppRoutes.splashScreen,
-      // home: SliverAppBarExample(),
+        // home: SliverAppBarExample(),
       ),
     );
   }

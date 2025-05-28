@@ -21,6 +21,7 @@ class OffersScreen extends StatelessWidget {
             OfferWidget.mainHead(),
             OfferWidget.secondaryOff(),
             OfferWidget.offersCategory(),
+            SizedBox(height: 40),
           ],
         ),
       ),

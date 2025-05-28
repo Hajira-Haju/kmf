@@ -1,3 +1,4 @@
+import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/presentation/new_events_screen/controller/news_events_controller.dart';
 import 'package:associations_app/presentation/news_inner_screen/news_inner_screen.dart';
 import 'package:associations_app/routes/app_routes/app_routes.dart';
@@ -22,7 +23,7 @@ class NewsEventsWidgets {
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
               foregroundColor: Colors.white,
-              backgroundColor: Colors.orange,
+              backgroundColor: ConstData.secondaryClr,
               child: Icon(CupertinoIcons.arrow_right),
             ),
           ),
@@ -31,7 +32,7 @@ class NewsEventsWidgets {
             borderRadius: BorderRadius.circular(30.r),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.orange.shade700),
+            borderSide: BorderSide(color: ConstData.secondaryClr),
             borderRadius: BorderRadius.circular(30.r),
           ),
         ),
@@ -46,27 +47,27 @@ class NewsEventsWidgets {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
-            'Latest News',
+            'Latest Updates',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
         SizedBox(
-          height: 200,
+          height: 210,
           child: ListView.builder(
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            itemCount: 4,
+            itemCount: NewsEventsData.latestNews.length,
             itemBuilder: (context, index) {
+              final data = NewsEventsData.latestNews[index];
               return GestureDetector(
                 onTap:
                     () => Get.toNamed(
                       AppRoutes.newsInnerScreen,
                       arguments: {
-                        'imgUrl':
-                            'https://media.istockphoto.com/id/479842074/photo/empty-road-at-building-exterior.jpg?s=612x612&w=0&k=20&c=SbyfZGN0i2O_QPLCdBcu9vhuzbQvTz4bGEn-lIzrN0E=',
-                        'head': '',
-                        'content': '',
+                        'imgUrl': data.imgUrl,
+                        'head': data.title,
+                        'content': data.description,
                       },
                     ),
                 child: SizedBox(
@@ -74,16 +75,18 @@ class NewsEventsWidgets {
                   child: Card(
                     margin: EdgeInsets.all(10),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: 120,
+                          width: double.infinity,
                           child: ClipRRect(
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(20),
                               topLeft: Radius.circular(20),
                             ),
                             child: Image.network(
-                              'https://media.istockphoto.com/id/479842074/photo/empty-road-at-building-exterior.jpg?s=612x612&w=0&k=20&c=SbyfZGN0i2O_QPLCdBcu9vhuzbQvTz4bGEn-lIzrN0E=',
+                              data.imgUrl,
                               errorBuilder:
                                   (context, error, stackTrace) =>
                                       Icon(Icons.error),
@@ -94,14 +97,21 @@ class NewsEventsWidgets {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(left: 8.0, top: 8),
                           child: Text(
-                            'Crystal lights of the tune of the light might replace batteries..',
+                            data.title,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               overflow: TextOverflow.ellipsis,
                             ),
                             maxLines: 2,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            '12/02/2025',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         ),
                       ],
@@ -134,7 +144,7 @@ class NewsEventsWidgets {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.r),
                   ),
-                  selectedColor: Colors.orange,
+                  selectedColor: ConstData.primaryClr,
                   label: Text(choices),
                   selected: controller.selectedChoice.value == choices,
                   onSelected: (value) {
@@ -152,19 +162,19 @@ class NewsEventsWidgets {
   static Widget newsList() {
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      itemCount: 4,
+      itemCount: NewsEventsData.newsList.length,
       physics: BouncingScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
+        final data = NewsEventsData.newsList[index];
         return GestureDetector(
           onTap:
               () => Get.toNamed(
                 AppRoutes.newsInnerScreen,
                 arguments: {
-                  'imgUrl':
-                      'https://www.knowledgetrain.co.uk/training-courses/programmes-1903x1087-1.jpg',
-                  'head': '',
-                  'content': '',
+                  'imgUrl': data.imgUrl,
+                  'head': data.title,
+                  'content': data.description,
                 },
               ),
           child: Card(
@@ -173,14 +183,14 @@ class NewsEventsWidgets {
               children: [
                 SizedBox(
                   width: 150,
-                  height: 80,
+                  height: 90,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10.r),
                       bottomLeft: Radius.circular(10.r),
                     ),
                     child: Image.network(
-                      'https://www.knowledgetrain.co.uk/training-courses/programmes-1903x1087-1.jpg',
+                      data.imgUrl,
                       fit: BoxFit.cover,
                       errorBuilder:
                           (context, error, stackTrace) => Icon(Icons.error),
@@ -189,19 +199,22 @@ class NewsEventsWidgets {
                 ),
                 Flexible(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(6.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Corporate Summit',
+                          data.title,
                           style: TextStyle(fontWeight: FontWeight.bold),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        SizedBox(height: 5),
                         Text(
-                          "This year's corporate summit calls for various agenda, especially the launching of multi tenant call...",
+                          '12/02/2023',
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                        Text(
+                          data.description,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                         ),

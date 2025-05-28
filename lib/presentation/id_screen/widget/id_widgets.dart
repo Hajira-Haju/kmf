@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/generated/assets.dart';
 import 'package:associations_app/presentation/id_screen/controller/id_controller.dart';
 import 'package:associations_app/presentation/id_screen/models/id_dats.dart';
@@ -9,43 +10,31 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class IdWidgets {
   static Widget idDetails(IdController controller) {
-    final qrData = jsonEncode(IdData.userData);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                Text('First Name'),
-                Text(
-                  'Test',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Text('Last Name'),
-                Text(
-                  'User',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Text('Gender'),
-                Text(
-                  'M',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ],
-            ),
-          ],
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            'Test user',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+          ),
         ),
         SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ListTile(
+            title: Text('Status'),
+            trailing: Text(
+              'Payment Pending',
+              style: TextStyle(
+                color: Colors.orange,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
         ListView.builder(
           itemCount: IdData.idData.length,
           physics: BouncingScrollPhysics(),
@@ -87,7 +76,7 @@ class IdWidgets {
                 child: Container(
                   width: 180,
                   decoration: BoxDecoration(
-                    color: Colors.orange,
+                    color: ConstData.primaryClr,
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Padding(
@@ -114,10 +103,6 @@ class IdWidgets {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Icon(Icons.verified, color: Colors.green, size: 50),
-              ),
             ],
           ),
         ),
@@ -143,14 +128,16 @@ class IdWidgets {
                   Card(
                     color: Colors.white,
                     child: QrImageView(
+
                       dataModuleStyle: QrDataModuleStyle(
                         dataModuleShape: QrDataModuleShape.circle,
-                        color: Colors.black,
+                        color: ConstData.secondaryClr,
                       ),
                       eyeStyle: QrEyeStyle(
                         eyeShape: QrEyeShape.circle,
-                        color: Colors.black,
+                        color: ConstData.secondaryClr,
                       ),
+
                       data: qrData,
                       version: QrVersions.auto,
                       size: 200.0,

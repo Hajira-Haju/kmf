@@ -8,9 +8,4 @@ class AssetsRes {
 
   static const String PROJECT_NAME = 'associations_app';
   static const String PROJECT_VERSION = '1.0.1+1';
-  static const String DARK_MODE = 'assets/dark-mode.png';
-  static const String LOGIN_BG = 'assets/login_bg.svg';
-  static const String OTP_BG = 'assets/otp_bg.svg';
-  static const String PROFILE = 'assets/profile.png';
-  static const String SIGN = 'assets/sign.png';
 }

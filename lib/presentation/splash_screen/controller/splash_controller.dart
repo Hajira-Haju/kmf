@@ -11,7 +11,7 @@ class SplashController extends GetxController {
 
   void navigate() {
     Future.delayed(
-      Duration(seconds: 3),
+      Duration(seconds: 2),
       () => Get.offAllNamed(AppRoutes.signInScreen),
     );
   }

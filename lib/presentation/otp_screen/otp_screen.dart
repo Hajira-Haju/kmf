@@ -1,6 +1,9 @@
 import 'package:associations_app/core/constants/const_datas.dart';
+import 'package:associations_app/presentation/otp_screen/controller/otp_controller.dart';
+import 'package:associations_app/presentation/otp_screen/widgets/otp_widget.dart';
 import 'package:associations_app/presentation/sign_in_screen/widgets/sign_in_widget.dart';
 import 'package:associations_app/routes/app_routes/app_routes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,74 +11,107 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pinput/pinput.dart';
 
-class OtpScreen extends StatelessWidget {
+import '../../widgets/dot_indicator/dot_indicator.dart';
+
+class OtpScreen extends GetView<OtpController> {
   const OtpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              Column(
+      body: Form(
+        key: controller.formKey,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SafeArea(
+              child: Stack(
                 children: [
-                  SvgPicture.asset(
-                    'assets/otp_bg.svg',
-                    width: double.infinity,
-                    height: 400.h,
-                    fit: BoxFit.cover,
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 370.h,
-                left: 0,
-                right: 0,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  height: 250.h,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade300,
-                        blurRadius: 2,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: Colors.white,
-                  ),
-                  child: Column(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 40),
-                      Text(
-                        'Enter OTP',
-                        style: TextStyle(
-                          color: ConstData.primaryClr,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
+                      SizedBox(width: double.infinity, height: 30),
+                      LoginWidgets.head(),
+                      const SizedBox(height: 50),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Enter the 4-digit code',
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w900,
+                              color: ConstData.secondaryClr,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'Sent to you at ****1234.',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: ' RESEND OTP',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: ConstData.primaryClr,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: 30),
-                      Pinput(
-                        pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                        showCursor: true,
-                        onCompleted: (pin) => print(pin),
-                      ),
-                      SizedBox(height: 40),
-                      LoginWidgets.customButton(
-                        btnTxt: 'Submit',
-                        onTap: () {
-                          Get.toNamed(AppRoutes.bottomNavScreen);
-                        },
-                      ),
+                      OtpWidget.otpField(controller),
                     ],
                   ),
-                ),
+                  Positioned(
+                    left: 20,
+                    right: 20,
+                    bottom: 90,
+                    child: LoginWidgets.customButton(
+                      btnTxt: 'Continue',
+                      onTap: () {
+                        if (controller.formKey.currentState!.validate()) {
+                          Get.offAllNamed(AppRoutes.welcomeScreen);
+                        } else {
+                          Get.snackbar(
+                            'Invalid otp',
+                            'Enter a valid otp',
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    left: 20,
+                    right: 20,
+                    bottom: 15,
+                    child: OtpWidget.adminButton(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Hero(
+                        tag: 'indicator',
+                        child: DotIndicator(pageIndex: 1),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

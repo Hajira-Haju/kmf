@@ -2,17 +2,10 @@
 class Assets {
   Assets._();
 
-  static const String assetsDarkMode = 'assets/dark-mode.png';
+  static const String assetsFbLogo = 'assets/fb_logo.svg';
   static const String assetsImgPerson = 'assets/img_person.jpg';
-  static const String assetsLoginBg = 'assets/login_bg.svg';
-  static const String assetsOtpBg = 'assets/otp_bg.svg';
-  static const String assetsProfile = 'assets/profile.png';
-  static const String assetsSign = 'assets/sign.png';
+  static const String assetsInstaLogo = 'assets/insta_logo.svg';
   static const String assetsTheAssociates = 'assets/the-associates.png';
   static const String assetsTheAssociatesLogo = 'assets/the-associates_logo.png';
-  static const String associationsMobileAppMasterAssetsDarkMode = 'assets/dark-mode.png';
-  static const String associationsMobileAppMasterAssetsLoginBg = 'assets/login_bg.svg';
-  static const String associationsMobileAppMasterAssetsOtpBg = 'assets/otp_bg.svg';
-  static const String associationsMobileAppMasterAssetsProfile = 'assets/profile.png';
 
 }

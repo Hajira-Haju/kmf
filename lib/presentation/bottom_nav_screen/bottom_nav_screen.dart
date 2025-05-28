@@ -1,4 +1,5 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/presentation/bottom_nav_screen/controller/bottom_nav_controller.dart';
 import 'package:associations_app/presentation/bottom_nav_screen/models/bottom_nav_datas.dart';
 import 'package:associations_app/presentation/bottom_nav_screen/widgets/bottom_nav_widgets.dart';
@@ -19,11 +20,14 @@ class BottomNavScreen extends GetView<BottomNavController> {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () => controller.key.currentState!.openDrawer(),
-          child: Icon(Icons.grid_view_rounded),
+          child: Icon(Icons.grid_view_rounded, color: ConstData.secondaryClr),
         ),
         title: Text(
-          'Associations',
-          style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+          'K M F',
+          style: TextStyle(
+            color: ConstData.primaryClr,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         actions: [
@@ -32,10 +36,10 @@ class BottomNavScreen extends GetView<BottomNavController> {
             child: GestureDetector(
               onTap:
                   () => Get.to(
-                NotificationScreen(),
-                transition: Transition.rightToLeftWithFade,
-              ),
-              child: Icon(Icons.notifications),
+                    NotificationScreen(),
+                    transition: Transition.rightToLeftWithFade,
+                  ),
+              child: Icon(Icons.notifications, color: ConstData.secondaryClr),
             ),
           ),
         ],
@@ -44,18 +48,23 @@ class BottomNavScreen extends GetView<BottomNavController> {
       drawer: BottomNavWidgets.drawer(),
       body: Obx(() => BottomNavData.pages[controller.activeIndex.value]),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.orange,
+        backgroundColor: ConstData.secondaryClr,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.r),
         ),
-        onPressed: () =>Get.to(IdScreen(),transition: Transition.downToUp),
+        onPressed:
+            () => Get.to(
+              IdScreen(),
+              transition: Transition.downToUp,
+              arguments: {'canPop': true},
+            ),
         child: Icon(CupertinoIcons.creditcard_fill),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Obx(
         () => AnimatedBottomNavigationBar(
-          activeColor: Colors.orange,
+          activeColor: ConstData.primaryClr,
           gapLocation: GapLocation.center,
           icons: [CupertinoIcons.news, Icons.local_offer_outlined],
           activeIndex: controller.activeIndex.value,

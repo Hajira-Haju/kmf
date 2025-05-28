@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:associations_app/core/constants/const_datas.dart';
+import 'package:associations_app/routes/app_routes/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -25,24 +28,13 @@ class BottomNavWidgets {
           children: [
             Column(
               children: [
-                Image.asset('assets/the-associates_logo.png', width: 120),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Divider(color: Colors.grey),
-                ),
-                SizedBox(width: double.infinity, height: 20),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.asset('assets/img_person.jpg', width: 100),
-                ),
-                SizedBox(height: 10),
+                SizedBox(width: double.infinity, height: 60),
+                Image.asset('assets/the-associates_logo.png', width: 100),
+                SizedBox(height: 20),
                 Text(
-                  'Test User',
+                  'KERALITES MEDICAL\nFORUM',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                Text(
-                  'test@skaktec.com',
-                  style: TextStyle(color: Colors.grey.shade700),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 30),
                 ListView.builder(
@@ -53,12 +45,20 @@ class BottomNavWidgets {
                   itemBuilder: (context, index) {
                     final data = BottomNavData.drawerData[index];
                     return ListTile(
-                      leading: Icon(data.icn),
+                      leading: Icon(data.icn, color: ConstData.secondaryClr),
                       title: Text(data.title),
                       trailing: Icon(CupertinoIcons.right_chevron),
                       onTap: data.onTap,
                     );
                   },
+                ),
+                Padding(padding: const EdgeInsets.all(8.0), child: Divider()),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SvgPicture.asset('assets/insta_logo.svg', width: 40),
+                    SvgPicture.asset('assets/fb_logo.svg', width: 40),
+                  ],
                 ),
               ],
             ),
@@ -70,7 +70,7 @@ class BottomNavWidgets {
                 title: Text('Log out', style: TextStyle(color: Colors.red)),
                 leading: Icon(Icons.logout, color: Colors.red),
                 trailing: Icon(CupertinoIcons.right_chevron, color: Colors.red),
-                onTap: () {},
+                onTap: () => Get.offAllNamed(AppRoutes.signInScreen),
               ),
             ),
           ],

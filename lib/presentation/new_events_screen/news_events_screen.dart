@@ -18,10 +18,10 @@ class NewsEventsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            NewsEventsWidgets.textField(),
             NewsEventsWidgets.latestNewsList(),
             NewsEventsWidgets.choiceChip(controller),
             NewsEventsWidgets.newsList(),
+            SizedBox(height: 40,)
           ],
         ),
       ),

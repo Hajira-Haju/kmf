@@ -9,79 +9,104 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../core/constants/const_datas.dart';
+import '../../widgets/dot_indicator/dot_indicator.dart';
 
 class SignInScreen extends GetView<SignInController> {
   const SignInScreen({super.key});
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              Column(
+      body: Form(
+        key: controller.formKey,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SafeArea(
+              child: Stack(
                 children: [
-                  SvgPicture.asset(
-                    'assets/login_bg.svg',
-                    width: double.infinity,
-                    height: 450.h,
-                    fit: BoxFit.cover,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(width: double.infinity, height: 30),
+                      LoginWidgets.head(),
+                      const SizedBox(height: 50),
+
+                      /// Welcome Text
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Enter Your Civil Id',
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w900,
+                              color: ConstData.secondaryClr,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          'Please enter your Civil ID number to continue. This helps us verify your identity.',
+                          style: TextStyle(fontSize: 16, color: Colors.black87),
+                          // textAlign: TextAlign.center,
+                        ),
+                      ),
+
+                      SizedBox(height: 30),
+                      Obx(
+                        () => CustomField(
+                          maxLength: 12,
+                          hint: 'Enter Civil id here...',
+                          onChanged: (p0) => controller.showError.value = false,
+                          validator:
+                              controller.showError.value
+                                  ? (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter your Civil ID';
+                                    } else if (!controller.isValidKuwaitCivilID(
+                                      value,
+                                    )) {
+                                      return 'Invalid Civil ID';
+                                    } else {
+                                      return null;
+                                    }
+                                  }
+                                  : null,
+                          onFieldSubmitted:
+                              (value) => controller.submitCivilId(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    left: 20,
+                    right: 20,
+                    bottom: 40,
+                    child: LoginWidgets.customButton(
+                      btnTxt: 'Continue',
+                      onTap: () {
+                        controller.submitCivilId();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Hero(
+                        tag: 'indicator',
+                        child: DotIndicator(pageIndex: 0),
+                      ),
+                    ),
                   ),
                 ],
               ),
-              Positioned(
-                top: 370.h,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 40),
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade300,
-                        blurRadius: 2,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      CustomField(
-                        hint: 'Enter your Civil-Id',
-                        prefix: CupertinoIcons.number,
-                      ),
-                      SizedBox(height: 40),
-                      Text(
-                        'We will send you-one time\npassword(OTP)',
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Carrier rates may apply',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: ConstData.primaryClr,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      LoginWidgets.customButton(
-                        btnTxt: 'Log in',
-                        onTap: () {
-                          Get.toNamed(AppRoutes.otpScreen);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

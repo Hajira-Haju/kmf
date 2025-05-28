@@ -1,11 +1,15 @@
+import 'package:associations_app/presentation/contact_us_screen/contact_us_screen.dart';
 import 'package:associations_app/presentation/new_events_screen/news_events_screen.dart';
-import 'package:associations_app/presentation/profile_screen/profile_screen.dart';
+import 'package:associations_app/presentation/quick_contact_screen/quick_contact_screen.dart';
+import 'package:associations_app/presentation/refer_member_screen/refer_member_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../../about_screen/about_screen.dart';
 import '../../offers_screen/offers_screen.dart';
+import '../../officials_screen/officials_screen.dart';
 
 class BottomNavData {
   static List<Widget> pages = [NewsEventsScreen(), OffersScreen()];
@@ -17,23 +21,29 @@ class BottomNavData {
 
   static List<DrawerModel> drawerData = [
     DrawerModel(
-      icn: CupertinoIcons.person_alt,
-      onTap: () {
-        Get.to(ProfileScreen());
-      },
-      title: 'My Profile',
+      icn: Icons.new_releases,
+      onTap: () => Get.to(AboutScreen()),
+      title: 'About KMF Kuwait',
     ),
-    DrawerModel(icn: CupertinoIcons.settings, onTap: () {}, title: 'Settings'),
     DrawerModel(
-      icn: CupertinoIcons.person_2_fill,
-      onTap: () {},
-      title: 'Invite Friends',
+      icn: CupertinoIcons.rectangle_on_rectangle_angled,
+      onTap: () => Get.to(OfficialsScreen()),
+      title: 'Officials',
     ),
-    DrawerModel(icn: CupertinoIcons.star_fill, onTap: () {}, title: 'Rate us'),
     DrawerModel(
-      icn: Icons.support_agent,
-      onTap: () {},
-      title: 'Help & support',
+      icn: Icons.app_registration,
+      onTap: () => Get.to(ReferMemberScreen()),
+      title: 'Refer a Member',
+    ),
+    DrawerModel(
+      icn: Icons.quick_contacts_dialer,
+      onTap: () => Get.to(QuickContactScreen()),
+      title: 'Quick Contact',
+    ),
+    DrawerModel(
+      icn: Icons.contact_mail_sharp,
+      onTap: () => Get.to(ContactUsScreen()),
+      title: 'Contact Us',
     ),
   ];
 }

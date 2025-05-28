@@ -8,15 +8,42 @@ import 'package:associations_app/presentation/sign_in_screen/binding/sign_in_bin
 import 'package:associations_app/presentation/sign_in_screen/sign_in_screen.dart';
 import 'package:associations_app/presentation/splash_screen/binding/splash_binding.dart';
 import 'package:associations_app/presentation/splash_screen/splash_screen.dart';
+import 'package:associations_app/presentation/welcome_screen/bindings/welcome_binding.dart';
+import 'package:associations_app/presentation/welcome_screen/welcome_screen.dart';
 import 'package:associations_app/routes/app_routes/app_routes.dart';
 import 'package:get/get.dart';
 
 class PageList {
   static var pages = [
-    GetPage(name: AppRoutes.splashScreen, page: () => SplashScreen(),binding:SplashBinding(), ),
-    GetPage(name: AppRoutes.signInScreen, page: () => SignInScreen(),binding:SignInBinding(), ),
-    GetPage(name: AppRoutes.otpScreen, page: () => OtpScreen(),binding:OtpBinding(), ),
-    GetPage(name: AppRoutes.bottomNavScreen, page: () => BottomNavScreen(),binding:BottomNavBinding(), ),
-    GetPage(name: AppRoutes.newsInnerScreen, page: () => NewsInnerScreen(),binding:NewsInnerBinding(), ),
+    GetPage(
+      name: AppRoutes.splashScreen,
+      page: () => SplashScreen(),
+      binding: SplashBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.signInScreen,
+      page: () => SignInScreen(),
+      binding: SignInBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.welcomeScreen,
+      page: () => WelcomeScreen(),
+      binding: WelcomeBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.otpScreen,
+      page: () => OtpScreen(),
+      binding: OtpBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.bottomNavScreen,
+      page: () => BottomNavScreen(),
+      binding: BottomNavBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.newsInnerScreen,
+      page: () => NewsInnerScreen(),
+      binding: NewsInnerBinding(),
+    ),
   ];
 }
