@@ -2,6 +2,7 @@ import 'package:associations_app/presentation/otp_screen/controller/otp_controll
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../core/constants/const_datas.dart';
@@ -52,8 +53,7 @@ class OtpWidget {
     );
   }
 
-  static Widget otpField(OtpController controller,
-      ) {
+  static Widget otpField(OtpController controller) {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0),
       child: Pinput(
@@ -99,7 +99,52 @@ class OtpWidget {
         ),
         keyboardType: TextInputType.number,
         showCursor: true,
-        onCompleted: (pin) => print(pin),
+        onCompleted: (pin) => debugPrint(pin),
+      ),
+    );
+  }
+
+  static Widget resendOtp(OtpController controller) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: RichText(
+        text: TextSpan(
+          text: 'Sent to you at ****1234.',
+          style: TextStyle(fontSize: 16, color: Colors.black87),
+          children: [
+            WidgetSpan(
+              child: Obx(
+                () => Text(
+                  ' RESEND OTP',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color:
+                        controller.resendOtp.value
+                            ? ConstData.primaryClr
+                            : Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+            WidgetSpan(
+              child: Obx(() {
+                if (controller.resendOtp.value) {
+                  return SizedBox();
+                } else {
+                  return Text(
+                    ' in 00:${controller.secondsRemaining.value.toString().padLeft(2, '0')}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  );
+                }
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }

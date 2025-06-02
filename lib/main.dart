@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
         getPages: PageList.pages,
         initialRoute: AppRoutes.splashScreen,
-        // home: SliverAppBarExample(),
+        // home: Tst(),
       ),
     );
   }

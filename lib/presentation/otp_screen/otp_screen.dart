@@ -48,27 +48,7 @@ class OtpScreen extends GetView<OtpController> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Sent to you at ****1234.',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black87,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: ' RESEND OTP',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: ConstData.primaryClr,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      OtpWidget.resendOtp(controller),
                       SizedBox(height: 30),
                       OtpWidget.otpField(controller),
                     ],
