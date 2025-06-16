@@ -8,15 +8,17 @@ class CustomField extends StatelessWidget {
   CustomField({
     super.key,
     required this.hint,
-    this.isObscure = false,
+    this.readOnly = false,
     this.validator,
     this.maxLength,
     this.onChanged,
-    this.onFieldSubmitted
+    this.onFieldSubmitted,
+    this.controller,
   });
   final String hint;
+  final TextEditingController? controller;
   final void Function(String)? onChanged;
-  final bool isObscure;
+  final bool readOnly;
   String? Function(String?)? validator;
   ValueChanged<String>? onFieldSubmitted;
   int? maxLength;
@@ -25,9 +27,11 @@ class CustomField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
+        readOnly: readOnly,
+        controller: controller,
         onFieldSubmitted: onFieldSubmitted,
         autovalidateMode: AutovalidateMode.always,
-        obscureText: isObscure,
+        // obscureText: isObscure,
         onChanged: onChanged,
         keyboardType: TextInputType.number,
         validator: validator,

@@ -41,6 +41,8 @@ dependencies:
   url_launcher:
   image_picker:
   smooth_page_indicator:
+  device_info_plus:
+  flutter_spinkit:
   pinput:
   animated_bottom_navigation_bar:
   qr_flutter:

@@ -60,6 +60,8 @@ class SignInScreen extends GetView<SignInController> {
                       SizedBox(height: 30),
                       Obx(
                         () => CustomField(
+                          readOnly: controller.isLoading.value,
+                          controller: controller.civilIdController,
                           maxLength: 12,
                           hint: 'Enter Civil id here...',
                           onChanged: (p0) => controller.showError.value = false,
@@ -87,11 +89,14 @@ class SignInScreen extends GetView<SignInController> {
                     left: 20,
                     right: 20,
                     bottom: 40,
-                    child: LoginWidgets.customButton(
-                      btnTxt: 'Continue',
-                      onTap: () {
-                        controller.submitCivilId();
-                      },
+                    child: Obx(
+                      () => LoginWidgets.customButton(
+                        isLoading: controller.isLoading.value,
+                        btnTxt: 'Continue',
+                        onTap: () {
+                          controller.submitCivilId();
+                        },
+                      ),
                     ),
                   ),
                   Padding(

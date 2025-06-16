@@ -1,21 +1,62 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../../core/data/api_client/api_service/api_service.dart';
 import '../../../routes/app_routes/app_routes.dart';
 
 class SignInController extends GetxController {
   RxBool isObscure = true.obs;
   final formKey = GlobalKey<FormState>();
   RxBool showError = false.obs;
+  final apiService = ApiService();
+  final civilIdController = TextEditingController();
+  String deviceId = 'N/A';
+  String deviceModel = 'N/A';
+  String deviceName = 'N/A';
+  String deviceOs = 'N/A';
+  RxBool isLoading = false.obs;
+
   void toggleObscure() {
     isObscure.value = !isObscure.value;
   }
 
   Future<void> submitCivilId() async {
     showError.value = true;
+    await getDeviceInfo();
     await Future.delayed(Duration(milliseconds: 100));
     if (formKey.currentState!.validate()) {
-      Get.toNamed(AppRoutes.otpScreen);
+      isLoading.value = true;
+      await apiService.login(
+        civilId: civilIdController.text,
+        deviceId: deviceId,
+        deviceName: deviceName,
+        deviceModel: deviceModel,
+        deviceType: deviceOs,
+      );
+    }
+    isLoading.value = false;
+  }
+
+  Future<void> getDeviceInfo() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+      deviceId = androidInfo.id;
+      deviceModel = androidInfo.model;
+      deviceName = androidInfo.device;
+      deviceOs = 'android';
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+
+      deviceId = iosInfo.identifierForVendor ?? 'Unknown';
+      deviceModel = iosInfo.utsname.machine;
+      deviceName = iosInfo.name;
+      deviceOs = 'ios';
     }
   }
 

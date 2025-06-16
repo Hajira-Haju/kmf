@@ -10,7 +10,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pinput/pinput.dart';
-
 import '../../widgets/dot_indicator/dot_indicator.dart';
 
 class OtpScreen extends GetView<OtpController> {

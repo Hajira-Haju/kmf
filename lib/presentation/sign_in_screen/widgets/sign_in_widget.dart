@@ -2,6 +2,7 @@ import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoginWidgets {
   static Widget head() {
@@ -33,7 +34,8 @@ class LoginWidgets {
   static Widget customButton({
     required String btnTxt,
     required VoidCallback? onTap,
-    Color? clr
+    Color? clr,
+    bool isLoading = false,
   }) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -41,14 +43,17 @@ class LoginWidgets {
           borderRadius: BorderRadius.circular(10.r),
         ),
         fixedSize: Size(200.w, 60),
-        backgroundColor: clr??ConstData.primaryClr,
+        backgroundColor: clr ?? ConstData.primaryClr,
         foregroundColor: Colors.white,
       ),
       onPressed: onTap,
-      child: Text(
-        btnTxt,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-      ),
+      child:
+          isLoading
+              ? SpinKitRipple(color: Colors.white)
+              : Text(
+                btnTxt,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
     );
   }
 }
