@@ -13,7 +13,7 @@ class FirebaseService {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   /// Call this from main() or your service initialization
-  Future<void> init() async {
+  Future<String> init() async {
     await Firebase.initializeApp();
 
     // Request permissions (for iOS)
@@ -33,5 +33,6 @@ class FirebaseService {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       debugPrint("📲 App opened from notification!");
     });
+    return token!;
   }
 }

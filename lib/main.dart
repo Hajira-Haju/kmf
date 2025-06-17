@@ -16,7 +16,7 @@ Future<void> main() async {
   await GetStorage.init();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  await FirebaseService().init();
+  // await FirebaseService().init();
   await NotificationService.initialize();
   runApp(const MyApp());
 }
