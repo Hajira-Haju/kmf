@@ -39,6 +39,9 @@ dependencies:
   flutter_screenutil:
   flutter_svg:
   url_launcher:
+  firebase_core:
+  firebase_messaging:
+  flutter_local_notifications:
   image_picker:
   smooth_page_indicator:
   device_info_plus:

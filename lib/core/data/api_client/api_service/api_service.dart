@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:associations_app/core/data/api_client/api_list/api_list.dart';
 import 'package:associations_app/core/data/api_client/api_method/api_method.dart';
-import 'package:associations_app/core/storage_service/storage_service.dart';
-import 'package:associations_app/presentation/sign_in_screen/model/registration_model.dart';
+ import 'package:associations_app/presentation/sign_in_screen/model/registration_model.dart';
 import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '../../../../routes/app_routes/app_routes.dart';
+import '../../../Services/storage_service/storage_service.dart';
 
 class ApiService {
   final storage = StorageService();

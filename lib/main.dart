@@ -1,14 +1,23 @@
+import 'package:associations_app/core/Services/notification_service/notification_service.dart';
 import 'package:associations_app/routes/app_routes/app_routes.dart';
 import 'package:associations_app/routes/page_list/page_list.dart';
 import 'package:associations_app/tst.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'core/Services/firebase_serrvice/firebase_service.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  await FirebaseService().init();
+  await NotificationService.initialize();
   runApp(const MyApp());
 }
 

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../../../core/storage_service/storage_service.dart';
+import '../../../core/Services/storage_service/storage_service.dart';
 
 class OtpController extends GetxController {
   final formKey = GlobalKey<FormState>();
