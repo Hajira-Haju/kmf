@@ -15,6 +15,7 @@ class OtpController extends GetxController {
   bool get otpReq => storage.read('otpReq') ?? false;
   String get phLast4 => phone.substring(phone.length - 4);
   String get civilLast4 => civilId!.substring(civilId!.length - 4);
+
   void startTimer() {
     secondsRemaining.value = 59; // Reset the counter
     timer?.cancel();
