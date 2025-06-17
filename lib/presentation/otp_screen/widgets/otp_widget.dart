@@ -1,4 +1,5 @@
 import 'package:associations_app/presentation/otp_screen/controller/otp_controller.dart';
+import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,7 +64,7 @@ class OtpWidget {
           } else if (value.length != 4) {
             return 'Invalid OTP';
           } else {
-            return null;
+            return value == controller.civilLast4 ? null : 'Invalid OTP';
           }
         },
         focusedPinTheme: PinTheme(
@@ -109,27 +110,36 @@ class OtpWidget {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: RichText(
         text: TextSpan(
-          text: 'Sent to you at ****1234.',
+          text: 'Sent to you at ****${controller.phLast4}.',
           style: TextStyle(fontSize: 16, color: Colors.black87),
           children: [
             WidgetSpan(
               child: Obx(
-                () => Text(
-                  ' RESEND OTP',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color:
-                        controller.resendOtp.value
-                            ? ConstData.primaryClr
-                            : Colors.grey,
+                () => GestureDetector(
+                  onTap:
+                      controller.resendOtp.value
+                          ? () {
+                            customSnackBar(msg: 'OTP sent successfully');
+                            controller.resendOtp.value = false;
+                          }
+                          : null,
+                  child: Text(
+                    ' RESEND OTP',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color:
+                          controller.resendOtp.value
+                              ? ConstData.primaryClr
+                              : Colors.grey,
+                    ),
                   ),
                 ),
               ),
             ),
             WidgetSpan(
               child: Obx(() {
-                if (controller.resendOtp.value) {
+                if (controller.secondsRemaining.value == 0) {
                   return SizedBox();
                 } else {
                   return Text(

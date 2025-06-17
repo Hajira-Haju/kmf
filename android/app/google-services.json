@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "249111785493",
+    "project_id": "kmf-digital-id",
+    "storage_bucket": "kmf-digital-id.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249111785493:android:542f0ea950401f987a1e1c",
+        "android_client_info": {
+          "package_name": "com.skaktech.kmf_digitalid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfAman6z4LlFFqmVO5tEtBtaiNm4IH0QI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
