@@ -31,29 +31,5 @@ class LoginWidgets {
     );
   }
 
-  static Widget customButton({
-    required String btnTxt,
-    required VoidCallback? onTap,
-    Color? clr,
-    bool isLoading = false,
-  }) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
-        ),
-        fixedSize: Size(200.w, 60),
-        backgroundColor: clr ?? ConstData.primaryClr,
-        foregroundColor: Colors.white,
-      ),
-      onPressed: onTap,
-      child:
-          isLoading
-              ? SpinKitRipple(color: Colors.white)
-              : Text(
-                btnTxt,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-    );
-  }
+
 }

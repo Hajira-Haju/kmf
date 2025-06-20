@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:associations_app/presentation/welcome_screen/controller/welcome_controller.dart';
 import 'package:associations_app/presentation/welcome_screen/widget/welcome_widget.dart';
+import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,7 +26,6 @@ class WelcomeScreen extends GetView<WelcomeController> {
 
                 /// Header
                 WelcomeWidget.head(),
-
                 const SizedBox(height: 50),
 
                 /// Welcome Text
@@ -38,7 +38,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                   ),
                 ),
                 Text(
-                  'Lijo Adukkolil Perumal',
+                  controller.userName,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 28,
@@ -68,11 +68,25 @@ class WelcomeScreen extends GetView<WelcomeController> {
                 /// Continue Button
               ],
             ),
+
             Positioned(
               bottom: 30,
               left: 10,
               right: 10,
-              child: WelcomeWidget.button(controller),
+              child: Obx(
+                () => customButton(
+                  btnTxt: 'Continue',
+                  onTap:
+                      controller.selectedImage.value != null
+                          ? () async {
+                            controller.isLoading.value
+                                ? null
+                                : controller.submitPhoto();
+                          }
+                          : null,
+                  isLoading: controller.isLoading.value,
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

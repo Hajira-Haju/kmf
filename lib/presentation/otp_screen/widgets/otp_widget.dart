@@ -3,10 +3,13 @@ import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../../core/constants/const_datas.dart';
+import '../../../routes/app_routes/app_routes.dart';
 
 class OtpWidget {
   static Widget head() {
@@ -65,6 +68,11 @@ class OtpWidget {
             return 'Invalid OTP';
           } else {
             return value == controller.civilLast4 ? null : 'Invalid OTP';
+          }
+        },
+        onChanged: (value) {
+          if (value == controller.civilLast4) {
+            Get.offAllNamed(AppRoutes.welcomeScreen);
           }
         },
         focusedPinTheme: PinTheme(

@@ -4,6 +4,7 @@ import 'package:associations_app/routes/app_routes/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -89,30 +90,4 @@ class WelcomeWidget {
     );
   }
 
-  static Widget button(WelcomeController controller) {
-    return Obx(
-      () => ElevatedButton(
-        onPressed:
-            controller.selectedImage.value != null
-                ? () async {
-                  Get.offAll(IdScreen(),arguments: {'canPop':false});
-                }
-                : null,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ConstData.primaryClr,
-          foregroundColor: Colors.white,
-          fixedSize: Size(200.w, 60),
-          padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 14),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          elevation: 4,
-        ),
-        child: const Text(
-          'Continue',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-      ),
-    );
-  }
 }

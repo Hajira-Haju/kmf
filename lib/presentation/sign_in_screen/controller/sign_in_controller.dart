@@ -52,7 +52,6 @@ class SignInController extends GetxController {
       deviceOs = 'android';
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-
       deviceId = iosInfo.identifierForVendor ?? 'Unknown';
       deviceModel = iosInfo.utsname.machine;
       deviceName = iosInfo.name;

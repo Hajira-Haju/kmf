@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../core/constants/const_datas.dart';
+import '../../widgets/custom_widget/custom_widget.dart';
 import '../../widgets/dot_indicator/dot_indicator.dart';
 
 class SignInScreen extends GetView<SignInController> {
@@ -90,11 +91,13 @@ class SignInScreen extends GetView<SignInController> {
                     right: 20,
                     bottom: 40,
                     child: Obx(
-                      () => LoginWidgets.customButton(
+                      () => customButton(
                         isLoading: controller.isLoading.value,
                         btnTxt: 'Continue',
                         onTap: () {
-                          controller.submitCivilId();
+                          controller.isLoading.value
+                              ? null
+                              : controller.submitCivilId();
                         },
                       ),
                     ),
