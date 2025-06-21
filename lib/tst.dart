@@ -36,7 +36,7 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
         deviceId = iosInfo.identifierForVendor ?? 'Unknown';
         deviceModel = iosInfo.utsname.machine;
         deviceName = iosInfo.name;
-        deviceOs = 'ios1';
+        deviceOs = 'ios';
       });
     }
   }
