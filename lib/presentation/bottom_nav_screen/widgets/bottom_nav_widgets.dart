@@ -14,7 +14,7 @@ import '../controller/bottom_nav_controller.dart';
 import '../models/bottom_nav_datas.dart';
 
 class BottomNavWidgets {
-  static Widget drawer() {
+  static Widget drawer(BottomNavController controller) {
     return SafeArea(
       child: Drawer(
         shape: RoundedRectangleBorder(
@@ -70,7 +70,10 @@ class BottomNavWidgets {
                 title: Text('Log out', style: TextStyle(color: Colors.red)),
                 leading: Icon(Icons.logout, color: Colors.red),
                 trailing: Icon(CupertinoIcons.right_chevron, color: Colors.red),
-                onTap: () => Get.offAllNamed(AppRoutes.signInScreen),
+                onTap: () async {
+                  await controller.storage.clearAll();
+                  Get.offAllNamed(AppRoutes.signInScreen);
+                },
               ),
             ),
           ],

@@ -39,12 +39,12 @@ class WelcomeWidget {
   }
 
   static Widget profileUpload(WelcomeController controller) {
-    return GestureDetector(
-      onTap: controller.pickImage,
-      child: Obx(
-        () => Stack(
-          children: [
-            Container(
+    return Obx(
+      () => Stack(
+        children: [
+          GestureDetector(
+            onTap: controller.isLoading.value ? null : controller.pickImage,
+            child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 boxShadow: [
@@ -72,22 +72,21 @@ class WelcomeWidget {
                         : null,
               ),
             ),
-            Positioned(
-              bottom: 20,
-              right: 10,
-              child:
-                  controller.selectedImage.value == null
-                      ? SizedBox()
-                      : CircleAvatar(
-                        backgroundColor: ConstData.secondaryClr,
-                        foregroundColor: Colors.white,
-                        child: Icon(Icons.edit),
-                      ),
-            ),
-          ],
-        ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 10,
+            child:
+                controller.selectedImage.value == null
+                    ? SizedBox()
+                    : CircleAvatar(
+                      backgroundColor: ConstData.secondaryClr,
+                      foregroundColor: Colors.white,
+                      child: Icon(Icons.edit),
+                    ),
+          ),
+        ],
       ),
     );
   }
-
 }

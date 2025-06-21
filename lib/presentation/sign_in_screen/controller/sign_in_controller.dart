@@ -55,7 +55,7 @@ class SignInController extends GetxController {
       deviceId = iosInfo.identifierForVendor ?? 'Unknown';
       deviceModel = iosInfo.utsname.machine;
       deviceName = iosInfo.name;
-      deviceOs = 'ios';
+      deviceOs = 'ios1';
     }
   }
 

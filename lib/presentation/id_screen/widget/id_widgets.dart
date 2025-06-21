@@ -3,20 +3,53 @@ import 'dart:convert';
 import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/generated/assets.dart';
 import 'package:associations_app/presentation/id_screen/controller/id_controller.dart';
+import 'package:associations_app/presentation/id_screen/models/civil_id_model.dart';
 import 'package:associations_app/presentation/id_screen/models/id_dats.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 
 class IdWidgets {
-  static Widget idDetails(IdController controller) {
+  static Widget shimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.white,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: CircleAvatar(
+              radius: 80,
+              backgroundColor: ConstData.secondaryClr,
+            ),
+          ),
+          SizedBox(height: 20),
+          ListView.builder(
+            itemCount: 6,
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Card(
+                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+                child: SizedBox(height: 60),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget idDetails(IdController controller, CivilIdModel data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Align(
           alignment: Alignment.center,
           child: Text(
-            'Test user',
+            data.membername!,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
           ),
         ),
@@ -26,9 +59,9 @@ class IdWidgets {
           child: ListTile(
             title: Text('Status'),
             trailing: Text(
-              'Payment Pending',
+              data.paymentStatus! ? 'Payment Completed' : 'Payment Pending',
               style: TextStyle(
-                color: Colors.orange,
+                color: data.paymentStatus! ? Colors.green : Colors.orange,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -36,12 +69,12 @@ class IdWidgets {
           ),
         ),
         ListView.builder(
-          itemCount: IdData.idData.length,
+          itemCount: IdData(data).idData.length,
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            final data = IdData.idData[index];
+            final value = IdData(data).idData[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
@@ -51,9 +84,9 @@ class IdWidgets {
                     child: Divider(height: 1),
                   ),
                   ListTile(
-                    title: Text(data.head),
+                    title: Text(value.head),
                     trailing: Text(
-                      data.value,
+                      value.value,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -72,7 +105,7 @@ class IdWidgets {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () => controller.showIdQr(),
+                onTap: () => controller.showIdQr(data),
                 child: Container(
                   width: 180,
                   decoration: BoxDecoration(
@@ -110,8 +143,8 @@ class IdWidgets {
     );
   }
 
-  static Widget qrWidget() {
-    final qrData = jsonEncode(IdData.userData);
+  static Widget qrWidget(CivilIdModel data) {
+    final qrData = jsonEncode(IdData(data).userData);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: BottomSheet(
@@ -128,7 +161,6 @@ class IdWidgets {
                   Card(
                     color: Colors.white,
                     child: QrImageView(
-
                       dataModuleStyle: QrDataModuleStyle(
                         dataModuleShape: QrDataModuleShape.circle,
                         color: ConstData.secondaryClr,

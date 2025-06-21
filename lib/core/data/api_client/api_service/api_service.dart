@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:associations_app/core/data/api_client/api_list/api_list.dart';
 import 'package:associations_app/core/data/api_client/api_method/api_method.dart';
+import 'package:associations_app/presentation/id_screen/models/civil_id_model.dart';
 import 'package:associations_app/presentation/sign_in_screen/model/registration_model.dart';
 import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,6 +80,7 @@ class ApiService {
       if (response.statusCode == 200) {
         var responseBody = await http.Response.fromStream(response);
         debugPrint(responseBody.body);
+        await storage.write('isLogged', true);
         Get.offAll(IdScreen(), arguments: {'canPop': false});
       } else {
         customSnackBar(msg: 'Something Went wrong');
@@ -88,6 +90,30 @@ class ApiService {
     } catch (e, s) {
       customSnackBar(msg: 'Something Went wrong');
       log('Error Occurred', stackTrace: s, error: e);
+    }
+  }
+
+  Future<CivilIdModel?> fetchCivilData() async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.civilId,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        customSnackBar(msg: 'Data Updated successfully');
+        storage.write('civilIdData', response.body);
+        final data = jsonDecode(response.body);
+        return CivilIdModel.fromJson(data);
+      } else {
+        customSnackBar(msg: 'Something went wrong');
+        debugPrint(response.body);
+        return null;
+      }
+    } catch (e, s) {
+      customSnackBar(msg: 'Something went wrong');
+      log('Error occurred', error: e, stackTrace: s);
+      return null;
     }
   }
 }

@@ -2,12 +2,14 @@ import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/presentation/new_events_screen/controller/news_events_controller.dart';
 import 'package:associations_app/presentation/news_inner_screen/news_inner_screen.dart';
 import 'package:associations_app/routes/app_routes/app_routes.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../models/news_events_data.dart';
 
@@ -85,11 +87,20 @@ class NewsEventsWidgets {
                               topRight: Radius.circular(20),
                               topLeft: Radius.circular(20),
                             ),
-                            child: Image.network(
-                              data.imgUrl,
-                              errorBuilder:
+                            child: CachedNetworkImage(
+                              imageUrl: data.imgUrl,
+                              errorWidget:
                                   (context, error, stackTrace) =>
                                       Icon(Icons.error),
+                              placeholder:
+                                  (context, url) => Shimmer.fromColors(
+                                    baseColor: Colors.grey.shade300,
+                                    highlightColor: Colors.white,
+                                    child: Container(
+                                      color: Colors.grey,
+                                      width: double.infinity,
+                                    ),
+                                  ),
                               width: 320,
                               height: 120,
                               fit: BoxFit.cover,

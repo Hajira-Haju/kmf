@@ -45,7 +45,7 @@ class BottomNavScreen extends GetView<BottomNavController> {
         ],
       ),
       key: controller.key,
-      drawer: BottomNavWidgets.drawer(),
+      drawer: BottomNavWidgets.drawer(controller),
       body: Obx(() => BottomNavData.pages[controller.activeIndex.value]),
       floatingActionButton: FloatingActionButton(
         backgroundColor: ConstData.secondaryClr,
