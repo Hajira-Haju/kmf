@@ -4,9 +4,11 @@ import 'package:associations_app/presentation/bottom_nav_screen/controller/botto
 import 'package:associations_app/presentation/bottom_nav_screen/models/bottom_nav_datas.dart';
 import 'package:associations_app/presentation/bottom_nav_screen/widgets/bottom_nav_widgets.dart';
 import 'package:associations_app/presentation/id_screen/id_screen.dart';
+import 'package:associations_app/res/assets_res.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../notification_screen/notification_screen.dart';
@@ -16,59 +18,89 @@ class BottomNavScreen extends GetView<BottomNavController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () => controller.key.currentState!.openDrawer(),
-          child: Icon(Icons.grid_view_rounded, color: ConstData.secondaryClr),
-        ),
-        title: Text(
-          'K M F',
-          style: TextStyle(
-            color: ConstData.primaryClr,
-            fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async {
+        if (controller.lastBackPressed == null ||
+            controller.now.difference(controller.lastBackPressed!) >
+                const Duration(seconds: 2)) {
+          controller.lastBackPressed = controller.now;
+          Fluttertoast.showToast(msg: "Press back again to exit");
+          return false;
+        }
+        return true; // Will exit
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: GestureDetector(
+            onTap: () => controller.key.currentState!.openDrawer(),
+            child: Icon(Icons.grid_view_rounded, color: ConstData.secondaryClr),
           ),
-        ),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: GestureDetector(
-              onTap:
-                  () => Get.to(
-                    NotificationScreen(),
-                    transition: Transition.rightToLeftWithFade,
-                  ),
-              child: Icon(Icons.notifications, color: ConstData.secondaryClr),
-            ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(AssetsRes.THE_ASSOCIATES_LOGO, width: 30),
+              SizedBox(width: 5),
+              Text(
+                'K M F',
+                style: TextStyle(
+                  color: ConstData.primaryClr,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      key: controller.key,
-      drawer: BottomNavWidgets.drawer(controller),
-      body: Obx(() => BottomNavData.pages[controller.activeIndex.value]),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: ConstData.secondaryClr,
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.r),
-        ),
-        onPressed:
-            () => Get.to(
-              IdScreen(),
-              transition: Transition.downToUp,
-              arguments: {'canPop': true},
+          centerTitle: true,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: GestureDetector(
+                onTap:
+                    () => Get.to(
+                      NotificationScreen(),
+                      transition: Transition.rightToLeftWithFade,
+                    ),
+                child: Icon(Icons.notifications, color: ConstData.secondaryClr),
+              ),
             ),
-        child: Icon(CupertinoIcons.creditcard_fill),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Obx(
-        () => AnimatedBottomNavigationBar(
-          activeColor: ConstData.primaryClr,
-          gapLocation: GapLocation.center,
-          icons: [CupertinoIcons.news, Icons.local_offer_outlined],
-          activeIndex: controller.activeIndex.value,
-          onTap: (p0) => controller.activeIndex.value = p0,
+          ],
+        ),
+        key: controller.key,
+        drawer: BottomNavWidgets.drawer(controller),
+        body: Obx(() {
+          final page = BottomNavData.pages[controller.activeIndex.value];
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeOut,
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: page,
+          );
+        }),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: ConstData.secondaryClr,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.r),
+          ),
+          onPressed:
+              () => Get.to(
+                IdScreen(),
+                transition: Transition.downToUp,
+                arguments: {'canPop': true},
+              ),
+          child: Icon(CupertinoIcons.creditcard_fill),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: Obx(
+          () => AnimatedBottomNavigationBar(
+            activeColor: ConstData.primaryClr,
+            gapLocation: GapLocation.center,
+            icons: [CupertinoIcons.news, Icons.local_offer_outlined],
+            activeIndex: controller.activeIndex.value,
+            onTap: (p0) => controller.activeIndex.value = p0,
+          ),
         ),
       ),
     );

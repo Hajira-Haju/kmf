@@ -38,7 +38,7 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

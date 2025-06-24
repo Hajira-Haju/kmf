@@ -1,3 +1,4 @@
+import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/presentation/bottom_nav_screen/widgets/bottom_nav_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class BottomNavController extends GetxController {
   final arg = Get.arguments;
   RxInt activeIndex = 0.obs;
   final key = GlobalKey<ScaffoldState>();
-
-
+  final now = DateTime.now();
+  DateTime? lastBackPressed;
 
 }
