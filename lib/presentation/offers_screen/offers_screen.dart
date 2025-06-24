@@ -14,16 +14,22 @@ class OffersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    OffersController controller = Get.put(OffersController());
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            OfferWidget.mainHead(),
-            OfferWidget.secondaryOff(),
-            OfferWidget.offersCategory(),
-            SizedBox(height: 40),
-          ],
-        ),
+      body: FutureBuilder(
+        future: controller.futureOffer,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return OfferWidget.shimmerLoad();
+          } else if (snapshot.hasData) {
+            final data = snapshot.data;
+            return SingleChildScrollView(
+              child: OfferWidget.offersCategory(data!),
+            );
+          } else {
+            return Center(child: Text('Something went wrong'));
+          }
+        },
       ),
     );
   }

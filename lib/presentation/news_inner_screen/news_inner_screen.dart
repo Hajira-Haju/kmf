@@ -1,8 +1,10 @@
 import 'package:associations_app/presentation/news_inner_screen/controller/news_inner_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class NewsInnerScreen extends GetView<NewsInnerController> {
   const NewsInnerScreen({super.key});
@@ -16,11 +18,20 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
               SizedBox(
                 height: 250.h,
                 width: double.infinity,
-                child: Image.network(
-                  controller.imgUrl,
+                child: CachedNetworkImage(
+                  imageUrl: controller.imgUrl,
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  errorBuilder:
+                  placeholder:
+                      (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.white,
+                        child: Container(
+                          color: Colors.grey,
+                          width: double.infinity,
+                        ),
+                      ),
+                  errorWidget:
                       (context, error, stackTrace) => Icon(Icons.error),
                 ),
               ),
@@ -78,9 +89,7 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Text(
-                         controller.content,
-                        ),
+                        child: Text(controller.content),
                       ),
                     ],
                   ),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:associations_app/core/data/api_client/api_list/api_list.dart';
 import 'package:associations_app/core/data/api_client/api_method/api_method.dart';
 import 'package:associations_app/presentation/id_screen/models/civil_id_model.dart';
+import 'package:associations_app/presentation/offers_screen/model/offer_model.dart';
 import 'package:associations_app/presentation/sign_in_screen/model/registration_model.dart';
 import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../../../presentation/id_screen/id_screen.dart';
 import '../../../../routes/app_routes/app_routes.dart';
 import '../../../Services/firebase_serrvice/firebase_service.dart';
+import '../../../Services/storage_service/services.dart';
 import '../../../Services/storage_service/storage_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -114,6 +116,28 @@ class ApiService {
       customSnackBar(msg: 'Something went wrong');
       log('Error occurred', error: e, stackTrace: s);
       return null;
+    }
+  }
+
+  Future<List<OfferModel>> fetchOffer() async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.offerUrl,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        await storage.write('offerData', response.body);
+        final data = jsonDecode(response.body) as List;
+        return data.map((e) => OfferModel.fromJson(e)).toList();
+      } else {
+        customSnackBar(msg: 'Something went wrong');
+        return Services().loadOffersFromCache();
+      }
+    } catch (e, s) {
+      customSnackBar(msg: 'Something went wrong');
+      log('Error occurred', error: e, stackTrace: s);
+      return Services().loadOffersFromCache();
     }
   }
 }

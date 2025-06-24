@@ -1,6 +1,14 @@
+import 'package:associations_app/presentation/offers_screen/model/offer_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../../routes/app_routes/app_routes.dart';
+import '../controller/offers_controller.dart';
 
 class OfferWidget {
   static Widget mainHead() {
@@ -70,44 +78,103 @@ class OfferWidget {
     );
   }
 
-  static Widget offersCategory() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Text(
-            'Latest Offers for you',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+  static Widget offersCategory(List<OfferModel> data) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              'Latest Offers for you',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ),
-        ),
-        GridView.builder(
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: data.length,
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: 150,
+            ),
+            itemBuilder: (context, index) {
+              final offer = data[index];
+              return GestureDetector(
+                onTap:
+                    () => Get.toNamed(
+                      AppRoutes.newsInnerScreen,
+                      arguments: {
+                        'imgUrl': offer.imagePath,
+                        'head': offer.offerHeader,
+                        'content': offer.offerDescription,
+                      },
+                    ),
+                child: Card(
+                  margin: EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.r),
+                          child: CachedNetworkImage(
+                            width: double.infinity,
+                            imageUrl: offer.imagePath!,
+                            fit: BoxFit.cover,
+                            placeholder:
+                                (context, url) => Shimmer.fromColors(
+                                  baseColor: Colors.grey.shade300,
+                                  highlightColor: Colors.white,
+                                  child: Container(
+                                    color: Colors.grey,
+                                    width: double.infinity,
+                                  ),
+                                ),
+                            errorWidget:
+                                (context, url, error) => Icon(Icons.error),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(offer.offerHeader!),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+
+  static Widget shimmerLoad() {
+    return SingleChildScrollView(
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.white,
+        child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: 4,
+          itemCount: 6,
+          padding: EdgeInsets.all(10),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            mainAxisExtent: 150,
+            mainAxisExtent: 130,
           ),
           itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.r),
-                child: Image.network(
-                  'https://media.istockphoto.com/id/1018337470/vector/vector-simple-style-sign-modern-store-with-white-beveled-font.jpg?s=612x612&w=0&k=20&c=rK2eMdKeAm_FpigWWnMFnPGesNzFgFhqppTi-rB6bCs=',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
+            return Card(color: Colors.white, margin: EdgeInsets.all(8));
           },
         ),
-      ],
+      ),
     );
   }
 }
