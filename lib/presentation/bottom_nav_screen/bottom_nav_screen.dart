@@ -38,7 +38,10 @@ class BottomNavScreen extends GetView<BottomNavController> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(AssetsRes.THE_ASSOCIATES_LOGO, width: 30),
+              Hero(
+                tag: 'logo',
+                child: Image.asset(AssetsRes.THE_ASSOCIATES_LOGO, width: 30),
+              ),
               SizedBox(width: 5),
               Text(
                 'K M F',
@@ -93,15 +96,17 @@ class BottomNavScreen extends GetView<BottomNavController> {
           child: Icon(CupertinoIcons.creditcard_fill),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: Obx(
-          () => AnimatedBottomNavigationBar(
+        bottomNavigationBar: Obx(() {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          return AnimatedBottomNavigationBar(
+            backgroundColor: isDark ? Colors.black12 : Colors.white,
             activeColor: ConstData.primaryClr,
             gapLocation: GapLocation.center,
             icons: [CupertinoIcons.news, Icons.local_offer_outlined],
             activeIndex: controller.activeIndex.value,
             onTap: (p0) => controller.activeIndex.value = p0,
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

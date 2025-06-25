@@ -1,3 +1,4 @@
+import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/presentation/news_inner_screen/controller/news_inner_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
   const NewsInnerScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Stack(
         children: [
@@ -24,8 +26,8 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
                   fit: BoxFit.cover,
                   placeholder:
                       (context, url) => Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.white,
+                        baseColor: ConstData.shimmerClrBase(context),
+                        highlightColor: ConstData.shimmerClrHighLight(context),
                         child: Container(
                           color: Colors.grey,
                           width: double.infinity,
@@ -65,7 +67,7 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
             bottom: 0,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: isDark ? Colors.black : Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.r),
                   topRight: Radius.circular(30.r),

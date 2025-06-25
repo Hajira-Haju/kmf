@@ -11,9 +11,11 @@ class SplashScreen extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Center(
-        child: Hero(tag: 'logo', child: Image.asset('assets/the-associates_logo.png', width: 150.w)),
+        child: Hero(
+          tag: 'logo',
+          child: Image.asset('assets/the-associates_logo.png', width: 150.w),
+        ),
       ),
     );
   }

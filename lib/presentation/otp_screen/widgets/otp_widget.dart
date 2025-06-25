@@ -114,12 +114,16 @@ class OtpWidget {
   }
 
   static Widget resendOtp(OtpController controller) {
+    bool isDark = Theme.of(Get.context!).brightness == Brightness.dark;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: RichText(
         text: TextSpan(
           text: 'Sent to you at ****${controller.phLast4}.',
-          style: TextStyle(fontSize: 16, color: Colors.black87),
+          style: TextStyle(
+            fontSize: 16,
+            color: isDark ? Colors.white : Colors.black87,
+          ),
           children: [
             WidgetSpan(
               child: Obx(

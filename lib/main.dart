@@ -34,9 +34,9 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         title: 'KMF',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        ),
+        theme: ThemeData(brightness: Brightness.light),
+        darkTheme: ThemeData(brightness: Brightness.dark),
+        themeMode: ThemeMode.system,
         getPages: PageList.pages,
         initialRoute: AppRoutes.splashScreen,
         // home: DeviceInfoScreen(),

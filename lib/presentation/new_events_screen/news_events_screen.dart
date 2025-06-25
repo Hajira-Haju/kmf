@@ -8,20 +8,19 @@ import '../bottom_nav_screen/controller/bottom_nav_controller.dart';
 import '../notification_screen/notification_screen.dart';
 import 'models/news_events_data.dart';
 
-class NewsEventsScreen extends StatelessWidget {
+class NewsEventsScreen extends GetView<NewsEventsController> {
   const NewsEventsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    NewsEventsController controller = NewsEventsController();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            NewsEventsWidgets.latestNewsList(),
-            NewsEventsWidgets.choiceChip(controller),
-            NewsEventsWidgets.newsList(),
-            SizedBox(height: 40,)
+            NewsEventsWidgets.latestNewsList(controller, context),
+            NewsEventsWidgets.choiceChip(controller, context),
+            NewsEventsWidgets.newsList(controller, context),
+            SizedBox(height: 40),
           ],
         ),
       ),

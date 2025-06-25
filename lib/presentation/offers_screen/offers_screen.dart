@@ -9,12 +9,11 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../notification_screen/notification_screen.dart';
 
-class OffersScreen extends StatelessWidget {
+class OffersScreen extends GetView<OffersController> {
   const OffersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    OffersController controller = Get.put(OffersController());
     return Scaffold(
       body: FutureBuilder(
         future: controller.futureOffer,

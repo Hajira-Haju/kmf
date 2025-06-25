@@ -27,6 +27,7 @@ class CustomField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
+        style: TextStyle(color: Colors.black),
         readOnly: readOnly,
         controller: controller,
         onFieldSubmitted: onFieldSubmitted,

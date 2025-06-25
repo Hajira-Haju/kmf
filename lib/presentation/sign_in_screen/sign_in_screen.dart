@@ -53,7 +53,7 @@ class SignInScreen extends GetView<SignInController> {
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           'Please enter your Civil ID number to continue. This helps us verify your identity.',
-                          style: TextStyle(fontSize: 16, color: Colors.black87),
+                          style: TextStyle(fontSize: 16),
                           // textAlign: TextAlign.center,
                         ),
                       ),

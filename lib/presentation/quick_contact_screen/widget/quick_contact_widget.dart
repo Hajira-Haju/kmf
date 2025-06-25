@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/constants/const_datas.dart';
@@ -38,6 +40,7 @@ class QuickContactWidget {
     required String value,
     bool isLink = false,
   }) {
+    bool isDark = Theme.of(Get.context!).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(
@@ -60,7 +63,12 @@ class QuickContactWidget {
               child: Text(
                 value,
                 style: TextStyle(
-                  color: isLink ? Colors.blue : Colors.black87,
+                  color:
+                      isLink
+                          ? Colors.blue
+                          : isDark
+                          ? Colors.grey
+                          : Colors.black87,
                   decoration:
                       isLink ? TextDecoration.underline : TextDecoration.none,
                 ),

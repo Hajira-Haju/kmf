@@ -1,3 +1,4 @@
+import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/presentation/offers_screen/model/offer_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,22 +89,15 @@ class OfferWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
               'Latest Offers for you',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
-          GridView.builder(
+          ListView.builder(
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemCount: data.length,
+            scrollDirection: Axis.vertical,
             padding: EdgeInsets.symmetric(horizontal: 10),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisExtent: 150,
-            ),
             itemBuilder: (context, index) {
               final offer = data[index];
               return GestureDetector(
@@ -119,9 +113,10 @@ class OfferWidget {
                 child: Card(
                   margin: EdgeInsets.all(8),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 100,
+                        height: 150,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.r),
                           child: CachedNetworkImage(
@@ -130,8 +125,12 @@ class OfferWidget {
                             fit: BoxFit.cover,
                             placeholder:
                                 (context, url) => Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade300,
-                                  highlightColor: Colors.white,
+                                  baseColor: ConstData.shimmerClrBase(
+                                    Get.context!,
+                                  ),
+                                  highlightColor: ConstData.shimmerClrHighLight(
+                                    Get.context!,
+                                  ),
                                   child: Container(
                                     color: Colors.grey,
                                     width: double.infinity,
@@ -142,8 +141,33 @@ class OfferWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 5),
-                      Text(offer.offerHeader!),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              offer.offerHeader!,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              offer.offerDate!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Text(
+                              offer.offerDescription!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -159,8 +183,8 @@ class OfferWidget {
   static Widget shimmerLoad() {
     return SingleChildScrollView(
       child: Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.white,
+        baseColor: ConstData.shimmerClrBase(Get.context!),
+        highlightColor: ConstData.shimmerClrHighLight(Get.context!),
         child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

@@ -9,6 +9,7 @@ class ReferMemberScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ConstData.secondaryClr,
@@ -55,7 +56,7 @@ class ReferMemberScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
               decoration: BoxDecoration(
-                color: Colors.grey.shade100,
+                color: isDark ? Colors.grey.shade400 : Colors.grey.shade100,
                 border: Border.all(color: ConstData.secondaryClr, width: 1.2),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -71,7 +72,11 @@ class ReferMemberScreen extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.copy, size: 20),
+                    icon: Icon(
+                      Icons.copy,
+                      size: 20,
+                      color: ConstData.secondaryClr,
+                    ),
                     onPressed: () {
                       Clipboard.setData(
                         const ClipboardData(

@@ -15,8 +15,9 @@ class WelcomeScreen extends GetView<WelcomeController> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: isDark ? Colors.black : Colors.grey[100],
       body: SafeArea(
         child: Stack(
           children: [
@@ -53,7 +54,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                   padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
                     'Upload your profile photo to complete your welcome process.',
-                    style: TextStyle(fontSize: 16, color: Colors.black87),
+                    style: TextStyle(fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
                 ),

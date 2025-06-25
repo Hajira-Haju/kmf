@@ -10,136 +10,170 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../models/news_events_data.dart';
 
 class NewsEventsWidgets {
-  static Widget textField() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: TextFormField(
-        decoration: InputDecoration(
-          hintText: 'Search here...',
-          prefixIcon: Icon(Icons.search),
-          suffixIcon: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              foregroundColor: Colors.white,
-              backgroundColor: ConstData.secondaryClr,
-              child: Icon(CupertinoIcons.arrow_right),
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
-            borderRadius: BorderRadius.circular(30.r),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: ConstData.secondaryClr),
-            borderRadius: BorderRadius.circular(30.r),
-          ),
-        ),
-      ),
-    );
-  }
-
-  static Widget latestNewsList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            'Latest Updates',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-        ),
-        SizedBox(
-          height: 210,
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemCount: NewsEventsData.latestNews.length,
-            itemBuilder: (context, index) {
-              final data = NewsEventsData.latestNews[index];
-              return GestureDetector(
-                onTap:
-                    () => Get.toNamed(
-                      AppRoutes.newsInnerScreen,
-                      arguments: {
-                        'imgUrl': data.imgUrl,
-                        'head': data.title,
-                        'content': data.description,
-                      },
-                    ),
-                child: SizedBox(
-                  width: 320,
-                  child: Card(
-                    margin: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 120,
-                          width: double.infinity,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(20),
-                              topLeft: Radius.circular(20),
-                            ),
-                            child: CachedNetworkImage(
-                              imageUrl: data.imgUrl,
-                              errorWidget:
-                                  (context, error, stackTrace) =>
-                                      Icon(Icons.error),
-                              placeholder:
-                                  (context, url) => Shimmer.fromColors(
-                                    baseColor: Colors.grey.shade300,
-                                    highlightColor: Colors.white,
-                                    child: Container(
-                                      color: Colors.grey,
-                                      width: double.infinity,
-                                    ),
-                                  ),
-                              width: 320,
-                              height: 120,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, top: 8),
-                          child: Text(
-                            data.title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            maxLines: 2,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            '12/02/2025',
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    ),
+  static Widget latestNewsList(NewsEventsController controller,BuildContext widgetContext) {
+    return FutureBuilder(
+      future: controller.futureLatest,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Shimmer.fromColors(
+            baseColor: ConstData.shimmerClrBase(widgetContext),
+            highlightColor: ConstData.shimmerClrHighLight(widgetContext),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    'Latest Updates',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
-              );
-            },
-          ),
-        ),
-      ],
+                SizedBox(
+                  height: 210,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        width: 320,
+                        child: Card(
+                          margin: EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 130, width: double.infinity),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else if (snapshot.hasData) {
+          final data = snapshot.data;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Latest Updates',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+              SizedBox(
+                height: 210,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: data!.length >= 5 ? 5 : data.length,
+                  itemBuilder: (context, index) {
+                    final latestNews = data[index];
+                    return GestureDetector(
+                      onTap:
+                          () => Get.toNamed(
+                            AppRoutes.newsInnerScreen,
+                            arguments: {
+                              'imgUrl': latestNews.imagePath,
+                              'head': latestNews.heading,
+                              'content': latestNews.description,
+                            },
+                          ),
+                      child: SizedBox(
+                        width: 320,
+                        child: Card(
+                          margin: EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 120,
+                                width: double.infinity,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    topLeft: Radius.circular(20),
+                                  ),
+                                  child: CachedNetworkImage(
+                                    imageUrl: latestNews.imagePath!,
+                                    errorWidget:
+                                        (context, error, stackTrace) =>
+                                            Icon(Icons.error),
+                                    placeholder:
+                                        (context, url) => Shimmer.fromColors(
+                                          baseColor: Colors.grey.shade300,
+                                          highlightColor: Colors.white,
+                                          child: Container(
+                                            color: Colors.grey,
+                                            width: double.infinity,
+                                          ),
+                                        ),
+                                    width: 320,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 8.0,
+                                  top: 8,
+                                ),
+                                child: Text(
+                                  latestNews.heading!,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  maxLines: 2,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  latestNews.date!,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        } else {
+          return SizedBox(
+            height: 220,
+            child: Center(child: Text('Something went wrong')),
+          );
+        }
+      },
     );
   }
 
-  static Widget choiceChip(NewsEventsController controller) {
-    return Obx(
-      () => Row(
+  static Widget choiceChip(
+    NewsEventsController controller,
+    BuildContext context,
+  ) {
+    return Obx(() {
+      final isDark = Theme.of(context).brightness == Brightness.dark;
+      return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children:
             NewsEventsData.choiceData.map((choices) {
@@ -148,7 +182,9 @@ class NewsEventsWidgets {
                 child: ChoiceChip(
                   labelStyle: TextStyle(
                     color:
-                        controller.selectedChoice.value == choices
+                        isDark
+                            ? Colors.white
+                            : controller.selectedChoice.value == choices
                             ? Colors.white
                             : Colors.black,
                   ),
@@ -161,83 +197,133 @@ class NewsEventsWidgets {
                   onSelected: (value) {
                     if (controller.selectedChoice.value != choices) {
                       controller.selectedChoice.value = choices;
+                      final index =
+                          {'All': 0, 'News': 1, 'Events': 2}[choices] ?? 0;
+                      controller.fetchNewsOrEvents(index);
                     }
                   },
                 ),
               );
             }).toList(),
-      ),
-    );
+      );
+    });
   }
 
-  static Widget newsList() {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      itemCount: NewsEventsData.newsList.length,
-      physics: BouncingScrollPhysics(),
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        final data = NewsEventsData.newsList[index];
-        return GestureDetector(
-          onTap:
-              () => Get.toNamed(
-                AppRoutes.newsInnerScreen,
-                arguments: {
-                  'imgUrl': data.imgUrl,
-                  'head': data.title,
-                  'content': data.description,
-                },
-              ),
-          child: Card(
-            margin: EdgeInsets.all(8),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 150,
-                  height: 90,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.r),
-                      bottomLeft: Radius.circular(10.r),
-                    ),
-                    child: Image.network(
-                      data.imgUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder:
-                          (context, error, stackTrace) => Icon(Icons.error),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          data.title,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          '12/02/2023',
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                        Text(
-                          data.description,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+  static Widget newsList(NewsEventsController controller,BuildContext context) {
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return Shimmer.fromColors(
+          baseColor: ConstData.shimmerClrBase(context),
+          highlightColor: ConstData.shimmerClrHighLight(context),
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: 3,
+            physics: BouncingScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Card(
+                margin: EdgeInsets.all(8),
+                child: Row(children: [SizedBox(width: 150, height: 100)]),
+              );
+            },
           ),
         );
-      },
-    );
+      } else if (controller.newsOrEvents.isNotEmpty) {
+        return ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount:
+              controller.selectedType.value == 0
+                  ? controller.newsOrEvents.length > 5
+                      ? controller.newsOrEvents.length - 5
+                      : controller.newsOrEvents.length
+                  : controller.newsOrEvents.length,
+          physics: BouncingScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            final data =
+                controller.selectedType.value == 0
+                    ? controller.newsOrEvents.length > 5
+                        ? controller.newsOrEvents[index + 5]
+                        : controller.newsOrEvents[index]
+                    : controller.newsOrEvents[index];
+            return GestureDetector(
+              onTap:
+                  () => Get.toNamed(
+                    AppRoutes.newsInnerScreen,
+                    arguments: {
+                      'imgUrl': data.imagePath,
+                      'head': data.heading,
+                      'content': data.description,
+                    },
+                  ),
+              child: Card(
+                margin: EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      height: 90,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.r),
+                          bottomLeft: Radius.circular(10.r),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: data.imagePath!,
+                          fit: BoxFit.cover,
+                          placeholder:
+                              (context, url) => Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.white,
+                                child: Container(
+                                  color: Colors.grey,
+                                  width: double.infinity,
+                                ),
+                              ),
+                          errorWidget:
+                              (context, error, stackTrace) => Icon(Icons.error),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              data.heading!,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              data.date!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Text(
+                              data.description!,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      } else {
+        return Column(
+          children: [SizedBox(height: 100), Text('Something went wrong')],
+        );
+      }
+    });
   }
 }

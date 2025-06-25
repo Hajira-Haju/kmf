@@ -39,6 +39,7 @@ class WelcomeWidget {
   }
 
   static Widget profileUpload(WelcomeController controller) {
+    bool isDark = Theme.of(Get.context!).brightness == Brightness.dark;
     return Obx(
       () => Stack(
         children: [
@@ -57,7 +58,7 @@ class WelcomeWidget {
               ),
               child: CircleAvatar(
                 radius: 100,
-                backgroundColor: Colors.white,
+                backgroundColor: isDark ? Colors.grey.shade600 : Colors.white,
                 backgroundImage:
                     controller.selectedImage.value != null
                         ? FileImage(controller.selectedImage.value!)
@@ -67,7 +68,8 @@ class WelcomeWidget {
                         ? Icon(
                           Icons.add_a_photo,
                           size: 40,
-                          color: Colors.grey[600],
+                          color:
+                              isDark ? Colors.grey.shade300 : Colors.grey[600],
                         )
                         : null,
               ),

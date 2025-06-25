@@ -7,14 +7,16 @@ import 'package:associations_app/presentation/id_screen/models/civil_id_model.da
 import 'package:associations_app/presentation/id_screen/models/id_dats.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
 class IdWidgets {
   static Widget shimmer() {
     return Shimmer.fromColors(
-      baseColor: Colors.grey.shade300,
-      highlightColor: Colors.white,
+      baseColor: ConstData.shimmerClrBase(Get.context!),
+      highlightColor: ConstData.shimmerClrHighLight(Get.context!),
       child: Column(
         children: [
           Padding(

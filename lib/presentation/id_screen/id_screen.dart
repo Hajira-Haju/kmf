@@ -78,8 +78,8 @@ class _IdScreenState extends State<IdScreen> {
                             fit: BoxFit.cover,
                             placeholder:
                                 (context, url) => Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade300,
-                                  highlightColor: Colors.white,
+                                  baseColor: ConstData.shimmerClrBase(context),
+                                  highlightColor: ConstData.shimmerClrHighLight(context),
                                   child: CircleAvatar(
                                     radius: 80,
                                     backgroundColor: Colors.white,

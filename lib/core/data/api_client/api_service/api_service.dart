@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:associations_app/core/data/api_client/api_list/api_list.dart';
 import 'package:associations_app/core/data/api_client/api_method/api_method.dart';
 import 'package:associations_app/presentation/id_screen/models/civil_id_model.dart';
+import 'package:associations_app/presentation/new_events_screen/models/news_and_events_model.dart';
 import 'package:associations_app/presentation/offers_screen/model/offer_model.dart';
 import 'package:associations_app/presentation/sign_in_screen/model/registration_model.dart';
 import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
@@ -116,6 +117,50 @@ class ApiService {
       customSnackBar(msg: 'Something went wrong');
       log('Error occurred', error: e, stackTrace: s);
       return null;
+    }
+  }
+
+  Future<List<NewsAndEventsModel>> fetchLatest() async {
+    final token = storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.newsAndEventsUrl(type: 0),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        await storage.write('latestUpdates', response.body);
+        final data = jsonDecode(response.body) as List;
+        return data.map((e) => NewsAndEventsModel.fromJson(e)).toList();
+      } else {
+        customSnackBar(msg: 'Something went wrong');
+        return Services().loadLatestFromCache();
+      }
+    } catch (e, s) {
+      customSnackBar(msg: 'Something went wrong');
+      log('Error occurred', error: e, stackTrace: s);
+      return Services().loadLatestFromCache();
+    }
+  }
+
+  Future<List<NewsAndEventsModel>> fetchNewsOrEvents(int type) async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.newsAndEventsUrl(type: type),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        await storage.write('newsOrEvents', response.body);
+        final data = jsonDecode(response.body) as List;
+        return data.map((e) => NewsAndEventsModel.fromJson(e)).toList();
+      } else {
+        customSnackBar(msg: 'Something went wrong');
+        return Services().loadNewsOrEventsFromCache();
+      }
+    } catch (e, s) {
+      customSnackBar(msg: 'Something went wrong');
+      log('Error occurred', error: e, stackTrace: s);
+      return Services().loadNewsOrEventsFromCache();
     }
   }
 
