@@ -77,7 +77,7 @@ class OtpScreen extends GetView<OtpController> {
                     left: 20,
                     right: 20,
                     bottom: 15,
-                    child: OtpWidget.adminButton(),
+                    child: OtpWidget.adminButton(controller),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

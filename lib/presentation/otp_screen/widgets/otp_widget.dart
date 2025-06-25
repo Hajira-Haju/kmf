@@ -38,7 +38,7 @@ class OtpWidget {
     );
   }
 
-  static Widget adminButton() {
+  static Widget adminButton(OtpController controller) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.h),
       child: ElevatedButton.icon(
@@ -50,7 +50,9 @@ class OtpWidget {
           fixedSize: Size(200.w, 40.h),
           backgroundColor: Colors.blueGrey,
         ),
-        onPressed: () {},
+        onPressed: () {
+          controller.contactAdminInfo();
+        },
         icon: Icon(CupertinoIcons.right_chevron),
         label: Text('Contact admin'),
       ),
@@ -168,6 +170,94 @@ class OtpWidget {
           ],
         ),
       ),
+    );
+  }
+
+  static BottomSheet assistanceSheet(RxBool isApproved) {
+    return BottomSheet(
+      onClosing: () {},
+      builder: (context) {
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(width: double.infinity, height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14.0,
+                  vertical: 6,
+                ),
+                child: Text(
+                  'Need Assistance?',
+                  style: TextStyle(
+                    color: ConstData.secondaryClr,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                child: Text(
+                  'You are just one step away from completing your Digital ID registration. If you are stuck on this screen or unable to receive the OTP, click the button below to register a complaint. An association representative will contact you shortly.',
+                ),
+              ),
+              Obx(() {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: isApproved.value,
+                            onChanged: (value) {
+                              isApproved.value = value!;
+                            },
+                          ),
+                          Flexible(
+                            child: Text(
+                              'I confirm that I have not received any OTP on my mobile or email.',
+                              style: TextStyle(
+                                color: ConstData.secondaryClr,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 14,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: customButton(
+                              fixedSize: Size(double.infinity, 50),
+                              btnTxt: 'Request Assistance',
+                              onTap:
+                                  isApproved.value
+                                      ? () {
+                                        isApproved.value = false;
+                                        Get.back();
+                                      }
+                                      : null,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
+              SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -13,7 +13,10 @@ import 'package:shimmer/shimmer.dart';
 import '../models/news_events_data.dart';
 
 class NewsEventsWidgets {
-  static Widget latestNewsList(NewsEventsController controller,BuildContext widgetContext) {
+  static Widget latestNewsList(
+    NewsEventsController controller,
+    BuildContext widgetContext,
+  ) {
     return FutureBuilder(
       future: controller.futureLatest,
       builder: (context, snapshot) {
@@ -209,7 +212,10 @@ class NewsEventsWidgets {
     });
   }
 
-  static Widget newsList(NewsEventsController controller,BuildContext context) {
+  static Widget newsList(
+    NewsEventsController controller,
+    BuildContext context,
+  ) {
     return Obx(() {
       if (controller.isLoading.value) {
         return Shimmer.fromColors(

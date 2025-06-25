@@ -22,11 +22,12 @@ Widget customButton({
   required VoidCallback? onTap,
   Color? clr,
   bool isLoading = false,
+  Size? fixedSize
 }) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-      fixedSize: Size(200.w, 60),
+      fixedSize:fixedSize?? Size(200.w, 60),
       backgroundColor: clr ?? ConstData.primaryClr,
       foregroundColor: Colors.white,
     ),

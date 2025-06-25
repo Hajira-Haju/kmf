@@ -5,6 +5,7 @@ class ApiList {
   static String imageUploadUrl = '$baseUrl/api/KMF/UploadProfilePicture';
   static String civilId = '$baseUrl/api/KMF/GetMemberDataPostLogin';
   static String offerUrl = '$baseUrl/api/KMF/GetAllOfferData';
+  static String contactUs = '$baseUrl/api/KMF/SaveClientEnquiery';
   static String newsAndEventsUrl({required int type}) {
     return '$baseUrl/api/KMF/GetAllNewsAndEventsData?Type=$type';
   }

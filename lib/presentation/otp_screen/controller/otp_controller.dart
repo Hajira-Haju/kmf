@@ -1,14 +1,19 @@
 import 'dart:async';
 
+import 'package:associations_app/presentation/otp_screen/widgets/otp_widget.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/Services/storage_service/storage_service.dart';
+import '../../../core/constants/const_datas.dart';
+import '../../../widgets/custom_widget/custom_widget.dart';
 
 class OtpController extends GetxController {
   final formKey = GlobalKey<FormState>();
   Timer? timer;
   RxInt secondsRemaining = 59.obs;
   RxBool resendOtp = false.obs;
+  RxBool isApproved = false.obs;
   final storage = StorageService();
   String? get civilId => storage.read('civilId');
   String get phone => (storage.read('phone') ?? 'INVALID').toString();
@@ -41,5 +46,11 @@ class OtpController extends GetxController {
     timer?.cancel();
     // TODO: implement onClose
     super.onClose();
+  }
+
+  void contactAdminInfo() {
+    Get.bottomSheet(
+     OtpWidget.assistanceSheet(isApproved)
+    );
   }
 }

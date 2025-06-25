@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:associations_app/core/constants/const_datas.dart';
+import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/data/api_client/api_service/api_service.dart';

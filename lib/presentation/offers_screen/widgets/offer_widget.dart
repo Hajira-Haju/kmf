@@ -86,12 +86,19 @@ class OfferWidget {
         children: [
           SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Text(
-              'Latest Offers for you',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Exclusive offers available',
+                  style: const TextStyle(fontSize: 22),
+                ),
+                Text('only for KMF members.'),
+              ],
             ),
           ),
+
           ListView.builder(
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
@@ -153,13 +160,13 @@ class OfferWidget {
                                 fontSize: 16,
                               ),
                             ),
-                            Text(
-                              offer.offerDate!,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
+                            // Text(
+                            //   offer.offerDate!,
+                            //   style: TextStyle(
+                            //     fontSize: 12,
+                            //     color: Colors.grey,
+                            //   ),
+                            // ),
                             Text(
                               offer.offerDescription!,
                               maxLines: 1,

@@ -10,6 +10,7 @@ import 'package:associations_app/presentation/sign_in_screen/model/registration_
 import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '../../../../presentation/id_screen/id_screen.dart';
@@ -144,6 +145,7 @@ class ApiService {
 
   Future<List<NewsAndEventsModel>> fetchNewsOrEvents(int type) async {
     final token = await storage.read('token');
+    print(token);
     try {
       final response = await api.get(
         url: ApiList.newsAndEventsUrl(type: type),
@@ -183,6 +185,42 @@ class ApiService {
       customSnackBar(msg: 'Something went wrong');
       log('Error occurred', error: e, stackTrace: s);
       return Services().loadOffersFromCache();
+    }
+  }
+
+  Future<void> contactUs({
+    required String name,
+    required String description,
+    required String contactNo,
+  }) async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.post(
+        url: ApiList.contactUs,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'name': name,
+          'description': description,
+          'contactNo': contactNo,
+        }),
+      );
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          'Your message sent successfully',
+          'We will contact you soon',
+          backgroundColor: Colors.green,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        Get.offAllNamed(AppRoutes.bottomNavScreen);
+      } else {
+        customSnackBar(msg: 'Something went wrong');
+      }
+    } catch (e, s) {
+      log('Error occurred', error: e, stackTrace: s);
+      customSnackBar(msg: 'Something went wrong');
     }
   }
 }

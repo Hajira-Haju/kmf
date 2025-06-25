@@ -1,6 +1,7 @@
 import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/presentation/contact_us_screen/controller/contact_us_controller.dart';
 import 'package:associations_app/presentation/contact_us_screen/widget/contact_us_widget.dart';
+import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -37,8 +38,9 @@ class ContactUsScreen extends StatelessWidget {
                 validator:
                     (value) => value!.isEmpty ? 'Please enter your name' : null,
               ),
-              const SizedBox(height: 20),
               ContactUsWidget.field(
+                maxLen: 8,
+                keyboardType: TextInputType.phone,
                 controller: controller.mobileController,
                 label: 'Mobile No.',
                 prfix: Icons.phone,
@@ -47,7 +49,6 @@ class ContactUsScreen extends StatelessWidget {
                         value!.isEmpty ? 'Please enter mobile number' : null,
               ),
 
-              const SizedBox(height: 20),
               ContactUsWidget.field(
                 controller: controller.messageController,
                 label: 'Message',
@@ -58,7 +59,21 @@ class ContactUsScreen extends StatelessWidget {
                 maxLines: 5,
               ),
               SizedBox(height: 20),
-              ContactUsWidget.button(controller),
+              Obx(
+                () => Row(
+                  children: [
+                    Expanded(
+                      child: customButton(
+                        isLoading: controller.isLoading.value,
+                        fixedSize: Size(double.infinity, 50),
+                        btnTxt: 'Submit',
+                        onTap: () => controller.submitContactDetails(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // ContactUsWidget.button(controller),
               const SizedBox(height: 30),
 
               // Submit Button
