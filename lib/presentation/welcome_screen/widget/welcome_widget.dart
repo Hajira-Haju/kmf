@@ -37,7 +37,29 @@ class WelcomeWidget {
       ),
     );
   }
-
+  static Widget infoBanner() {
+    return Container(
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(8),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.orange.withValues(alpha: .2),
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: Colors.white),
+      ),
+      child: Row(
+        children: [
+          Icon(CupertinoIcons.lightbulb_fill),
+          SizedBox(width: 10),
+          Flexible(
+            child: Text(
+              'Please make sure your face is clearly visible in the picture and try again.',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   static Widget profileUpload(WelcomeController controller) {
     bool isDark = Theme.of(Get.context!).brightness == Brightness.dark;
     return Obx(

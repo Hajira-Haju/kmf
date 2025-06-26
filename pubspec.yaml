@@ -41,6 +41,7 @@ dependencies:
   fluttertoast:
   url_launcher:
   firebase_core:
+  google_mlkit_face_detection:
   firebase_messaging:
   flutter_local_notifications:
   image_picker:

@@ -1,77 +1,51 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+import 'package:image_picker/image_picker.dart';
 
-class AnimatedTestPage extends StatefulWidget {
-  const AnimatedTestPage({super.key});
+class PersonCapturePage extends StatelessWidget {
+  const PersonCapturePage({super.key});
 
-  @override
-  State<AnimatedTestPage> createState() => _AnimatedTestPageState();
-}
+  Future<void> captureAndCheck(BuildContext context) async {
+    final imagePath = await pickImage();
+    if (imagePath == null) return;
 
-class _AnimatedTestPageState extends State<AnimatedTestPage>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  bool isAnimating = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Initialize the controller
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-
-    // Create a tween for scaling
-    _animation = Tween<double>(begin: 1.0, end: 1.5).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-  }
-
-  void _toggleAnimation() {
-    if (isAnimating) {
-      _controller.reverse();
+    final hasPerson = await containsPerson(imagePath);
+    if (hasPerson) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('✅ This is a person!')),
+      );
     } else {
-      _controller.forward();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('❌ No person detected, try another photo.')),
+      );
     }
-    setState(() {
-      isAnimating = !isAnimating;
-    });
   }
 
-  @override
-  void dispose() {
-    _controller.dispose(); // Always dispose
-    super.dispose();
+  Future<String?> pickImage() async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    return image?.path;
+  }
+
+  Future<bool> containsPerson(String imagePath) async {
+    final inputImage = InputImage.fromFile(File(imagePath));
+    final options = FaceDetectorOptions(
+      enableClassification: true,
+      enableLandmarks: true,
+    );
+    final faceDetector = FaceDetector(options: options);
+    final faces = await faceDetector.processImage(inputImage);
+    return faces.isNotEmpty;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Animated Test Page")),
       body: Center(
-        child: GestureDetector(
-          onTap: _toggleAnimation,
-          child: ScaleTransition(
-            scale: _animation,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.teal,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Center(
-                child: Text(
-                  "Tap Me",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-        ),
+        child: ElevatedButton(
+            onPressed: () => captureAndCheck(context),
+            child: const Text('Capture Image')),
       ),
     );
   }

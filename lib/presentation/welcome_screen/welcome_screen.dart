@@ -63,13 +63,21 @@ class WelcomeScreen extends GetView<WelcomeController> {
 
                 /// Profile Upload
                 WelcomeWidget.profileUpload(controller),
+                SizedBox(height: 10),
 
-                const SizedBox(height: 60),
-
-                /// Continue Button
+                Obx(() {
+                  if (!controller.hasPerson.value &&
+                      controller.showBanner.value) {
+                    return WelcomeWidget.infoBanner();
+                  } else {
+                    return SizedBox();
+                  }
+                }),
+                // const SizedBox(height: 60),
               ],
             ),
 
+            /// Continue Button
             Positioned(
               bottom: 30,
               left: 10,
@@ -78,7 +86,8 @@ class WelcomeScreen extends GetView<WelcomeController> {
                 () => customButton(
                   btnTxt: 'Continue',
                   onTap:
-                      controller.selectedImage.value != null
+                      controller.selectedImage.value != null &&
+                              controller.hasPerson.value
                           ? () async {
                             controller.isLoading.value
                                 ? null

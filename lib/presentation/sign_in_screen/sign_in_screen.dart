@@ -84,6 +84,7 @@ class SignInScreen extends GetView<SignInController> {
                               (value) => controller.submitCivilId(),
                         ),
                       ),
+
                     ],
                   ),
                   Positioned(
