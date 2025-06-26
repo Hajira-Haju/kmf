@@ -1,63 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'dart:io';
 
-class DeviceInfoScreen extends StatefulWidget {
+class AnimatedTestPage extends StatefulWidget {
+  const AnimatedTestPage({super.key});
+
   @override
-  _DeviceInfoScreenState createState() => _DeviceInfoScreenState();
+  State<AnimatedTestPage> createState() => _AnimatedTestPageState();
 }
 
-class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
-  String? deviceId = '';
-  String? deviceModel = '';
-  String? deviceName = '';
-  String deviceOs = '';
+class _AnimatedTestPageState extends State<AnimatedTestPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  bool isAnimating = false;
 
   @override
   void initState() {
     super.initState();
-    getDeviceInfo();
+
+    // Initialize the controller
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+
+    // Create a tween for scaling
+    _animation = Tween<double>(begin: 1.0, end: 1.5).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
   }
 
-  Future<void> getDeviceInfo() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      setState(() {
-        deviceId = androidInfo.id;
-        deviceModel = androidInfo.model;
-        deviceName = androidInfo.device;
-        deviceOs = 'android';
-      });
-    } else if (Platform.isIOS) {
-      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      setState(() {
-        deviceId = iosInfo.identifierForVendor ?? 'Unknown';
-        deviceModel = iosInfo.utsname.machine;
-        deviceName = iosInfo.name;
-        deviceOs = 'ios';
-      });
+  void _toggleAnimation() {
+    if (isAnimating) {
+      _controller.reverse();
+    } else {
+      _controller.forward();
     }
+    setState(() {
+      isAnimating = !isAnimating;
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // Always dispose
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Device Info')),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Device ID: $deviceId', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 10),
-            Text('Model: $deviceModel', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 10),
-            Text('Device Name: $deviceName', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 10),
-            Text('Device OS: $deviceOs', style: TextStyle(fontSize: 16)),
-          ],
+      appBar: AppBar(title: const Text("Animated Test Page")),
+      body: Center(
+        child: GestureDetector(
+          onTap: _toggleAnimation,
+          child: ScaleTransition(
+            scale: _animation,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.teal,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Center(
+                child: Text(
+                  "Tap Me",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

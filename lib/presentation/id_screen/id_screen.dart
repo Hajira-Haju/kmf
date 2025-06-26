@@ -11,6 +11,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../res/assets_res.dart';
+
 class IdScreen extends StatefulWidget {
   const IdScreen({super.key});
 
@@ -40,7 +42,17 @@ class _IdScreenState extends State<IdScreen> {
             child: Icon(Icons.close, color: ConstData.secondaryClr),
           ),
           centerTitle: true,
-          title: Text('MY DIGITAL ID'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Hero(
+                tag: 'logo',
+                child: Image.asset(AssetsRes.THE_ASSOCIATES_LOGO, width: 30),
+              ),
+              SizedBox(width: 5),
+              Text('MY DIGITAL ID'),
+            ],
+          ),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10.0),
@@ -79,7 +91,9 @@ class _IdScreenState extends State<IdScreen> {
                             placeholder:
                                 (context, url) => Shimmer.fromColors(
                                   baseColor: ConstData.shimmerClrBase(context),
-                                  highlightColor: ConstData.shimmerClrHighLight(context),
+                                  highlightColor: ConstData.shimmerClrHighLight(
+                                    context,
+                                  ),
                                   child: CircleAvatar(
                                     radius: 80,
                                     backgroundColor: Colors.white,

@@ -9,6 +9,7 @@ class ContactUsController extends GetxController {
   final messageController = TextEditingController();
   RxBool isLoading = false.obs;
   final api = ApiService();
+
   Future<void> submitContactDetails() async {
     if (formKey.currentState!.validate()) {
       isLoading.value = true;
@@ -16,6 +17,7 @@ class ContactUsController extends GetxController {
         name: nameController.text,
         description: messageController.text,
         contactNo: mobileController.text,
+        type: 2,
       );
     }
     isLoading.value = false;

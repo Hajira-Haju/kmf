@@ -12,7 +12,6 @@ class ContactUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ContactUsController controller = Get.put(ContactUsController());
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contact Us'),
@@ -34,25 +33,32 @@ class ContactUsScreen extends StatelessWidget {
               ContactUsWidget.field(
                 controller: controller.nameController,
                 label: 'Name',
-                prfix: Icons.person,
+                prefix: Icons.person,
                 validator:
                     (value) => value!.isEmpty ? 'Please enter your name' : null,
               ),
+              SizedBox(height: 5),
               ContactUsWidget.field(
                 maxLen: 8,
                 keyboardType: TextInputType.phone,
                 controller: controller.mobileController,
                 label: 'Mobile No.',
-                prfix: Icons.phone,
-                validator:
-                    (value) =>
-                        value!.isEmpty ? 'Please enter mobile number' : null,
+                prefix: Icons.phone,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter mobile number';
+                  } else if (value.length < 8) {
+                    return 'Please enter valid mobile number';
+                  } else {
+                    return null;
+                  }
+                },
               ),
-
+              SizedBox(height: 5),
               ContactUsWidget.field(
                 controller: controller.messageController,
                 label: 'Message',
-                prfix: Icons.message,
+                prefix: Icons.message,
                 validator:
                     (value) =>
                         value!.isEmpty ? 'Please enter mobile number' : null,

@@ -99,7 +99,7 @@ class BottomNavScreen extends GetView<BottomNavController> {
         bottomNavigationBar: Obx(() {
           final isDark = Theme.of(context).brightness == Brightness.dark;
           return AnimatedBottomNavigationBar(
-            backgroundColor: isDark ? Colors.black12 : Colors.white,
+            backgroundColor: isDark ? Colors.grey.shade900 : Colors.white,
             activeColor: ConstData.primaryClr,
             gapLocation: GapLocation.center,
             icons: [CupertinoIcons.news, Icons.local_offer_outlined],

@@ -92,7 +92,7 @@ class OfferWidget {
               children: [
                 Text(
                   'Exclusive offers available',
-                  style: const TextStyle(fontSize: 22),
+                  style: const TextStyle(fontSize: 20),
                 ),
                 Text('only for KMF members.'),
               ],
@@ -118,7 +118,7 @@ class OfferWidget {
                       },
                     ),
                 child: Card(
-                  margin: EdgeInsets.all(8),
+                  margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -156,7 +156,7 @@ class OfferWidget {
                             Text(
                               offer.offerHeader!,
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w500,
                                 fontSize: 16,
                               ),
                             ),

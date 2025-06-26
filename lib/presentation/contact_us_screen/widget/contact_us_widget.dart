@@ -10,7 +10,7 @@ class ContactUsWidget {
   static Widget field({
     required TextEditingController controller,
     required String label,
-    required IconData prfix,
+    required IconData prefix,
     int? maxLines,
     int? maxLen,
     TextInputType? keyboardType,
@@ -24,7 +24,7 @@ class ContactUsWidget {
       decoration: InputDecoration(
         helperText: '',
         labelText: label,
-        prefixIcon: Icon(prfix),
+        prefixIcon: Icon(prefix),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
       validator: validator,

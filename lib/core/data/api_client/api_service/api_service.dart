@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:associations_app/core/data/api_client/api_list/api_list.dart';
 import 'package:associations_app/core/data/api_client/api_method/api_method.dart';
 import 'package:associations_app/presentation/id_screen/models/civil_id_model.dart';
+import 'package:associations_app/presentation/new_events_screen/models/event_type_model.dart';
 import 'package:associations_app/presentation/new_events_screen/models/news_and_events_model.dart';
 import 'package:associations_app/presentation/offers_screen/model/offer_model.dart';
 import 'package:associations_app/presentation/sign_in_screen/model/registration_model.dart';
@@ -143,6 +144,26 @@ class ApiService {
     }
   }
 
+  Future<List<EventTypeModel>> fetchEventType() async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.eventType,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        await storage.write('eventType', response.body);
+        final data = jsonDecode(response.body) as List;
+        return data.map((e) => EventTypeModel.fromJson(e)).toList();
+      } else {
+        return Services().loadEventTypeFromCache();
+      }
+    } catch (e, s) {
+      log('Error occurred', error: e, stackTrace: s);
+      return Services().loadEventTypeFromCache();
+    }
+  }
+
   Future<List<NewsAndEventsModel>> fetchNewsOrEvents(int type) async {
     final token = await storage.read('token');
     print(token);
@@ -192,6 +213,7 @@ class ApiService {
     required String name,
     required String description,
     required String contactNo,
+    required int type,
   }) async {
     final token = await storage.read('token');
     try {
@@ -205,16 +227,23 @@ class ApiService {
           'name': name,
           'description': description,
           'contactNo': contactNo,
+          'Type': type,
         }),
       );
       if (response.statusCode == 200) {
+        await storage.write(
+          'last_support_time',
+          DateTime.now().toIso8601String(),
+        );
         Get.snackbar(
           'Your message sent successfully',
-          'We will contact you soon',
+          'We will contact you soon...',
           backgroundColor: Colors.green,
           snackPosition: SnackPosition.BOTTOM,
         );
-        Get.offAllNamed(AppRoutes.bottomNavScreen);
+        if (type == 2) {
+          Get.offAllNamed(AppRoutes.bottomNavScreen);
+        }
       } else {
         customSnackBar(msg: 'Something went wrong');
       }

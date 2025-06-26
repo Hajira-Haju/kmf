@@ -23,7 +23,6 @@ class BottomNavWidgets {
             bottomRight: Radius.circular(5.r),
           ),
         ),
-
         child: Stack(
           children: [
             Column(

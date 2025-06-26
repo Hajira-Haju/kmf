@@ -27,12 +27,10 @@ class NewsEventsWidgets {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    'Latest Updates',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Text('Latest Updates', style: TextStyle(fontSize: 20)),
                 ),
                 SizedBox(
                   height: 210,
@@ -65,12 +63,13 @@ class NewsEventsWidgets {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  'Latest Updates',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 10,
                 ),
+                child: Text('Latest Updates', style: TextStyle(fontSize: 20)),
               ),
               SizedBox(
                 height: 210,
@@ -134,7 +133,7 @@ class NewsEventsWidgets {
                                 child: Text(
                                   latestNews.heading!,
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w500,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   maxLines: 2,
@@ -174,42 +173,81 @@ class NewsEventsWidgets {
     NewsEventsController controller,
     BuildContext context,
   ) {
-    return Obx(() {
-      final isDark = Theme.of(context).brightness == Brightness.dark;
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children:
-            NewsEventsData.choiceData.map((choices) {
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ChoiceChip(
-                  labelStyle: TextStyle(
-                    color:
-                        isDark
-                            ? Colors.white
-                            : controller.selectedChoice.value == choices
-                            ? Colors.white
-                            : Colors.black,
+    return FutureBuilder(
+      future: controller.futureEventType,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Shimmer.fromColors(
+            baseColor: ConstData.shimmerClrBase(context),
+            highlightColor: ConstData.shimmerClrHighLight(context),
+            child: Row(
+              children: List.generate(
+                3,
+                (index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ChoiceChip(
+                    label: SizedBox(width: 30),
+                    selected: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  selectedColor: ConstData.primaryClr,
-                  label: Text(choices),
-                  selected: controller.selectedChoice.value == choices,
-                  onSelected: (value) {
-                    if (controller.selectedChoice.value != choices) {
-                      controller.selectedChoice.value = choices;
-                      final index =
-                          {'All': 0, 'News': 1, 'Events': 2}[choices] ?? 0;
-                      controller.fetchNewsOrEvents(index);
-                    }
-                  },
                 ),
-              );
-            }).toList(),
-      );
-    });
+              ),
+            ),
+          );
+        } else if (snapshot.hasData) {
+          final data = snapshot.data;
+          return Obx(() {
+            final isDark = Theme.of(context).brightness == Brightness.dark;
+            return Align(
+              alignment: Alignment.centerLeft,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children:
+                      data!.map((choices) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ChoiceChip(
+                            labelStyle: TextStyle(
+                              color:
+                                  isDark
+                                      ? Colors.white
+                                      : controller.selectedChoice.value ==
+                                          choices.typeName
+                                      ? Colors.white
+                                      : Colors.black,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            selectedColor: ConstData.primaryClr,
+                            label: Text(choices.typeName!),
+                            selected:
+                                controller.selectedChoice.value ==
+                                choices.typeName,
+                            onSelected: (value) {
+                              if (controller.selectedChoice.value !=
+                                  choices.typeName) {
+                                controller.selectedChoice.value =
+                                    choices.typeName!;
+                                controller.fetchNewsOrEvents(choices.id!);
+                              }
+                            },
+                          ),
+                        );
+                      }).toList(),
+                ),
+              ),
+            );
+          });
+        } else {
+          return SizedBox(height: 70);
+        }
+      },
+    );
   }
 
   static Widget newsList(
@@ -299,7 +337,7 @@ class NewsEventsWidgets {
                           children: [
                             Text(
                               data.heading!,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(fontWeight: FontWeight.w500),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -325,9 +363,12 @@ class NewsEventsWidgets {
             );
           },
         );
+      } else if (controller.isLoading.value == false &&
+          controller.newsOrEvents.isEmpty) {
+        return Column(children: [SizedBox(height: 120), Text('No Data Found')]);
       } else {
         return Column(
-          children: [SizedBox(height: 100), Text('Something went wrong')],
+          children: [SizedBox(height: 120), Text('Something went wrong')],
         );
       }
     });

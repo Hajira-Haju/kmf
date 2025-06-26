@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:associations_app/core/data/api_client/api_service/api_service.dart';
 import 'package:associations_app/presentation/otp_screen/widgets/otp_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,10 @@ class OtpController extends GetxController {
   bool get otpReq => storage.read('otpReq') ?? false;
   String get phLast4 => phone.substring(phone.length - 4);
   String get civilLast4 => civilId!.substring(civilId!.length - 4);
-
+  String get name => storage.read('usrName') ?? 'N/A';
+  final restrictionDuration = Duration(hours: 2);
+  final api = ApiService();
+  RxBool isLoading = false.obs;
   void startTimer() {
     secondsRemaining.value = 59; // Reset the counter
     timer?.cancel();
@@ -48,9 +52,19 @@ class OtpController extends GetxController {
     super.onClose();
   }
 
-  void contactAdminInfo() {
-    Get.bottomSheet(
-     OtpWidget.assistanceSheet(isApproved)
+  Future<void> requestAssistance() async {
+    isLoading.value = true;
+    await api.contactUs(
+      name: name,
+      description:
+          'Trouble in Login. Please contact as soon as Possible for support...',
+      contactNo: phone,
+      type: 1,
     );
+    isLoading.value = false;
+  }
+
+  void contactAdminInfo() {
+    Get.bottomSheet(OtpWidget.assistanceSheet(isApproved));
   }
 }

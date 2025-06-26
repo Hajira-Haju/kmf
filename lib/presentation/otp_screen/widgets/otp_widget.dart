@@ -51,6 +51,20 @@ class OtpWidget {
           backgroundColor: Colors.blueGrey,
         ),
         onPressed: () {
+          final savedTime = controller.storage.read('last_support_time');
+          if (savedTime != null) {
+            final lastClicked = DateTime.parse(savedTime);
+            final difference = DateTime.now().difference(lastClicked);
+            if (difference < controller.restrictionDuration) {
+              final remaining = controller.restrictionDuration - difference;
+              Get.snackbar(
+                'Please wait',
+                'Try again in ${remaining.inMinutes} minutes',
+                snackPosition: SnackPosition.BOTTOM,
+              );
+              return;
+            }
+          }
           controller.contactAdminInfo();
         },
         icon: Icon(CupertinoIcons.right_chevron),
@@ -174,6 +188,7 @@ class OtpWidget {
   }
 
   static BottomSheet assistanceSheet(RxBool isApproved) {
+    OtpController controller = Get.find();
     return BottomSheet(
       onClosing: () {},
       builder: (context) {
@@ -235,16 +250,20 @@ class OtpWidget {
                       child: Row(
                         children: [
                           Expanded(
-                            child: customButton(
-                              fixedSize: Size(double.infinity, 50),
-                              btnTxt: 'Request Assistance',
-                              onTap:
-                                  isApproved.value
-                                      ? () {
-                                        isApproved.value = false;
-                                        Get.back();
-                                      }
-                                      : null,
+                            child: Obx(
+                              () => customButton(
+                                fixedSize: Size(double.infinity, 50),
+                                isLoading: controller.isLoading.value,
+                                btnTxt: 'Request Assistance',
+                                onTap:
+                                    isApproved.value
+                                        ? () async {
+                                          await controller.requestAssistance();
+                                          controller.isApproved.value = false;
+                                          Get.close(1);
+                                        }
+                                        : null,
+                              ),
                             ),
                           ),
                         ],

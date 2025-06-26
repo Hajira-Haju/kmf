@@ -73,7 +73,7 @@ class OtpScreen extends GetView<OtpController> {
                       },
                     ),
                   ),
-                  Positioned(
+                 Positioned(
                     left: 20,
                     right: 20,
                     bottom: 15,
