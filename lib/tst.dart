@@ -51,8 +51,9 @@ class NewsEventsController extends GetxController {
     fetchNews();
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
-          scrollController.position.maxScrollExtent - 100) {
+          scrollController.position.maxScrollExtent - 400) {
         print(scrollController.position.pixels);
+        print(scrollController.position.maxScrollExtent - 200);
         if (!isLoading.value && nextPage != 0) {
           fetchNews();
         }
@@ -105,7 +106,8 @@ class NewsEventsPage extends StatelessWidget {
         }
 
         return ListView.builder(
-          shrinkWrap: true,scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
           controller: controller.scrollController,
           itemCount: controller.newsList.length + 1, // +1 for loader
           itemBuilder: (context, index) {

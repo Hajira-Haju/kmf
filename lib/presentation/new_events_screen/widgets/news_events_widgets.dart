@@ -275,18 +275,39 @@ class NewsEventsWidgets {
       } else if (controller.newsOrEvents.isNotEmpty) {
         return ListView.builder(
           scrollDirection: Axis.vertical,
-          itemCount:
-              controller.selectedType.value == 0
-                  ? controller.newsOrEvents.length > 5
-                      ? controller.newsOrEvents.length - 5
-                      : controller.newsOrEvents.length
-                  : controller.newsOrEvents.length +
-                      (controller.isLoading.value ? 1 : 0),
           physics: BouncingScrollPhysics(),
           shrinkWrap: true,
+          itemCount:
+              controller.selectedType.value == 0
+                  ? (controller.newsOrEvents.length > 5
+                          ? controller.newsOrEvents.length - 5
+                          : controller.newsOrEvents.length) +
+                      (controller.isLoading.value ? 1 : 0)
+                  : controller.newsOrEvents.length +
+                      (controller.isLoading.value ? 1 : 0),
           itemBuilder: (context, index) {
+            final isMainType = controller.selectedType.value == 0;
+            final listLength =
+                isMainType
+                    ? (controller.newsOrEvents.length > 5
+                        ? controller.newsOrEvents.length - 5
+                        : controller.newsOrEvents.length)
+                    : controller.newsOrEvents.length;
+
+            // Bottom loader
+            if (index >= listLength) {
+              return Shimmer.fromColors(
+                baseColor: ConstData.shimmerClrBase(context),
+                highlightColor: ConstData.shimmerClrHighLight(context),
+                child: Card(
+                  margin: EdgeInsets.all(8),
+                  child: Row(children: [SizedBox(width: 150, height: 100)]),
+                ),
+              );
+            }
+
             final data =
-                controller.selectedType.value == 0
+                isMainType
                     ? controller.newsOrEvents.length > 5
                         ? controller.newsOrEvents[index + 5]
                         : controller.newsOrEvents[index]
