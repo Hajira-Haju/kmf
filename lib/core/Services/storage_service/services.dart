@@ -43,4 +43,30 @@ class Services {
     final data = jsonDecode(storedData) as List;
     return data.map((e) => EventTypeModel.fromJson(e)).toList();
   }
+
+  Future<dynamic> loadAboutUsFromCache() async {
+    final storedData = await storage.read('aboutUs');
+    if (storedData == null) {
+      return null; // No cache available
+    }
+    final data = jsonDecode(storedData);
+    return data['htmlContent'];
+  }
+
+  Future<dynamic> loadReferAFriendFromCache() async {
+    final storedData = await storage.read('referAFriend');
+    if (storedData == null) {
+      return null; // No cache available
+    }
+    final data = jsonDecode(storedData);
+    return data['htmlContent'];
+  }
+  Future<dynamic> loadQuickContactFromCache() async {
+    final storedData = await storage.read('quickContact');
+    if (storedData == null) {
+      return null; // No cache available
+    }
+    final data = jsonDecode(storedData);
+    return data['htmlContent'];
+  }
 }

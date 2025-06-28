@@ -10,4 +10,8 @@ class ApiList {
   static String newsAndEventsUrl({required int type}) {
     return '$baseUrl/api/KMF/GetAllNewsAndEventsData?Type=$type';
   }
+
+  static String aboutUs = '$baseUrl/api/KMF/GetSectionDataByType?Type=39';
+  static String referFriend = '$baseUrl/api/KMF/GetSectionDataByType?Type=40';
+  static String quickContact = '$baseUrl/api/KMF/GetSectionDataByType?Type=41';
 }

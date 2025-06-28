@@ -38,8 +38,6 @@ class OtpWidget {
     );
   }
 
-
-
   static Widget adminButton(OtpController controller) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -60,8 +58,8 @@ class OtpWidget {
             if (difference < controller.restrictionDuration) {
               final remaining = controller.restrictionDuration - difference;
               Get.snackbar(
-                'Please wait',
-                'Try again in ${remaining.inMinutes} minutes',
+                'Already applied.',
+                'We will contact you or Try again in ${remaining.inMinutes} minutes',
                 snackPosition: SnackPosition.BOTTOM,
               );
               return;

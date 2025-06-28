@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   get:
   get_storage: ^2.1.1
+  flutter_html:
   flutter_screenutil:
   flutter_svg:
   fluttertoast:

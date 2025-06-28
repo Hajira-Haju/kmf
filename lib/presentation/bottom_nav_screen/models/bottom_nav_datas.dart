@@ -2,6 +2,7 @@ import 'package:associations_app/presentation/contact_us_screen/contact_us_scree
 import 'package:associations_app/presentation/new_events_screen/news_events_screen.dart';
 import 'package:associations_app/presentation/quick_contact_screen/quick_contact_screen.dart';
 import 'package:associations_app/presentation/refer_member_screen/refer_member_screen.dart';
+import 'package:associations_app/routes/app_routes/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,7 +23,7 @@ class BottomNavData {
   static List<DrawerModel> drawerData = [
     DrawerModel(
       icn: Icons.new_releases,
-      onTap: () => Get.to(AboutScreen()),
+      onTap: () => Get.toNamed(AppRoutes.aboutUs),
       title: 'About KMF Kuwait',
     ),
     DrawerModel(
@@ -32,12 +33,12 @@ class BottomNavData {
     ),
     DrawerModel(
       icn: Icons.app_registration,
-      onTap: () => Get.to(ReferMemberScreen()),
+      onTap: () => Get.toNamed(AppRoutes.referScreen),
       title: 'Refer a Member',
     ),
     DrawerModel(
       icn: Icons.quick_contacts_dialer,
-      onTap: () => Get.to(QuickContactScreen()),
+      onTap: () => Get.toNamed(AppRoutes.quickContactScreen),
       title: 'Quick Contact',
     ),
     DrawerModel(

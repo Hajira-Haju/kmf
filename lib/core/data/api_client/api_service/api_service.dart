@@ -252,4 +252,70 @@ class ApiService {
       customSnackBar(msg: 'Something went wrong');
     }
   }
+
+  Future<dynamic> fetchAboutUs() async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        headers: {'Authorization': 'Bearer $token'},
+        url: ApiList.aboutUs,
+      );
+      if (response.statusCode == 200) {
+        await storage.write('aboutUs', response.body);
+        final data = jsonDecode(response.body);
+        return data['htmlContent'];
+      } else {
+        customSnackBar(msg: 'Failed to Update');
+        return Services().loadAboutUsFromCache();
+      }
+    } catch (e, s) {
+      customSnackBar(msg: 'Failed to Update');
+      log('Error occurred', error: e, stackTrace: s);
+      return Services().loadAboutUsFromCache();
+    }
+  }
+
+  Future<dynamic> fetchReferAFriend() async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        headers: {'Authorization': 'Bearer $token'},
+        url: ApiList.referFriend,
+      );
+      if (response.statusCode == 200) {
+        await storage.write('referAFriend', response.body);
+        final data = jsonDecode(response.body);
+        return data['htmlContent'];
+      } else {
+        customSnackBar(msg: 'Failed to Update');
+        return Services().loadReferAFriendFromCache();
+      }
+    } catch (e, s) {
+      customSnackBar(msg: 'Failed to Update');
+      log('Error occurred', error: e, stackTrace: s);
+      return Services().loadReferAFriendFromCache();
+    }
+  }
+
+  Future<dynamic> fetchQuickContact() async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        headers: {'Authorization': 'Bearer $token'},
+        url: ApiList.quickContact,
+      );
+      if (response.statusCode == 200) {
+        await storage.write('quickContact', response.body);
+        final data = jsonDecode(response.body);
+        return data['htmlContent'];
+      } else {
+        customSnackBar(msg: 'Failed to Update');
+        return Services().loadQuickContactFromCache();
+      }
+    } catch (e, s) {
+      customSnackBar(msg: 'Failed to Update');
+      log('Error occurred', error: e, stackTrace: s);
+      return Services().loadQuickContactFromCache();
+    }
+  }
 }
