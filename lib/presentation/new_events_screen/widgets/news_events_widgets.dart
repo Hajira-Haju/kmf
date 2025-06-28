@@ -291,6 +291,7 @@ class NewsEventsWidgets {
                         ? controller.newsOrEvents[index + 5]
                         : controller.newsOrEvents[index]
                     : controller.newsOrEvents[index];
+
             return GestureDetector(
               onTap:
                   () => Get.toNamed(
