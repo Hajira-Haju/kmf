@@ -22,8 +22,9 @@ class Services {
     if (storedData == null) {
       return []; // No cache available
     }
-    final data = jsonDecode(storedData) as List;
-    return data.map((e) => NewsAndEventsModel.fromJson(e)).toList();
+    final data = jsonDecode(storedData);
+    final newsAndEvents = data['newsOrEventsData'] as List;
+    return newsAndEvents.map((e) => NewsAndEventsModel.fromJson(e)).toList();
   }
 
   Future<List<NewsAndEventsModel>> loadNewsOrEventsFromCache() async {
@@ -31,8 +32,9 @@ class Services {
     if (storedData == null) {
       return []; // No cache available
     }
-    final data = jsonDecode(storedData) as List;
-    return data.map((e) => NewsAndEventsModel.fromJson(e)).toList();
+    final data = jsonDecode(storedData);
+    final newsAndEvents = data['newsOrEventsData'] as List;
+    return newsAndEvents.map((e) => NewsAndEventsModel.fromJson(e)).toList();
   }
 
   Future<List<EventTypeModel>> loadEventTypeFromCache() async {
@@ -61,6 +63,7 @@ class Services {
     final data = jsonDecode(storedData);
     return data['htmlContent'];
   }
+
   Future<dynamic> loadQuickContactFromCache() async {
     final storedData = await storage.read('quickContact');
     if (storedData == null) {

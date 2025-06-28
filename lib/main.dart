@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.system,
         getPages: PageList.pages,
         initialRoute: AppRoutes.splashScreen,
-        // home: PersonCapturePage(),
+        // home: NewsEventsPage(),
       ),
     );
   }

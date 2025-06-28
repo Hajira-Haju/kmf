@@ -1,52 +1,142 @@
-import 'dart:io';
+// news_events_controller.dart
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+// news_events_page.dart
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:get/get.dart';
 
-class PersonCapturePage extends StatelessWidget {
-  const PersonCapturePage({super.key});
+class NewsAndEventsModel {
+  final int id;
+  final String heading;
+  final String description;
+  final String imagePath;
+  final String date;
+  final String type;
 
-  Future<void> captureAndCheck(BuildContext context) async {
-    final imagePath = await pickImage();
-    if (imagePath == null) return;
+  NewsAndEventsModel({
+    required this.id,
+    required this.heading,
+    required this.description,
+    required this.imagePath,
+    required this.date,
+    required this.type,
+  });
 
-    final hasPerson = await containsPerson(imagePath);
-    if (hasPerson) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('✅ This is a person!')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('❌ No person detected, try another photo.')),
-      );
-    }
-  }
-
-  Future<String?> pickImage() async {
-    final picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.camera);
-    return image?.path;
-  }
-
-  Future<bool> containsPerson(String imagePath) async {
-    final inputImage = InputImage.fromFile(File(imagePath));
-    final options = FaceDetectorOptions(
-      enableClassification: true,
-      enableLandmarks: true,
+  factory NewsAndEventsModel.fromJson(Map<String, dynamic> json) {
+    return NewsAndEventsModel(
+      id: json['id'],
+      heading: json['heading'] ?? '',
+      description: json['description'] ?? '',
+      imagePath: json['imagePath'] ?? '',
+      date: json['date'] ?? '',
+      type: json['type'] ?? '',
     );
-    final faceDetector = FaceDetector(options: options);
-    final faces = await faceDetector.processImage(inputImage);
-    return faces.isNotEmpty;
   }
+}
+
+class NewsEventsController extends GetxController {
+  RxList<NewsAndEventsModel> newsList = <NewsAndEventsModel>[].obs;
+  RxBool isLoading = false.obs;
+  int currentPage = 1;
+  int nextPage = 1;
+
+  final scrollController = ScrollController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchNews();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 100) {
+        print(scrollController.position.pixels);
+        if (!isLoading.value && nextPage != 0) {
+          fetchNews();
+        }
+      }
+    });
+  }
+
+  Future<void> fetchNews() async {
+    if (nextPage == 0) return;
+    isLoading.value = true;
+    try {
+      final response = await http.get(
+        Uri.parse(
+          'http://skaktech-005-site27.otempurl.com/api/KMF/GetAllNewsAndEventsData?Type=0&PageNumber=$currentPage',
+        ),
+        headers: {'Authorization': 'Bearer ${GetStorage().read('token')}'},
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        final List<dynamic> list = jsonData['newsOrEventsData'];
+        nextPage = jsonData['nextPageNumber'] ?? 0;
+
+        final news = list.map((e) => NewsAndEventsModel.fromJson(e)).toList();
+        newsList.addAll(news);
+
+        if (nextPage != 0) {
+          currentPage = nextPage;
+        }
+      }
+    } catch (e) {
+      print('Error fetching news: $e');
+    }
+    isLoading.value = false;
+  }
+}
+
+class NewsEventsPage extends StatelessWidget {
+  const NewsEventsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(NewsEventsController());
+
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-            onPressed: () => captureAndCheck(context),
-            child: const Text('Capture Image')),
-      ),
+      appBar: AppBar(title: const Text('News & Events')),
+      body: Obx(() {
+        if (controller.newsList.isEmpty && controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return ListView.builder(
+          shrinkWrap: true,scrollDirection: Axis.vertical,
+          controller: controller.scrollController,
+          itemCount: controller.newsList.length + 1, // +1 for loader
+          itemBuilder: (context, index) {
+            if (index < controller.newsList.length) {
+              final NewsAndEventsModel item = controller.newsList[index];
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: ListTile(
+                  leading: Image.network(
+                    'http://skaktech-005-site27.otempurl.com${item.imagePath}',
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                    errorBuilder:
+                        (_, __, ___) => const Icon(Icons.broken_image),
+                  ),
+                  title: Text(item.heading),
+                  subtitle: Text(item.date),
+                ),
+              );
+            } else {
+              return controller.nextPage != 0
+                  ? const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                  : const SizedBox();
+            }
+          },
+        );
+      }),
     );
   }
 }

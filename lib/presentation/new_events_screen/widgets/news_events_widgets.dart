@@ -228,12 +228,12 @@ class NewsEventsWidgets {
                             selected:
                                 controller.selectedChoice.value ==
                                 choices.typeName,
-                            onSelected: (value) {
+                            onSelected: (value) async {
                               if (controller.selectedChoice.value !=
                                   choices.typeName) {
                                 controller.selectedChoice.value =
                                     choices.typeName!;
-                                controller.fetchNewsOrEvents(choices.id!);
+                                controller.fetchNewsOrEvents(choices.id!, true);
                               }
                             },
                           ),
@@ -255,7 +255,7 @@ class NewsEventsWidgets {
     BuildContext context,
   ) {
     return Obx(() {
-      if (controller.isLoading.value) {
+      if (controller.newsOrEvents.isEmpty && controller.isLoading.value) {
         return Shimmer.fromColors(
           baseColor: ConstData.shimmerClrBase(context),
           highlightColor: ConstData.shimmerClrHighLight(context),
@@ -280,7 +280,8 @@ class NewsEventsWidgets {
                   ? controller.newsOrEvents.length > 5
                       ? controller.newsOrEvents.length - 5
                       : controller.newsOrEvents.length
-                  : controller.newsOrEvents.length,
+                  : controller.newsOrEvents.length +
+                      (controller.isLoading.value ? 1 : 0),
           physics: BouncingScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (context, index) {

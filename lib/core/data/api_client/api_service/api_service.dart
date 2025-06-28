@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:associations_app/core/data/api_client/api_list/api_list.dart';
 import 'package:associations_app/core/data/api_client/api_method/api_method.dart';
 import 'package:associations_app/presentation/id_screen/models/civil_id_model.dart';
+import 'package:associations_app/presentation/new_events_screen/controller/news_events_controller.dart';
 import 'package:associations_app/presentation/new_events_screen/models/event_type_model.dart';
 import 'package:associations_app/presentation/new_events_screen/models/news_and_events_model.dart';
 import 'package:associations_app/presentation/offers_screen/model/offer_model.dart';
@@ -126,13 +127,16 @@ class ApiService {
     final token = storage.read('token');
     try {
       final response = await api.get(
-        url: ApiList.newsAndEventsUrl(type: 0),
+        url: ApiList.newsAndEventsUrl(type: 0, pageNo: 1),
         headers: {'Authorization': 'Bearer $token'},
       );
       if (response.statusCode == 200) {
         await storage.write('latestUpdates', response.body);
-        final data = jsonDecode(response.body) as List;
-        return data.map((e) => NewsAndEventsModel.fromJson(e)).toList();
+        final data = jsonDecode(response.body);
+        final newsAndEvents = data['newsOrEventsData'] as List;
+        return newsAndEvents
+            .map((e) => NewsAndEventsModel.fromJson(e))
+            .toList();
       } else {
         customSnackBar(msg: 'Something went wrong');
         return Services().loadLatestFromCache();
@@ -164,26 +168,33 @@ class ApiService {
     }
   }
 
-  Future<List<NewsAndEventsModel>> fetchNewsOrEvents(int type) async {
+  Future<Map<String, dynamic>> fetchNewsOrEvents(int type, int page) async {
     final token = await storage.read('token');
-    print(token);
     try {
       final response = await api.get(
-        url: ApiList.newsAndEventsUrl(type: type),
+        url: ApiList.newsAndEventsUrl(type: type, pageNo: page),
         headers: {'Authorization': 'Bearer $token'},
       );
       if (response.statusCode == 200) {
-        await storage.write('newsOrEvents', response.body);
-        final data = jsonDecode(response.body) as List;
-        return data.map((e) => NewsAndEventsModel.fromJson(e)).toList();
+        final jsonData = jsonDecode(response.body);
+        final List<dynamic> list = jsonData['newsOrEventsData'];
+        final int nextPage = jsonData['nextPageNumber'];
+        if (page == 1 && list.isNotEmpty) {
+          await storage.write('newsOrEvents', response.body);
+        }
+        return {
+          'list': list.map((e) => NewsAndEventsModel.fromJson(e)).toList(),
+          'nextPage': nextPage,
+        };
       } else {
-        customSnackBar(msg: 'Something went wrong');
-        return Services().loadNewsOrEventsFromCache();
+        log('Failed to load from server');
+        final cachedList = await Services().loadNewsOrEventsFromCache();
+        return {'list': cachedList, 'nextPage': 0};
       }
     } catch (e, s) {
-      customSnackBar(msg: 'Something went wrong');
       log('Error occurred', error: e, stackTrace: s);
-      return Services().loadNewsOrEventsFromCache();
+      final cachedList = await Services().loadNewsOrEventsFromCache();
+      return {'list': cachedList, 'nextPage': 0};
     }
   }
 
