@@ -7,6 +7,7 @@ import 'dart:convert';
 // news_events_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class NewsAndEventsModel {
   final int id;
@@ -62,6 +63,29 @@ class NewsEventsController extends GetxController {
   }
 
   Future<void> fetchNews() async {
+    final bool isConnected =
+        await InternetConnectionChecker.instance.hasConnection;
+    if (isConnected) {
+      print('Device is connected to the internet');
+      ScaffoldMessenger.of(Get.context!).hideCurrentMaterialBanner();
+    } else {
+      ScaffoldMessenger.of(Get.context!).showMaterialBanner(
+        MaterialBanner(
+          content: Text('This is a material banner message.'),
+          leading: Icon(Icons.info, color: Colors.white),
+          backgroundColor: Colors.blue,
+          actions: [
+            TextButton(
+              onPressed: () {
+                ScaffoldMessenger.of(Get.context!).hideCurrentMaterialBanner();
+              },
+              child: Text('DISMISS', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+      );
+      print('Device is not connected to the internet');
+    }
     if (nextPage == 0) return;
     isLoading.value = true;
     try {
@@ -130,9 +154,28 @@ class NewsEventsPage extends StatelessWidget {
               );
             } else {
               return controller.nextPage != 0
-                  ? const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(child: CircularProgressIndicator()),
+                  ? GestureDetector(onTap: () {
+                print('chec');
+                ScaffoldMessenger.of(Get.context!).showMaterialBanner(
+                  MaterialBanner(
+                    content: Text('This is a material banner message.'),
+                    leading: Icon(Icons.info, color: Colors.white),
+                    backgroundColor: Colors.blue,
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          ScaffoldMessenger.of(Get.context!).hideCurrentMaterialBanner();
+                        },
+                        child: Text('DISMISS', style: TextStyle(color: Colors.white)),
+                      ),
+                    ],
+                  ),
+                );
+                  },
+                    child: const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Center(child: CircularProgressIndicator(backgroundColor: Colors.red,)),
+                    ),
                   )
                   : const SizedBox();
             }

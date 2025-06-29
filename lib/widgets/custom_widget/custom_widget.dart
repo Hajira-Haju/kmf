@@ -17,17 +17,34 @@ SnackbarController customSnackBar({required String msg}) {
   );
 }
 
+ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason>
+customBanner({required String msg, required Color clr,void Function()? onTap}) {
+  return ScaffoldMessenger.of(Get.context!).showMaterialBanner(
+    MaterialBanner(
+      content: Text(msg),
+      leading: Icon(Icons.info, color: Colors.white),
+      backgroundColor: clr,
+      actions: [
+        TextButton(
+          onPressed: onTap,
+          child: Text('DISMISS', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget customButton({
   required String btnTxt,
   required VoidCallback? onTap,
   Color? clr,
   bool isLoading = false,
-  Size? fixedSize
+  Size? fixedSize,
 }) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-      fixedSize:fixedSize?? Size(200.w, 60),
+      fixedSize: fixedSize ?? Size(200.w, 60),
       backgroundColor: clr ?? ConstData.primaryClr,
       foregroundColor: Colors.white,
     ),

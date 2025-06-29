@@ -37,6 +37,7 @@ dependencies:
   get:
   get_storage: ^2.1.1
   flutter_html:
+  internet_connection_checker:
   flutter_screenutil:
   flutter_svg:
   fluttertoast:
