@@ -19,6 +19,9 @@ import 'package:associations_app/presentation/welcome_screen/welcome_screen.dart
 import 'package:associations_app/routes/app_routes/app_routes.dart';
 import 'package:get/get.dart';
 
+import '../../presentation/officials_screen/binding/officials_bindings.dart';
+import '../../presentation/officials_screen/officials_screen.dart';
+
 class PageList {
   static var pages = [
     GetPage(
@@ -65,6 +68,11 @@ class PageList {
       name: AppRoutes.quickContactScreen,
       page: () => QuickContactScreen(),
       binding: QuickContactBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.officials,
+      page: () => OfficialsScreen(),
+      binding: OfficialsBinding(),
     ),
   ];
 }

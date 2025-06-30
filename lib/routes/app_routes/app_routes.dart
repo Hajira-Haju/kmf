@@ -8,4 +8,5 @@ class AppRoutes {
   static String aboutUs = '/about_us';
   static String referScreen = '/refer_member_screen';
   static String quickContactScreen = '/quick_contact_screen';
+  static String officials = '/officials';
 }

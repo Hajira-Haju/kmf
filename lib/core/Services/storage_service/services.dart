@@ -5,6 +5,7 @@ import 'package:associations_app/presentation/new_events_screen/models/event_typ
 import 'package:associations_app/presentation/new_events_screen/models/news_and_events_model.dart';
 
 import '../../../presentation/offers_screen/model/offer_model.dart';
+import '../../../presentation/officials_screen/model/official_model.dart';
 
 class Services {
   final storage = StorageService();
@@ -25,6 +26,15 @@ class Services {
     final data = jsonDecode(storedData);
     final newsAndEvents = data['newsOrEventsData'] as List;
     return newsAndEvents.map((e) => NewsAndEventsModel.fromJson(e)).toList();
+  }
+
+  Future<List<OfficialsModel>> loadOfficialsFromCache() async {
+    final storedData = await storage.read('officialsData');
+    if (storedData == null) {
+      return []; // No cache available
+    }
+    final data = jsonDecode(storedData) as List;
+    return data.map((e) => OfficialsModel.fromJson(e)).toList();
   }
 
   Future<List<NewsAndEventsModel>> loadNewsOrEventsFromCache() async {

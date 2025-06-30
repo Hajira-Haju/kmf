@@ -57,7 +57,7 @@ class OfficialsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: OfficialsWidgets.gridView(),
+              child: OfficialsWidgets.listViewWithGrid(),
             ),
             const SizedBox(height: 24),
           ],

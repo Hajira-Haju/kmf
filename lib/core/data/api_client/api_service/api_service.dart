@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '../../../../presentation/id_screen/id_screen.dart';
+import '../../../../presentation/officials_screen/model/official_model.dart';
 import '../../../../routes/app_routes/app_routes.dart';
 import '../../../Services/firebase_serrvice/firebase_service.dart';
 import '../../../Services/storage_service/services.dart';
@@ -327,6 +328,29 @@ class ApiService {
       customSnackBar(msg: 'Failed to Update');
       log('Error occurred', error: e, stackTrace: s);
       return Services().loadQuickContactFromCache();
+    }
+  }
+  Future<List<OfficialsModel>> fetchOfficialsData() async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.officials,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        await storage.write('officialsData', response.body);
+        final List jsonData = jsonDecode(response.body);
+        return jsonData.map((e) => OfficialsModel.fromJson(e)).toList();
+      } else {
+        customSnackBar(msg: 'Something went wrong');
+        debugPrint(response.body);
+        return Services().loadOfficialsFromCache();
+      }
+    } catch (e, s) {
+      log('Error occurred', error: e, stackTrace: s);
+      customSnackBar(msg: 'Something went wrong');
+      return Services().loadOfficialsFromCache();
     }
   }
 }

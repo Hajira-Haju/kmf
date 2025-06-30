@@ -86,8 +86,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                 () => customButton(
                   btnTxt: 'Continue',
                   onTap:
-                      controller.selectedImage.value != null &&
-                              controller.hasPerson.value
+                      controller.selectedImage.value != null
                           ? () async {
                             controller.isLoading.value
                                 ? null

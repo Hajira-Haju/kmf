@@ -14,4 +14,6 @@ class ApiList {
   static String aboutUs = '$baseUrl/api/KMF/GetSectionDataByType?Type=39';
   static String referFriend = '$baseUrl/api/KMF/GetSectionDataByType?Type=40';
   static String quickContact = '$baseUrl/api/KMF/GetSectionDataByType?Type=41';
+  static String officials = '$baseUrl/api/KMF/GetCommitteDetailsByGroup';
+
 }

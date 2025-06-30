@@ -28,7 +28,8 @@ class BottomNavData {
     ),
     DrawerModel(
       icn: CupertinoIcons.rectangle_on_rectangle_angled,
-      onTap: () => Get.to(OfficialsScreen()),
+      onTap: () => Get.toNamed(AppRoutes.officials)
+      ,
       title: 'Officials',
     ),
     DrawerModel(
