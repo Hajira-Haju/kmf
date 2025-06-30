@@ -1,8 +1,10 @@
 import 'package:associations_app/core/constants/const_datas.dart';
+import 'package:associations_app/presentation/officials_screen/controller/official_controller.dart';
 import 'package:associations_app/presentation/officials_screen/widgets/officials_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class OfficialsScreen extends StatelessWidget {
+class OfficialsScreen extends GetView<OfficialController> {
   const OfficialsScreen({super.key});
 
   @override
@@ -57,7 +59,7 @@ class OfficialsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: OfficialsWidgets.gridView(),
+              child: OfficialsWidgets.listViewWithGrid(controller),
             ),
             const SizedBox(height: 24),
           ],

@@ -14,7 +14,8 @@ class NewsEventsScreen extends GetView<NewsEventsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(controller: controller.scrollController,
+      body: SingleChildScrollView(
+        controller: controller.scrollController,
         child: Column(
           children: [
             NewsEventsWidgets.latestNewsList(controller, context),

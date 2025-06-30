@@ -4,6 +4,8 @@ import 'package:associations_app/presentation/bottom_nav_screen/binding/bottom_n
 import 'package:associations_app/presentation/bottom_nav_screen/bottom_nav_screen.dart';
 import 'package:associations_app/presentation/news_inner_screen/bindings/news_inner_binding.dart';
 import 'package:associations_app/presentation/news_inner_screen/news_inner_screen.dart';
+import 'package:associations_app/presentation/officials_screen/binding/official_binding.dart';
+import 'package:associations_app/presentation/officials_screen/officials_screen.dart';
 import 'package:associations_app/presentation/otp_screen/binding/otp_binding.dart';
 import 'package:associations_app/presentation/otp_screen/otp_screen.dart';
 import 'package:associations_app/presentation/quick_contact_screen/binding/quick_contact_binding.dart';
@@ -65,6 +67,11 @@ class PageList {
       name: AppRoutes.quickContactScreen,
       page: () => QuickContactScreen(),
       binding: QuickContactBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.officialsScreen,
+      page: () => OfficialsScreen(),
+      binding: OfficialBinding(),
     ),
   ];
 }
