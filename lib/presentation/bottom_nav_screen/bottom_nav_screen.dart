@@ -27,6 +27,7 @@ class BottomNavScreen extends GetView<BottomNavController> {
           Fluttertoast.showToast(msg: "Press back again to exit");
           return false;
         }
+        controller.updateLogStatus();
         return true; // Will exit
       },
       child: Scaffold(

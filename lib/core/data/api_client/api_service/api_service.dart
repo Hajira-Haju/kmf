@@ -69,6 +69,18 @@ class ApiService {
     }
   }
 
+  Future<void> loggedStatus(int type) async {
+    final token = storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.loggedStatus(type),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+    } catch (e, s) {
+      log('Error occurred', stackTrace: s, error: e);
+    }
+  }
+
   Future<void> uploadImage({required File image}) async {
     final token = await storage.read('token');
     try {
@@ -143,7 +155,6 @@ class ApiService {
         return Services().loadLatestFromCache();
       }
     } catch (e, s) {
-      customSnackBar(msg: 'Something went wrong');
       log('Error occurred', error: e, stackTrace: s);
       return Services().loadLatestFromCache();
     }
@@ -215,7 +226,6 @@ class ApiService {
         return Services().loadOffersFromCache();
       }
     } catch (e, s) {
-      customSnackBar(msg: 'Something went wrong');
       log('Error occurred', error: e, stackTrace: s);
       return Services().loadOffersFromCache();
     }
@@ -277,7 +287,7 @@ class ApiService {
         final data = jsonDecode(response.body);
         return data['htmlContent'];
       } else {
-        customSnackBar(msg: 'Failed to Update');
+        customSnackBar(msg: 'Something went wrong');
         return Services().loadAboutUsFromCache();
       }
     } catch (e, s) {
@@ -299,7 +309,7 @@ class ApiService {
         final data = jsonDecode(response.body);
         return data['htmlContent'];
       } else {
-        customSnackBar(msg: 'Failed to Update');
+        customSnackBar(msg: 'Something went wrong');
         return Services().loadReferAFriendFromCache();
       }
     } catch (e, s) {
@@ -321,7 +331,7 @@ class ApiService {
         final data = jsonDecode(response.body);
         return data['htmlContent'];
       } else {
-        customSnackBar(msg: 'Failed to Update');
+        customSnackBar(msg: 'Something went wrong');
         return Services().loadQuickContactFromCache();
       }
     } catch (e, s) {
@@ -350,7 +360,7 @@ class ApiService {
       }
     } catch (e, s) {
       log('Error occurred', error: e, stackTrace: s);
-      customSnackBar(msg: 'Something went wrong');
+      customSnackBar(msg: 'Failed to Update');
       return Services().loadOfficialsFromCache();
     }
   }
