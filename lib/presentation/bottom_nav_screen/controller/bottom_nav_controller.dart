@@ -4,6 +4,7 @@ import 'package:associations_app/presentation/bottom_nav_screen/widgets/bottom_n
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/Services/storage_service/storage_service.dart';
 import '../../id_screen/id_screen.dart';
@@ -43,6 +44,12 @@ class BottomNavController extends GetxController with WidgetsBindingObserver {
     );
   }
 
+  Future<void> launchUrlTo(String urlData) async {
+    final Uri url = Uri.parse(urlData);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);

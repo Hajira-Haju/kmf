@@ -118,7 +118,7 @@ class OfferWidget {
                       },
                     ),
                 child: Card(
-                  margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  margin: EdgeInsets.symmetric(horizontal: 8, vertical: 14),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

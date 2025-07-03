@@ -35,14 +35,8 @@ class AboutScreen extends GetView<AboutUsController> {
             return SingleChildScrollView(
               child: Html(
                 onLinkTap: (url, attributes, element) async {
-                  if (url != null && await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(
-                      Uri.parse(url),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  } else {
-                    // Optionally show an error or fallback
-                    print("Could not launch $url");
+                  if (!await launchUrl(Uri.parse(url!))) {
+                    throw Exception('Could not launch $url');
                   }
                 },
                 data: htmlContent.replaceAll("<br>", ""),

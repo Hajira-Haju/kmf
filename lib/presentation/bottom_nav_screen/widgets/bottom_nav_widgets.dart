@@ -58,9 +58,24 @@ class BottomNavWidgets {
                   child: Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SvgPicture.asset('assets/insta_clr.svg', width: 40),
+                      InkWell(
+                        onTap:
+                            () => controller.launchUrlTo(
+                              'https://www.instagram.com/kmf_kuwait?igsh=MTF0bGFrMmFxNGp5dQ==&utm_source=ig_contact_invite',
+                            ),
+                        child: SvgPicture.asset(
+                          'assets/insta_clr.svg',
+                          width: 40,
+                        ),
+                      ),
                       SizedBox(width: 10),
-                      SvgPicture.asset('assets/fb_clr.svg', width: 40),
+                      InkWell(
+                        onTap:
+                            () => controller.launchUrlTo(
+                              'https://www.facebook.com/profile.php?id=100079688261730&sk=photos&locale=sw_KE',
+                            ),
+                        child: SvgPicture.asset('assets/fb_clr.svg', width: 40),
+                      ),
                     ],
                   ),
                 ),

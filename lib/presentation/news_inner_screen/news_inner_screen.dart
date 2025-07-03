@@ -44,7 +44,7 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
+                InkWell(
                   onTap: () => Get.back(),
                   child: CircleAvatar(
                     backgroundColor: Colors.grey.withValues(alpha: .7),
@@ -52,10 +52,12 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
                     child: Icon(Icons.arrow_back_ios_new),
                   ),
                 ),
-                CircleAvatar(
-                  backgroundColor: Colors.grey.withValues(alpha: .7),
-                  foregroundColor: Colors.white,
-                  child: Icon(CupertinoIcons.ellipsis_vertical),
+                InkWell(onTap: () => controller.shareContent(),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey.withValues(alpha: .7),
+                    foregroundColor: Colors.white,
+                    child: Icon(Icons.share),
+                  ),
                 ),
               ],
             ),

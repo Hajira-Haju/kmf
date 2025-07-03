@@ -4,6 +4,7 @@ import 'package:associations_app/presentation/welcome_screen/widget/welcome_widg
 import 'package:associations_app/widgets/custom_widget/custom_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

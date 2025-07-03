@@ -40,13 +40,8 @@ class ReferMemberScreen extends GetView<ReferMemberController> {
                   Map<String, String> attributes,
                   element,
                 ) async {
-                  if (url != null && await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(
-                      Uri.parse(url),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  } else {
-                    debugPrint("Could not launch $url");
+                  if (!await launchUrl(Uri.parse(url!))) {
+                    throw Exception('Could not launch $url');
                   }
                 },
 
