@@ -25,7 +25,7 @@ class ReferMemberScreen extends GetView<ReferMemberController> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: SpinKitPouringHourGlassRefined(
+              child: SpinKitFadingCircle(
                 color: ConstData.secondaryClr,
                 size: 50,
               ),

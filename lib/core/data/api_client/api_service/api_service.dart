@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:associations_app/core/data/api_client/api_list/api_list.dart';
 import 'package:associations_app/core/data/api_client/api_method/api_method.dart';
+import 'package:associations_app/presentation/bottom_nav_screen/controller/bottom_nav_controller.dart';
 import 'package:associations_app/presentation/id_screen/models/civil_id_model.dart';
 import 'package:associations_app/presentation/new_events_screen/controller/news_events_controller.dart';
 import 'package:associations_app/presentation/new_events_screen/models/event_type_model.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '../../../../presentation/id_screen/id_screen.dart';
+import '../../../../presentation/notification_screen/models/notification_model.dart';
 import '../../../../presentation/officials_screen/model/officials_model.dart';
 import '../../../../routes/app_routes/app_routes.dart';
 import '../../../Services/firebase_serrvice/firebase_service.dart';
@@ -137,6 +139,7 @@ class ApiService {
   }
 
   Future<List<NewsAndEventsModel>> fetchLatest() async {
+    BottomNavController bottomNav = Get.find();
     final token = storage.read('token');
     try {
       final response = await api.get(
@@ -146,6 +149,7 @@ class ApiService {
       if (response.statusCode == 200) {
         await storage.write('latestUpdates', response.body);
         final data = jsonDecode(response.body);
+        bottomNav.isUnread.value = data['isUnread'];
         final newsAndEvents = data['newsOrEventsData'] as List;
         return newsAndEvents
             .map((e) => NewsAndEventsModel.fromJson(e))
@@ -362,6 +366,63 @@ class ApiService {
       log('Error occurred', error: e, stackTrace: s);
       customSnackBar(msg: 'Failed to Update');
       return Services().loadOfficialsFromCache();
+    }
+  }
+
+  Future<List<NotificationList>> fetchNotification() async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.notificationUrl,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final notification = data['notificationList'] as List;
+        return notification.map((e) => NotificationList.fromJson(e)).toList();
+      } else {
+        return [];
+      }
+    } catch (e, s) {
+      log('Error occurred', error: e, stackTrace: s);
+      return [];
+    }
+  }
+
+  Future<void> deleteNotification(int id) async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.deleteNotificationUrl(id),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        customSnackBar(msg: 'Deleted successfully!');
+      } else {
+        customSnackBar(msg: 'Failed to delete');
+      }
+    } catch (e, s) {
+      log('Error occurred', error: e, stackTrace: s);
+    }
+  }
+
+  Future<void> logOut() async {
+    final token = await storage.read('token');
+    try {
+      final response = await api.get(
+        url: ApiList.logOut,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        await storage.clearAll();
+        Get.offAllNamed(AppRoutes.signInScreen);
+      } else {
+        customSnackBar(msg: 'Failed to Logout. Try again later...');
+      }
+    } catch (e, s) {
+      customSnackBar(msg: 'Failed to Logout. Try again later...');
+      log('Error occurred', error: e, stackTrace: s);
     }
   }
 }

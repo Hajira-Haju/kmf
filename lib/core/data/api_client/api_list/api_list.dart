@@ -18,4 +18,11 @@ class ApiList {
   static String loggedStatus(int type) {
     return '$baseUrl/api/KMF/UpdateLoginLogOutTime?Type=$type';
   }
+
+  static String notificationUrl = '$baseUrl/api/KMF/GetNotificationByMember';
+  static String deleteNotificationUrl(int id) {
+    return '$baseUrl/api/KMF/UpdateMessageStatus?MessageID=$id';
+  }
+
+  static String logOut = '$baseUrl/api/KMF/LogOut';
 }

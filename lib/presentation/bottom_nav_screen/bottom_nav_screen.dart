@@ -5,6 +5,7 @@ import 'package:associations_app/presentation/bottom_nav_screen/models/bottom_na
 import 'package:associations_app/presentation/bottom_nav_screen/widgets/bottom_nav_widgets.dart';
 import 'package:associations_app/presentation/id_screen/id_screen.dart';
 import 'package:associations_app/res/assets_res.dart';
+import 'package:associations_app/tst.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +33,7 @@ class BottomNavScreen extends GetView<BottomNavController> {
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: GestureDetector(
+          leading: InkWell(
             onTap: () => controller.key.currentState!.openDrawer(),
             child: Icon(Icons.grid_view_rounded, color: ConstData.secondaryClr),
           ),
@@ -55,15 +56,43 @@ class BottomNavScreen extends GetView<BottomNavController> {
           ),
           centerTitle: true,
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: GestureDetector(
-                onTap:
-                    () => Get.to(
+            Obx(
+              () => Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: InkWell(
+                  onTap: () async {
+                    await Get.to(
                       NotificationScreen(),
                       transition: Transition.rightToLeftWithFade,
+                    );
+                    controller.api.fetchLatest();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(
+                          Icons.notifications,
+                          color: ConstData.secondaryClr,
+                        ),
+                        if (controller.isUnread.value)
+                          Positioned(
+                            right: 2,
+                            top: 1,
+                            child: Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
-                child: Icon(Icons.notifications, color: ConstData.secondaryClr),
+                  ),
+                ),
               ),
             ),
           ],

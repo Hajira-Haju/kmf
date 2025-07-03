@@ -19,7 +19,6 @@ class SplashController extends GetxController {
   void navigate() {
     Future.delayed(Duration(seconds: 2), () {
       if (isLogged == null) {
-
         Get.offAllNamed(AppRoutes.signInScreen);
       } else {
         ///to update log in db

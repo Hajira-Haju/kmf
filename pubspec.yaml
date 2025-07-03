@@ -80,8 +80,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/fb_clr.svg
     - assets/fb_logo.svg
     - assets/img_person.jpg
+    - assets/insta_clr.svg
     - assets/insta_logo.svg
     - assets/the-associates.png
     - assets/the-associates_logo.png

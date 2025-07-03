@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:associations_app/core/constants/const_datas.dart';
+import 'package:associations_app/core/data/api_client/api_service/api_service.dart';
 import 'package:associations_app/routes/app_routes/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,12 +53,16 @@ class BottomNavWidgets {
                   },
                 ),
                 Padding(padding: const EdgeInsets.all(8.0), child: Divider()),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SvgPicture.asset('assets/insta_logo.svg', width: 40),
-                    SvgPicture.asset('assets/fb_logo.svg', width: 40),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SvgPicture.asset('assets/insta_clr.svg', width: 40),
+                      SizedBox(width: 10),
+                      SvgPicture.asset('assets/fb_clr.svg', width: 40),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -70,14 +75,51 @@ class BottomNavWidgets {
                 leading: Icon(Icons.logout, color: Colors.red),
                 trailing: Icon(CupertinoIcons.right_chevron, color: Colors.red),
                 onTap: () async {
-                  await controller.storage.clearAll();
-                  Get.offAllNamed(AppRoutes.signInScreen);
+                  controller.showLogoutDialog(Get.context!);
+                  // await controller.storage.clearAll();
+                  // Get.offAllNamed(AppRoutes.signInScreen);
                 },
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  static Widget logOutButton({
+    void Function()? onTap,
+    required String text,
+    required Color clr,
+  }) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: clr,
+      ),
+      onPressed: onTap,
+      child: Text(text),
+    );
+  }
+
+  static Widget logOutDialog(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+      title: const Text('Confirm Logout'),
+      content: const Text('Are you sure you want to logout?'),
+      actionsAlignment: MainAxisAlignment.spaceEvenly,
+      actions: [
+        logOutButton(
+          text: 'Cancel',
+          clr: ConstData.secondaryClr,
+          onTap: () => Get.back(),
+        ),
+        logOutButton(
+          text: 'Logout',
+          clr: ConstData.primaryClr,
+          onTap: () => ApiService().logOut(),
+        ),
+      ],
     );
   }
 }

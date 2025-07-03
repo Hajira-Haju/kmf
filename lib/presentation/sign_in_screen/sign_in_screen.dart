@@ -39,7 +39,7 @@ class SignInScreen extends GetView<SignInController> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Enter Your Civil Id',
+                            'Enter Your Civil ID',
                             style: TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.w900,
@@ -64,7 +64,7 @@ class SignInScreen extends GetView<SignInController> {
                           readOnly: controller.isLoading.value,
                           controller: controller.civilIdController,
                           maxLength: 12,
-                          hint: 'Enter Civil id here...',
+                          hint: '',
                           onChanged: (p0) => controller.showError.value = false,
                           validator:
                               controller.showError.value

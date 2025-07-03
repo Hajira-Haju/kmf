@@ -33,6 +33,11 @@ class FirebaseService {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       debugPrint("📲 App opened from notification!");
     });
+    ///refresh event fcm token
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+      debugPrint("🔄 FCM Token refreshed: $newToken");
+      // Safely update backend with this new token
+    });
     return token!;
   }
 }

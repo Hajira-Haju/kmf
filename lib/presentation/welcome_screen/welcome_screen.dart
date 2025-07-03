@@ -47,9 +47,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                     color: ConstData.secondaryClr,
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
@@ -58,13 +56,11 @@ class WelcomeScreen extends GetView<WelcomeController> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-
                 SizedBox(height: 40),
 
                 /// Profile Upload
                 WelcomeWidget.profileUpload(controller),
                 SizedBox(height: 10),
-
                 Obx(() {
                   if (!controller.hasPerson.value &&
                       controller.showBanner.value) {

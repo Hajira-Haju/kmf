@@ -16,7 +16,7 @@ class BottomNavController extends GetxController with WidgetsBindingObserver {
   final now = DateTime.now();
   final api = ApiService();
   DateTime? lastBackPressed;
-
+  RxBool isUnread = false.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -34,6 +34,13 @@ class BottomNavController extends GetxController with WidgetsBindingObserver {
 
   Future<void> updateLogStatus() async {
     await api.loggedStatus(2);
+  }
+
+  void showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => BottomNavWidgets.logOutDialog(context),
+    );
   }
 
   @override
