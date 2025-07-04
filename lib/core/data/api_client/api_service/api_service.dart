@@ -61,7 +61,7 @@ class ApiService {
         await storage.write('usrName', data['name']);
         return RegistrationModel.fromJson(data);
       } else {
-        customSnackBar(msg: 'Something Went wrong');
+        customSnackBar(msg: response.body ?? 'Something went wrong');
         return null;
       }
     } catch (e, s) {

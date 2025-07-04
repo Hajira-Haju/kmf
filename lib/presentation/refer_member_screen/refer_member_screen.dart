@@ -35,12 +35,22 @@ class ReferMemberScreen extends GetView<ReferMemberController> {
             return SingleChildScrollView(
               child: Html(
                 data: htmlContent.replaceAll("<br>", ""),
-                onLinkTap: (
-                  String? url,
-                  Map<String, String> attributes,
-                  element,
-                ) async {
-                  if (!await launchUrl(Uri.parse(url!))) {
+                onLinkTap: (url, attributes, element) async {
+                  bool containsAtLeast8Digits(String input) {
+                    final digitMatches = RegExp(r'\d').allMatches(input);
+                    return digitMatches.length >= 6;
+                  }
+
+                  Uri uri;
+                  if (url!.contains('@')) {
+                    uri = Uri(scheme: 'mailto', path: url.trim());
+                  } else if (url.startsWith('+') ||
+                      containsAtLeast8Digits(url)) {
+                    uri = Uri(scheme: 'tel', path: url.trim());
+                  } else {
+                    uri = Uri.parse(url);
+                  }
+                  if (!await launchUrl(uri)) {
                     throw Exception('Could not launch $url');
                   }
                 },
