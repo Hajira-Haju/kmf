@@ -26,60 +26,65 @@ class BottomNavWidgets {
         ),
         child: Stack(
           children: [
-            Column(
-              children: [
-                SizedBox(width: double.infinity, height: 60),
-                Image.asset('assets/the-associates_logo.png', width: 100),
-                SizedBox(height: 20),
-                Text(
-                  'KERALITES MEDICAL\nFORUM',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 30),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: BottomNavData.drawerData.length,
-                  scrollDirection: Axis.vertical,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final data = BottomNavData.drawerData[index];
-                    return ListTile(
-                      leading: Icon(data.icn, color: ConstData.secondaryClr),
-                      title: Text(data.title),
-                      trailing: Icon(CupertinoIcons.right_chevron),
-                      onTap: data.onTap,
-                    );
-                  },
-                ),
-                Padding(padding: const EdgeInsets.all(8.0), child: Divider()),
-                Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InkWell(
-                        onTap:
-                            () => controller.launchUrlTo(
-                              'https://www.instagram.com/kmf_kuwait?igsh=MTF0bGFrMmFxNGp5dQ==&utm_source=ig_contact_invite',
-                            ),
-                        child: SvgPicture.asset(
-                          'assets/insta_clr.svg',
-                          width: 40,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      InkWell(
-                        onTap:
-                            () => controller.launchUrlTo(
-                              'https://www.facebook.com/profile.php?id=100079688261730&sk=photos&locale=sw_KE',
-                            ),
-                        child: SvgPicture.asset('assets/fb_clr.svg', width: 40),
-                      ),
-                    ],
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(width: double.infinity, height: 60),
+                  Image.asset('assets/the-associates_logo.png', width: 100),
+                  SizedBox(height: 20),
+                  Text(
+                    'KERALITES MEDICAL\nFORUM',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ],
+                  SizedBox(height: 30),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: BottomNavData.drawerData.length,
+                    scrollDirection: Axis.vertical,
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final data = BottomNavData.drawerData[index];
+                      return ListTile(
+                        leading: Icon(data.icn, color: ConstData.secondaryClr),
+                        title: Text(data.title),
+                        trailing: Icon(CupertinoIcons.right_chevron),
+                        onTap: data.onTap,
+                      );
+                    },
+                  ),
+                  Padding(padding: const EdgeInsets.all(8.0), child: Divider()),
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap:
+                              () => controller.launchUrlTo(
+                                'https://www.instagram.com/kmf_kuwait?igsh=MTF0bGFrMmFxNGp5dQ==&utm_source=ig_contact_invite',
+                              ),
+                          child: SvgPicture.asset(
+                            'assets/insta_clr.svg',
+                            width: 40,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        InkWell(
+                          onTap:
+                              () => controller.launchUrlTo(
+                                'https://www.facebook.com/profile.php?id=100079688261730&sk=photos&locale=sw_KE',
+                              ),
+                          child: SvgPicture.asset(
+                            'assets/fb_clr.svg',
+                            width: 40,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             Positioned(
               bottom: 10,

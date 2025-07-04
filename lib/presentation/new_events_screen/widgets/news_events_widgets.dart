@@ -132,10 +132,8 @@ class NewsEventsWidgets {
                                 ),
                                 child: Text(
                                   latestNews.heading!,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontWeight: FontWeight.w500),
                                   maxLines: 2,
                                 ),
                               ),
@@ -143,6 +141,7 @@ class NewsEventsWidgets {
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
                                   latestNews.date!,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 12,
@@ -255,145 +254,151 @@ class NewsEventsWidgets {
     BuildContext context,
   ) {
     return Obx(() {
-      if (controller.newsOrEvents.isEmpty && controller.isLoading.value) {
-        return Shimmer.fromColors(
-          baseColor: ConstData.shimmerClrBase(context),
-          highlightColor: ConstData.shimmerClrHighLight(context),
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: 3,
-            physics: BouncingScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Card(
-                margin: EdgeInsets.all(8),
-                child: Row(children: [SizedBox(width: 150, height: 100)]),
-              );
-            },
-          ),
-        );
-      } else if (controller.newsOrEvents.isNotEmpty) {
-        return ListView.builder(
+      final isLoading =
+          controller.newsOrEvents.isEmpty && controller.isLoading.value;
+      final isData = controller.newsOrEvents.isNotEmpty;
+      final isEmpty =
+          !controller.isLoading.value && controller.newsOrEvents.isEmpty;
+
+      Widget loadingWidget = Shimmer.fromColors(
+        baseColor: ConstData.shimmerClrBase(context),
+        highlightColor: ConstData.shimmerClrHighLight(context),
+        child: ListView.builder(
           scrollDirection: Axis.vertical,
+          itemCount: 3,
           physics: BouncingScrollPhysics(),
           shrinkWrap: true,
-          itemCount:
-              controller.selectedType.value == 0
-                  ? (controller.newsOrEvents.length > 5
-                          ? controller.newsOrEvents.length - 5
-                          : controller.newsOrEvents.length) +
-                      (controller.isLoading.value ? 1 : 0)
-                  : controller.newsOrEvents.length +
-                      (controller.isLoading.value ? 1 : 0),
           itemBuilder: (context, index) {
-            final isMainType = controller.selectedType.value == 0;
-            final listLength =
-                isMainType
-                    ? (controller.newsOrEvents.length > 5
-                        ? controller.newsOrEvents.length - 5
-                        : controller.newsOrEvents.length)
-                    : controller.newsOrEvents.length;
-
-            // Bottom loader
-            if (index >= listLength) {
-              return Shimmer.fromColors(
-                baseColor: ConstData.shimmerClrBase(context),
-                highlightColor: ConstData.shimmerClrHighLight(context),
-                child: Card(
-                  margin: EdgeInsets.all(8),
-                  child: Row(children: [SizedBox(width: 150, height: 100)]),
-                ),
-              );
-            }
-
-            final data =
-                isMainType
-                    ? controller.newsOrEvents.length > 5
-                        ? controller.newsOrEvents[index + 5]
-                        : controller.newsOrEvents[index]
-                    : controller.newsOrEvents[index];
-
-            return GestureDetector(
-              onTap:
-                  () => Get.toNamed(
-                    AppRoutes.newsInnerScreen,
-                    arguments: {
-                      'imgUrl': data.imagePath,
-                      'head': data.heading,
-                      'content': data.description,
-                    },
-                  ),
-              child: Card(
-                margin: EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      height: 90,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10.r),
-                          bottomLeft: Radius.circular(10.r),
-                        ),
-                        child: CachedNetworkImage(
-                          imageUrl: data.imagePath!,
-                          fit: BoxFit.cover,
-                          placeholder:
-                              (context, url) => Shimmer.fromColors(
-                                baseColor: Colors.grey.shade300,
-                                highlightColor: Colors.white,
-                                child: Container(
-                                  color: Colors.grey,
-                                  width: double.infinity,
-                                ),
-                              ),
-                          errorWidget:
-                              (context, error, stackTrace) => Icon(Icons.error),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              data.heading!,
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              data.date!,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Text(
-                              data.description!,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            return Card(
+              margin: EdgeInsets.all(8),
+              child: Row(children: [SizedBox(width: 150, height: 100)]),
             );
           },
-        );
-      } else if (controller.isLoading.value == false &&
-          controller.newsOrEvents.isEmpty) {
-        return Column(children: [SizedBox(height: 120), Text('No Data Found')]);
-      } else {
-        return Column(
-          children: [SizedBox(height: 120), Text('Something went wrong')],
-        );
-      }
+        ),
+      );
+
+      Widget dataWidget = ListView.builder(
+        scrollDirection: Axis.vertical,
+        physics: BouncingScrollPhysics(),
+        shrinkWrap: true,
+        itemCount:
+            controller.selectedType.value == 0
+                ? (controller.newsOrEvents.length > 5
+                        ? controller.newsOrEvents.length - 5
+                        : controller.newsOrEvents.length) +
+                    (controller.isLoading.value ? 1 : 0)
+                : controller.newsOrEvents.length +
+                    (controller.isLoading.value ? 1 : 0),
+        itemBuilder: (context, index) {
+          final isMainType = controller.selectedType.value == 0;
+          final listLength =
+              isMainType
+                  ? (controller.newsOrEvents.length > 5
+                      ? controller.newsOrEvents.length - 5
+                      : controller.newsOrEvents.length)
+                  : controller.newsOrEvents.length;
+
+          // Bottom loader
+          if (index >= listLength) {
+            return Shimmer.fromColors(
+              baseColor: ConstData.shimmerClrBase(context),
+              highlightColor: ConstData.shimmerClrHighLight(context),
+              child: Card(
+                margin: EdgeInsets.all(8),
+                child: Row(children: [SizedBox(width: 150, height: 100)]),
+              ),
+            );
+          }
+
+          final data =
+              isMainType
+                  ? controller.newsOrEvents.length > 5
+                      ? controller.newsOrEvents[index + 5]
+                      : controller.newsOrEvents[index]
+                  : controller.newsOrEvents[index];
+
+          return GestureDetector(
+            onTap:
+                () => Get.toNamed(
+                  AppRoutes.newsInnerScreen,
+                  arguments: {
+                    'imgUrl': data.imagePath,
+                    'head': data.heading,
+                    'content': data.description,
+                  },
+                ),
+            child: Card(
+              margin: EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 150,
+                    height: 90,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.r),
+                        bottomLeft: Radius.circular(10.r),
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: data.imagePath!,
+                        fit: BoxFit.cover,
+                        placeholder:
+                            (context, url) => Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.white,
+                              child: Container(
+                                color: Colors.grey,
+                                width: double.infinity,
+                              ),
+                            ),
+                        errorWidget:
+                            (context, error, stackTrace) => Icon(Icons.error),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data.heading!,
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            data.date!,
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                          Text(
+                            data.description!,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      Widget fallbackWidget = Column(
+        children: [SizedBox(height: 120), Text(isEmpty ? 'No Data Found' : '')],
+      );
+
+      return AnimatedCrossFade(
+        duration: Duration(milliseconds: 500),
+        crossFadeState:
+            isLoading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        firstChild: loadingWidget,
+        secondChild: isData ? dataWidget : fallbackWidget,
+      );
     });
   }
 }

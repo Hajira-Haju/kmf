@@ -67,15 +67,18 @@ class _IdScreenState extends State<IdScreen> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: FutureBuilder(
-            future: controller.futureCivilId,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return IdWidgets.shimmer();
-              } else if (snapshot.hasData) {
-                final civilIdData = snapshot.data;
-                return Column(
+        body: FutureBuilder(
+          future: controller.futureCivilId,
+          builder: (context, snapshot) {
+            Widget child;
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              child = IdWidgets.shimmer();
+            } else if (snapshot.hasData) {
+              final civilIdData = snapshot.data;
+              child = SingleChildScrollView(
+                key: ValueKey('data'),
+                child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(30.0),
@@ -111,14 +114,22 @@ class _IdScreenState extends State<IdScreen> {
                       ),
                     ),
                     IdWidgets.idDetails(controller, civilIdData),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                   ],
-                );
-              } else {
-                return Center(child: Text('Something went wrong'));
-              }
-            },
-          ),
+                ),
+              );
+            } else {
+              child = const Center(
+                key: ValueKey('error'),
+                child: Text('Something went wrong'),
+              );
+            }
+
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              child: child,
+            );
+          },
         ),
       ),
     );

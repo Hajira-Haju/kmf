@@ -26,8 +26,8 @@ class NotificationScreen extends StatelessWidget {
         ),
       ),
       body: Obx(() {
-        if (controller.isLoading.value && controller.notifications.isEmpty) {
-          return Shimmer.fromColors(
+        return AnimatedCrossFade(
+          firstChild: Shimmer.fromColors(
             baseColor: ConstData.shimmerClrBase(context),
             highlightColor: ConstData.shimmerClrHighLight(context),
             child: ListView.builder(
@@ -51,92 +51,99 @@ class NotificationScreen extends StatelessWidget {
                 );
               },
             ),
-          );
-        } else if (controller.notifications.isNotEmpty) {
-          return ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
-            itemCount: controller.notifications.length,
-            itemBuilder: (context, index) {
-              final data = controller.notifications[index];
-              Color randomColor =
-                  NotificationData.colorList[controller.random.nextInt(
-                    NotificationData.colorList.length,
-                  )];
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 2,
-                ),
-                child: Dismissible(
-                  direction: DismissDirection.endToStart,
-                  key: Key(data.id.toString()),
-                  onDismissed: (direction) async {
-                    controller.notifications.removeAt(index);
-                    await controller.api.deleteNotification(data.id!);
-                    controller.fetchNotification();
-                  },
-                  background: Card(
-                    color: Colors.red,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(
-                            CupertinoIcons.delete_solid,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Card(
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(
-                              color: ConstData.secondaryClr.withValues(
-                                alpha: .2,
+          ),
+          secondChild:
+              controller.notifications.isNotEmpty
+                  ? ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: controller.notifications.length,
+                    itemBuilder: (context, index) {
+                      final data = controller.notifications[index];
+                      Color randomColor =
+                          NotificationData.colorList[controller.random.nextInt(
+                            NotificationData.colorList.length,
+                          )];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 2,
+                        ),
+                        child: Dismissible(
+                          direction: DismissDirection.endToStart,
+                          key: Key(data.id.toString()),
+                          onDismissed: (direction) async {
+                            controller.notifications.removeAt(index);
+                            await controller.api.deleteNotification(data.id!);
+                            controller.fetchNotification();
+                          },
+                          background: Card(
+                            color: Colors.red,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14.0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.delete_solid,
+                                    color: Colors.white,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          leading: CircleAvatar(
-                            backgroundColor: randomColor,
-                            child: Text(
-                              data.header![0],
-                              style: TextStyle(color: Colors.white),
-                            ),
+                          child: Stack(
+                            children: [
+                              Card(
+                                child: ListTile(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: BorderSide(
+                                      color: ConstData.secondaryClr.withValues(
+                                        alpha: .2,
+                                      ),
+                                    ),
+                                  ),
+                                  leading: CircleAvatar(
+                                    backgroundColor: randomColor,
+                                    child: Text(
+                                      data.header![0],
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  title: Text(data.header!),
+                                  subtitle: Text(data.message!),
+                                ),
+                              ),
+                              if (data.isRead == false)
+                                Positioned(
+                                  right: 15,
+                                  top: 15,
+                                  child: Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
-                          title: Text(data.header!),
-                          subtitle: Text(data.message!),
                         ),
-                      ),
-                      if (data.isRead == false)
-                        Positioned(
-                          right: 15,
-                          top: 15,
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        } else {
-          return Center(child: Text('No Notifications'));
-        }
+                      );
+                    },
+                  )
+                  : Center(child: Text('No Notifications')),
+          crossFadeState:
+              controller.isLoading.value && controller.notifications.isEmpty
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 500),
+        );
       }),
     );
   }

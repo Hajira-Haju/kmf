@@ -86,7 +86,7 @@ class IdWidgets {
                     child: Divider(height: 1),
                   ),
                   ListTile(
-                    title: Text(value.head),
+                    title: Text(value.head, overflow: TextOverflow.ellipsis),
                     trailing: Text(
                       value.value,
                       style: TextStyle(
@@ -122,14 +122,17 @@ class IdWidgets {
                           radius: 20,
                           child: Icon(CupertinoIcons.qrcode, size: 30),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Share Identity',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 16,
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Share Identity',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
