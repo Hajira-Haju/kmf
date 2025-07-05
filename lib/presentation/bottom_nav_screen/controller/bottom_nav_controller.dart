@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/Services/notification_service/notification_service.dart';
 import '../../../core/Services/storage_service/storage_service.dart';
 import '../../id_screen/id_screen.dart';
 
@@ -22,6 +23,8 @@ class BottomNavController extends GetxController with WidgetsBindingObserver {
   void onInit() {
     // TODO: implement onInit
     WidgetsBinding.instance.addObserver(this);
+    // Clears all notifications when app enters foreground
+    NotificationService.localNotificationsPlugin.cancelAll();
     super.onInit();
   }
 
@@ -50,6 +53,7 @@ class BottomNavController extends GetxController with WidgetsBindingObserver {
       throw Exception('Could not launch $url');
     }
   }
+
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);

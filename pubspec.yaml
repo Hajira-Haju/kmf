@@ -52,6 +52,7 @@ dependencies:
   flutter_spinkit:
   pinput:
   share_plus:
+  flutter_slidable:
   cached_network_image:
   animated_bottom_navigation_bar:
   qr_flutter:

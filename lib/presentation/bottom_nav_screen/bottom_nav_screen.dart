@@ -132,7 +132,7 @@ class BottomNavScreen extends GetView<BottomNavController> {
             backgroundColor: isDark ? Colors.grey.shade900 : Colors.white,
             activeColor: ConstData.primaryClr,
             gapLocation: GapLocation.center,
-            icons: [CupertinoIcons.news, Icons.local_offer_outlined],
+            icons: [Icons.newspaper, Icons.local_offer_rounded],
             activeIndex: controller.activeIndex.value,
             onTap: (p0) => controller.activeIndex.value = p0,
           );

@@ -7,18 +7,23 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../../core/constants/const_datas.dart';
 
-SnackbarController customSnackBar({required String msg}) {
+SnackbarController customSnackBar({required String msg, Color? clr}) {
   return Get.showSnackbar(
     GetSnackBar(
       margin: EdgeInsets.all(8),
       message: msg,
       duration: Duration(seconds: 3),
+      backgroundColor: clr ?? Colors.grey.shade800,
     ),
   );
 }
 
 ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason>
-customBanner({required String msg, required Color clr,void Function()? onTap}) {
+customBanner({
+  required String msg,
+  required Color clr,
+  void Function()? onTap,
+}) {
   return ScaffoldMessenger.of(Get.context!).showMaterialBanner(
     MaterialBanner(
       content: Text(msg),

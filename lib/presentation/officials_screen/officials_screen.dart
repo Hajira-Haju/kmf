@@ -11,7 +11,7 @@ class OfficialsScreen extends GetView<OfficialController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('OFFICIALS'),
+        title: const Text('Officials'),
         centerTitle: true,
         backgroundColor: ConstData.secondaryClr,
         foregroundColor: Colors.white,

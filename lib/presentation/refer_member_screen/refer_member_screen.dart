@@ -6,7 +6,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:html/dom.dart' as dom; // <-- Needed for dom.Element
 
 class ReferMemberScreen extends GetView<ReferMemberController> {
   const ReferMemberScreen({super.key});
@@ -16,7 +15,7 @@ class ReferMemberScreen extends GetView<ReferMemberController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ConstData.secondaryClr,
-        title: const Text('REFER'),
+        title: const Text('Refer a Member'),
         centerTitle: true,
         foregroundColor: Colors.white,
       ),

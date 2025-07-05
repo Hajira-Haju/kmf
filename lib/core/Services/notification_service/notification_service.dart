@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class NotificationService {
-  static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
+  static final FlutterLocalNotificationsPlugin localNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   static Future<void> initialize() async {
@@ -27,7 +27,7 @@ class NotificationService {
         );
 
     // Initialize plugin
-    await _localNotificationsPlugin.initialize(initializationSettings);
+    await localNotificationsPlugin.initialize(initializationSettings);
 
     // Create a notification channel (required for Android 8.0+)
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -37,7 +37,7 @@ class NotificationService {
       importance: Importance.high,
     );
 
-    await _localNotificationsPlugin
+    await localNotificationsPlugin
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
         >()
@@ -62,7 +62,7 @@ class NotificationService {
         android: androidDetails,
       );
 
-      await _localNotificationsPlugin.show(
+      await localNotificationsPlugin.show(
         notification.hashCode,
         notification.title,
         notification.body,

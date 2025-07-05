@@ -20,21 +20,26 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
               SizedBox(
                 height: 250.h,
                 width: double.infinity,
-                child: CachedNetworkImage(
-                  imageUrl: controller.imgUrl,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder:
-                      (context, url) => Shimmer.fromColors(
-                        baseColor: ConstData.shimmerClrBase(context),
-                        highlightColor: ConstData.shimmerClrHighLight(context),
-                        child: Container(
-                          color: Colors.grey,
-                          width: double.infinity,
+                child: GestureDetector(
+                  onTap: () => controller.showImageDialog(controller.imgUrl),
+                  child: CachedNetworkImage(
+                    imageUrl: controller.imgUrl,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                    placeholder:
+                        (context, url) => Shimmer.fromColors(
+                          baseColor: ConstData.shimmerClrBase(context),
+                          highlightColor: ConstData.shimmerClrHighLight(
+                            context,
+                          ),
+                          child: Container(
+                            color: Colors.grey,
+                            width: double.infinity,
+                          ),
                         ),
-                      ),
-                  errorWidget:
-                      (context, error, stackTrace) => Icon(Icons.error),
+                    errorWidget:
+                        (context, error, stackTrace) => Icon(Icons.error),
+                  ),
                 ),
               ),
             ],
@@ -52,7 +57,8 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
                     child: Icon(Icons.arrow_back_ios_new),
                   ),
                 ),
-                InkWell(onTap: () => controller.shareContent(),
+                InkWell(
+                  onTap: () => controller.shareContent(),
                   child: CircleAvatar(
                     backgroundColor: Colors.grey.withValues(alpha: .7),
                     foregroundColor: Colors.white,
@@ -95,6 +101,7 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Text(controller.content),
                       ),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),

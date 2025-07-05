@@ -122,17 +122,17 @@ class ApiService {
         headers: {'Authorization': 'Bearer $token'},
       );
       if (response.statusCode == 200) {
-        customSnackBar(msg: 'Data Updated successfully');
+        customSnackBar(msg: 'Data Updated successfully', clr: Colors.green);
         storage.write('civilIdData', response.body);
         final data = jsonDecode(response.body);
         return CivilIdModel.fromJson(data);
       } else {
-        customSnackBar(msg: 'Something went wrong');
+        customSnackBar(msg: 'Something went wrong', clr: Colors.red);
         debugPrint(response.body);
         return null;
       }
     } catch (e, s) {
-      customSnackBar(msg: 'Something went wrong');
+      customSnackBar(msg: 'Something went wrong', clr: Colors.red);
       log('Error occurred', error: e, stackTrace: s);
       return null;
     }
@@ -291,11 +291,11 @@ class ApiService {
         final data = jsonDecode(response.body);
         return data['htmlContent'];
       } else {
-        customSnackBar(msg: 'Something went wrong');
+        customSnackBar(msg: 'Something went wrong', clr: Colors.red);
         return Services().loadAboutUsFromCache();
       }
     } catch (e, s) {
-      customSnackBar(msg: 'Failed to Update');
+      customSnackBar(msg: 'Failed to Update', clr: Colors.red);
       log('Error occurred', error: e, stackTrace: s);
       return Services().loadAboutUsFromCache();
     }
@@ -313,11 +313,11 @@ class ApiService {
         final data = jsonDecode(response.body);
         return data['htmlContent'];
       } else {
-        customSnackBar(msg: 'Something went wrong');
+        customSnackBar(msg: 'Something went wrong', clr: Colors.red);
         return Services().loadReferAFriendFromCache();
       }
     } catch (e, s) {
-      customSnackBar(msg: 'Failed to Update');
+      customSnackBar(msg: 'Failed to Update', clr: Colors.red);
       log('Error occurred', error: e, stackTrace: s);
       return Services().loadReferAFriendFromCache();
     }
@@ -335,11 +335,11 @@ class ApiService {
         final data = jsonDecode(response.body);
         return data['htmlContent'];
       } else {
-        customSnackBar(msg: 'Something went wrong');
+        customSnackBar(msg: 'Something went wrong', clr: Colors.red);
         return Services().loadQuickContactFromCache();
       }
     } catch (e, s) {
-      customSnackBar(msg: 'Failed to Update');
+      customSnackBar(msg: 'Failed to Update', clr: Colors.red);
       log('Error occurred', error: e, stackTrace: s);
       return Services().loadQuickContactFromCache();
     }
@@ -358,13 +358,13 @@ class ApiService {
         final List jsonData = jsonDecode(response.body);
         return jsonData.map((e) => OfficialsModel.fromJson(e)).toList();
       } else {
-        customSnackBar(msg: 'Something went wrong');
+        customSnackBar(msg: 'Something went wrong', clr: Colors.red);
         debugPrint(response.body);
         return Services().loadOfficialsFromCache();
       }
     } catch (e, s) {
       log('Error occurred', error: e, stackTrace: s);
-      customSnackBar(msg: 'Failed to Update');
+      customSnackBar(msg: 'Failed to Update', clr: Colors.red);
       return Services().loadOfficialsFromCache();
     }
   }
@@ -397,9 +397,9 @@ class ApiService {
         headers: {'Authorization': 'Bearer $token'},
       );
       if (response.statusCode == 200) {
-        customSnackBar(msg: 'Deleted successfully!');
+        customSnackBar(msg: 'Deleted successfully!', clr: Colors.green);
       } else {
-        customSnackBar(msg: 'Failed to delete');
+        customSnackBar(msg: 'Failed to delete', clr: Colors.red);
       }
     } catch (e, s) {
       log('Error occurred', error: e, stackTrace: s);
@@ -418,10 +418,16 @@ class ApiService {
         await storage.clearAll();
         Get.offAllNamed(AppRoutes.signInScreen);
       } else {
-        customSnackBar(msg: 'Failed to Logout. Try again later...');
+        customSnackBar(
+          msg: 'Failed to Logout. Try again later...',
+          clr: Colors.red,
+        );
       }
     } catch (e, s) {
-      customSnackBar(msg: 'Failed to Logout. Try again later...');
+      customSnackBar(
+        msg: 'Failed to Logout. Try again later...',
+        clr: Colors.red,
+      );
       log('Error occurred', error: e, stackTrace: s);
     }
   }

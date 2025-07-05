@@ -3,6 +3,7 @@ import 'package:associations_app/presentation/notification_screen/controller/not
 import 'package:associations_app/presentation/notification_screen/models/notification_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shimmer/shimmer.dart';
@@ -68,39 +69,37 @@ class NotificationScreen extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8.0,
-                          vertical: 2,
+                          vertical: 4,
                         ),
-                        child: Dismissible(
-                          direction: DismissDirection.endToStart,
+                        child: Slidable(
                           key: Key(data.id.toString()),
-                          onDismissed: (direction) async {
-                            controller.notifications.removeAt(index);
-                            await controller.api.deleteNotification(data.id!);
-                            controller.fetchNotification();
-                          },
-                          background: Card(
-                            color: Colors.red,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14.0,
+                          endActionPane: ActionPane(
+                            motion: const ScrollMotion(), // Smooth drag motion
+                            extentRatio:
+                                0.25, // How much to slide to reveal action
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) async {
+                                  controller.notifications.removeAt(index);
+                                  await controller.api.deleteNotification(
+                                    data.id!,
+                                  );
+                                  controller.fetchNotification();
+                                },
+                                backgroundColor: Colors.red,
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete,
+                                label: 'Delete',
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Icon(
-                                    CupertinoIcons.delete_solid,
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            ],
                           ),
                           child: Stack(
                             children: [
                               Card(
+                                margin: EdgeInsets.all(0),
                                 child: ListTile(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(4),
                                     side: BorderSide(
                                       color: ConstData.secondaryClr.withValues(
                                         alpha: .2,

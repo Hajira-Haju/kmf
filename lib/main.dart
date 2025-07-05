@@ -32,13 +32,6 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: GetMaterialApp(
-        builder:
-            (context, child) => MediaQuery(
-              data: MediaQuery.of(
-                context,
-              ).copyWith(textScaler: TextScaler.linear(1.0)),
-              child: child!,
-            ),
         title: 'KMF',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(brightness: Brightness.light),

@@ -104,12 +104,10 @@ class IdWidgets {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
                 onTap: () => controller.showIdQr(data),
                 child: Container(
-                  width: 180,
                   decoration: BoxDecoration(
                     color: ConstData.primaryClr,
                     borderRadius: BorderRadius.circular(50),
@@ -122,17 +120,15 @@ class IdWidgets {
                           radius: 20,
                           child: Icon(CupertinoIcons.qrcode, size: 30),
                         ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Share Identity',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Share Identity',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 16,
                             ),
                           ),
                         ),
