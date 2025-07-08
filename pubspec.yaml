@@ -53,6 +53,7 @@ dependencies:
   pinput:
   share_plus:
   flutter_slidable:
+  timeago:
   cached_network_image:
   animated_bottom_navigation_bar:
   qr_flutter:
@@ -82,11 +83,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/fb_clr.svg
-    - assets/fb_logo.svg
+    - assets/facebook.png
+    - assets/fb_logo.png
     - assets/img_person.jpg
-    - assets/insta_clr.svg
-    - assets/insta_logo.svg
+    - assets/insta_logo.png
+    - assets/instagram.png
     - assets/the-associates.png
     - assets/the-associates_logo.png
 

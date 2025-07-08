@@ -4,6 +4,7 @@ import 'package:associations_app/presentation/bottom_nav_screen/widgets/bottom_n
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/Services/notification_service/notification_service.dart';
@@ -19,6 +20,9 @@ class BottomNavController extends GetxController with WidgetsBindingObserver {
   final api = ApiService();
   DateTime? lastBackPressed;
   RxBool isUnread = false.obs;
+  RxBool isFbExpanded = false.obs;
+  RxBool isInstaExpanded = false.obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -26,6 +30,29 @@ class BottomNavController extends GetxController with WidgetsBindingObserver {
     // Clears all notifications when app enters foreground
     NotificationService.localNotificationsPlugin.cancelAll();
     super.onInit();
+  }
+
+  void handleFbTap() {
+    if (!isFbExpanded.value) {
+      isFbExpanded.value = true;
+      isInstaExpanded.value = false;
+    } else {
+      launchUrlTo(
+        'https://www.facebook.com/profile.php?id=100079688261730&sk=photos&locale=sw_KE',
+      );
+    }
+  }
+
+
+  void handleInstaTap() {
+    if (!isInstaExpanded.value) {
+      isInstaExpanded.value = true;
+      isFbExpanded.value = false;
+    } else {
+      launchUrlTo(
+        'https://www.instagram.com/kmf_kuwait?igsh=MTF0bGFrMmFxNGp5dQ==&utm_source=ig_contact_invite',
+      );
+    }
   }
 
   @override

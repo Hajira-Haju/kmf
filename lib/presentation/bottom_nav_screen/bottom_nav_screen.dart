@@ -98,6 +98,10 @@ class BottomNavScreen extends GetView<BottomNavController> {
           ],
         ),
         key: controller.key,
+        onDrawerChanged: (isOpened) {
+          controller.isInstaExpanded.value = false;
+          controller.isFbExpanded.value = false;
+        },
         drawer: BottomNavWidgets.drawer(controller),
         body: Obx(() {
           final page = BottomNavData.pages[controller.activeIndex.value];

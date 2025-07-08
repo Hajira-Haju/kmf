@@ -8,11 +8,11 @@ class AssetsRes {
 
   static const String PROJECT_NAME = 'associations_app';
   static const String PROJECT_VERSION = '1.0.1+1';
-  static const String FB_CLR = 'assets/fb_clr.svg';
-  static const String FB_LOGO = 'assets/fb_logo.svg';
+  static const String FACEBOOK = 'assets/facebook.png';
+  static const String FB_LOGO = 'assets/fb_logo.png';
   static const String IMG_PERSON = 'assets/img_person.jpg';
-  static const String INSTA_CLR = 'assets/insta_clr.svg';
-  static const String INSTA_LOGO = 'assets/insta_logo.svg';
+  static const String INSTA_LOGO = 'assets/insta_logo.png';
+  static const String INSTAGRAM = 'assets/instagram.png';
   static const String THE_ASSOCIATES = 'assets/the-associates.png';
   static const String THE_ASSOCIATES_LOGO = 'assets/the-associates_logo.png';
 }

@@ -192,17 +192,17 @@ class OfferWidget {
       child: Shimmer.fromColors(
         baseColor: ConstData.shimmerClrBase(Get.context!),
         highlightColor: ConstData.shimmerClrHighLight(Get.context!),
-        child: GridView.builder(
+        child: ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: 6,
           padding: EdgeInsets.all(10),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisExtent: 130,
-          ),
           itemBuilder: (context, index) {
-            return Card(color: Colors.white, margin: EdgeInsets.all(8));
+            return Card(
+              color: Colors.white,
+              margin: EdgeInsets.all(8),
+              child: SizedBox(height: 140),
+            );
           },
         ),
       ),

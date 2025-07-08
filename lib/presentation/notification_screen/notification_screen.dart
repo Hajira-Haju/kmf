@@ -7,6 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -66,6 +67,11 @@ class NotificationScreen extends StatelessWidget {
                           NotificationData.colorList[controller.random.nextInt(
                             NotificationData.colorList.length,
                           )];
+                      DateTime utcTime = DateTime.parse(data.dateTime!).toUtc();
+                      DateTime istTime = utcTime.add(
+                        Duration(hours: 5, minutes: 30),
+                      );
+                      DateTime kwtTime = utcTime.add(Duration(hours: 3));
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8.0,
@@ -79,6 +85,7 @@ class NotificationScreen extends StatelessWidget {
                                 0.25, // How much to slide to reveal action
                             children: [
                               SlidableAction(
+                                borderRadius: BorderRadius.circular(4),
                                 onPressed: (context) async {
                                   controller.notifications.removeAt(index);
                                   await controller.api.deleteNotification(
@@ -114,7 +121,40 @@ class NotificationScreen extends StatelessWidget {
                                     ),
                                   ),
                                   title: Text(data.header!),
-                                  subtitle: Text(data.message!),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data.message ?? '',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      if ((data.message?.length ?? 0) >
+                                          60) // adjust threshold as needed
+                                        GestureDetector(
+                                          onTap:
+                                              () => controller.showNotification(
+                                                data.header!,
+                                                data.message!,
+                                                context,
+                                              ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 4.0,
+                                            ),
+                                            child: Text(
+                                              'Read more',
+                                              style: TextStyle(
+                                                color: Colors.blue,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                  trailing: Text(timeago.format(istTime)),
                                 ),
                               ),
                               if (data.isRead == false)

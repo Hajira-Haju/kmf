@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ReferMemberScreen extends GetView<ReferMemberController> {
@@ -70,6 +71,21 @@ class ReferMemberScreen extends GetView<ReferMemberController> {
           } else {
             return Center(child: Text("Something went wrong"));
           }
+        },
+      ),
+      floatingActionButton: FutureBuilder(
+        future: controller.futureReferFriend,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return FloatingActionButton(
+              backgroundColor: ConstData.secondaryClr,
+              onPressed: () {
+                controller.shareReferContent(snapshot.data!);
+              },
+              child: const Icon(Icons.share),
+            );
+          }
+          return const SizedBox();
         },
       ),
     );

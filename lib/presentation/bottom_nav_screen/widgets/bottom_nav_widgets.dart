@@ -16,6 +16,7 @@ import '../models/bottom_nav_datas.dart';
 
 class BottomNavWidgets {
   static Widget drawer(BottomNavController controller) {
+    final isDark = Get.isDarkMode;
     return SafeArea(
       child: Drawer(
         shape: RoundedRectangleBorder(
@@ -54,33 +55,53 @@ class BottomNavWidgets {
                     },
                   ),
                   Padding(padding: const EdgeInsets.all(8.0), child: Divider()),
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        InkWell(
-                          onTap:
-                              () => controller.launchUrlTo(
-                                'https://www.instagram.com/kmf_kuwait?igsh=MTF0bGFrMmFxNGp5dQ==&utm_source=ig_contact_invite',
+                  Obx(
+                    () => Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: controller.handleInstaTap,
+                            child: AnimatedCrossFade(
+                              duration: Duration(milliseconds: 400),
+                              crossFadeState:
+                                  controller.isInstaExpanded.value
+                                      ? CrossFadeState.showSecond
+                                      : CrossFadeState.showFirst,
+                              firstChild: Image.asset(
+                                'assets/instagram.png',
+                                color: isDark ? Colors.grey : Colors.black,
+                                width: 30,
                               ),
-                          child: SvgPicture.asset(
-                            'assets/insta_clr.svg',
-                            width: 40,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        InkWell(
-                          onTap:
-                              () => controller.launchUrlTo(
-                                'https://www.facebook.com/profile.php?id=100079688261730&sk=photos&locale=sw_KE',
+                              secondChild: Image.asset(
+                                'assets/insta_logo.png',
+                                width: 160,
                               ),
-                          child: SvgPicture.asset(
-                            'assets/fb_clr.svg',
-                            width: 40,
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 10),
+                          GestureDetector(
+                            onTap: controller.handleFbTap,
+                            child: AnimatedCrossFade(
+                              duration: Duration(milliseconds: 400),
+                              crossFadeState:
+                                  controller.isFbExpanded.value
+                                      ? CrossFadeState.showSecond
+                                      : CrossFadeState.showFirst,
+                              firstChild: Image.asset(
+                                'assets/facebook.png',
+                                color: isDark ? Colors.grey : Colors.black,
+                                width: 30,
+                              ),
+                              secondChild: Image.asset(
+                                'assets/fb_logo.png',
+                                width: 160,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
