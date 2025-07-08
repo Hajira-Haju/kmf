@@ -25,7 +25,7 @@ class NewsInnerScreen extends GetView<NewsInnerController> {
                   child: CachedNetworkImage(
                     imageUrl: controller.imgUrl,
                     width: double.infinity,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                     placeholder:
                         (context, url) => Shimmer.fromColors(
                           baseColor: ConstData.shimmerClrBase(context),

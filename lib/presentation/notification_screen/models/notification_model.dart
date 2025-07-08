@@ -30,6 +30,7 @@ class NotificationList {
   String? header;
   String? message;
   bool? isRead;
+  String? dateTime;
 
   NotificationList({this.id, this.header, this.message, this.isRead});
 
@@ -38,6 +39,7 @@ class NotificationList {
     header = json['header'];
     message = json['message'];
     isRead = json['isRead'];
+    dateTime = json['createdDateUtc'];
   }
 
   Map<String, dynamic> toJson() {

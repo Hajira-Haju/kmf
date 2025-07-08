@@ -18,6 +18,7 @@ class ReferMemberScreen extends GetView<ReferMemberController> {
         title: const Text('Refer a Member'),
         centerTitle: true,
         foregroundColor: Colors.white,
+
       ),
       body: FutureBuilder(
         future: controller.futureReferFriend,
@@ -70,6 +71,22 @@ class ReferMemberScreen extends GetView<ReferMemberController> {
           } else {
             return Center(child: Text("Something went wrong"));
           }
+        },
+      ),
+      floatingActionButton: FutureBuilder(
+        future: controller.futureReferFriend,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return FloatingActionButton(
+              backgroundColor: ConstData.secondaryClr,
+              foregroundColor: Colors.white,
+              onPressed: () {
+                controller.shareReferContent(snapshot.data!);
+              },
+              child: const Icon(Icons.share),
+            );
+          }
+          return const SizedBox();
         },
       ),
     );

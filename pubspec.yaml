@@ -53,6 +53,7 @@ dependencies:
   pinput:
   share_plus:
   flutter_slidable:
+  timeago:
   cached_network_image:
   animated_bottom_navigation_bar:
   qr_flutter:

@@ -18,9 +18,8 @@ class OfficialsScreen extends GetView<OfficialController> {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Icon(
@@ -30,14 +29,12 @@ class OfficialsScreen extends GetView<OfficialController> {
               ),
             ),
             const SizedBox(height: 12),
-            Center(
-              child: Text(
-                'Executive Committee Members',
-                style: TextStyle(
-                  color: ConstData.primaryClr,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                ),
+            Text(textAlign: TextAlign.center,
+              'Executive Committee Members',
+              style: TextStyle(
+                color: ConstData.primaryClr,
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
               ),
             ),
             const SizedBox(height: 10),
@@ -53,14 +50,7 @@ class OfficialsScreen extends GetView<OfficialController> {
               ),
             ),
             const SizedBox(height: 24),
-            Container(
-              decoration: BoxDecoration(
-                color: ConstData.secondaryClr.withValues(alpha: .2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: OfficialsWidgets.listViewWithGrid(controller),
-            ),
+            OfficialsWidgets.listViewWithGrid(controller),
             const SizedBox(height: 24),
           ],
         ),
