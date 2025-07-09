@@ -8,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/constants/const_datas.dart';
 
@@ -37,6 +38,7 @@ class WelcomeWidget {
       ),
     );
   }
+
   static Widget infoBanner() {
     return Container(
       margin: EdgeInsets.all(16),
@@ -60,13 +62,18 @@ class WelcomeWidget {
       ),
     );
   }
+
   static Widget profileUpload(WelcomeController controller) {
     bool isDark = Theme.of(Get.context!).brightness == Brightness.dark;
     return Obx(
       () => Stack(
         children: [
           GestureDetector(
-            onTap: controller.isLoading.value ? null : controller.pickImage,
+            onTap: () {
+              controller.isLoading.value
+                  ? null
+                  : controller.showOptions(controller);
+            },
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -110,6 +117,66 @@ class WelcomeWidget {
                     ),
           ),
         ],
+      ),
+    );
+  }
+
+  static Widget imageSelector(WelcomeController controller) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Choose an option',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                SizedBox(width: 20),
+                InkWell(
+                  onTap: () => controller.pickImage(ImageSource.camera),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundColor: ConstData.secondaryClr,
+                        foregroundColor: Colors.white,
+                        child: Icon(Icons.camera_alt_outlined, size: 30),
+                      ),
+                      Text('Camera'),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 20),
+                InkWell(
+                  onTap: () => controller.pickImage(ImageSource.gallery),
+
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundColor: ConstData.secondaryClr,
+                        foregroundColor: Colors.white,
+                        child: Icon(Icons.photo_library_outlined, size: 30),
+                      ),
+                      Text('Gallery'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 50),
+          ],
+        ),
       ),
     );
   }

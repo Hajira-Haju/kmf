@@ -22,7 +22,7 @@ class OfficialsWidgets {
               padding: const EdgeInsets.all(12),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisExtent: 300,
+                mainAxisExtent: 340,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
               ),

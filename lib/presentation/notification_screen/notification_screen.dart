@@ -106,7 +106,7 @@ class NotificationScreen extends StatelessWidget {
                                 margin: EdgeInsets.all(0),
                                 child: ListTile(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
+                                    borderRadius: BorderRadius.circular(10),
                                     side: BorderSide(
                                       color: ConstData.secondaryClr.withValues(
                                         alpha: .2,
@@ -154,7 +154,7 @@ class NotificationScreen extends StatelessWidget {
                                         ),
                                     ],
                                   ),
-                                  trailing: Text(timeago.format(istTime)),
+                                  trailing: Text(timeago.format(kwtTime)),
                                 ),
                               ),
                               if (data.isRead == false)

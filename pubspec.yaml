@@ -42,6 +42,7 @@ dependencies:
   flutter_svg:
   fluttertoast:
   url_launcher:
+  font_awesome_flutter:
   firebase_core:
   google_mlkit_face_detection:
   firebase_messaging:

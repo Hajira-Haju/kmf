@@ -3,14 +3,17 @@ import 'dart:convert';
 import 'package:associations_app/core/constants/const_datas.dart';
 import 'package:associations_app/core/data/api_client/api_service/api_service.dart';
 import 'package:associations_app/routes/app_routes/app_routes.dart';
+import 'package:associations_app/tst.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../generated/assets.dart';
+import '../../../widgets/social_button/social_button.dart';
 import '../controller/bottom_nav_controller.dart';
 import '../models/bottom_nav_datas.dart';
 
@@ -61,44 +64,20 @@ class BottomNavWidgets {
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          GestureDetector(
-                            onTap: controller.handleInstaTap,
-                            child: AnimatedCrossFade(
-                              duration: Duration(milliseconds: 400),
-                              crossFadeState:
-                                  controller.isInstaExpanded.value
-                                      ? CrossFadeState.showSecond
-                                      : CrossFadeState.showFirst,
-                              firstChild: Image.asset(
-                                'assets/instagram.png',
-                                color: isDark ? Colors.grey : Colors.black,
-                                width: 30,
-                              ),
-                              secondChild: Image.asset(
-                                'assets/insta_logo.png',
-                                width: 160,
-                              ),
-                            ),
+                          SocialButton(
+                            isExpanded: controller.isFbExpanded.value,
+                            icon: Icons.facebook,
+                            label: 'Facebook',
+                            color: Color(0xFF4267B2),
+                            onTap: () => controller.handleFbTap(),
                           ),
                           SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: controller.handleFbTap,
-                            child: AnimatedCrossFade(
-                              duration: Duration(milliseconds: 400),
-                              crossFadeState:
-                                  controller.isFbExpanded.value
-                                      ? CrossFadeState.showSecond
-                                      : CrossFadeState.showFirst,
-                              firstChild: Image.asset(
-                                'assets/facebook.png',
-                                color: isDark ? Colors.grey : Colors.black,
-                                width: 30,
-                              ),
-                              secondChild: Image.asset(
-                                'assets/fb_logo.png',
-                                width: 160,
-                              ),
-                            ),
+                          SocialButton(
+                            isExpanded: controller.isInstaExpanded.value,
+                            icon: FontAwesomeIcons.instagram,
+                            label: 'Instagram',
+                            color: Color(0xFFE1306C),
+                            onTap: () => controller.handleInstaTap(),
                           ),
                         ],
                       ),
