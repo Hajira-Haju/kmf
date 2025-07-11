@@ -30,7 +30,7 @@ class SignInScreen extends GetView<SignInController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(width: double.infinity, height: 30),
-                      LoginWidgets.head(),
+                      LoginWidgets.head(context),
                       const SizedBox(height: 50),
 
                       /// Welcome Text

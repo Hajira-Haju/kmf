@@ -5,31 +5,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoginWidgets {
-  static Widget head() {
+  static Widget head(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          Hero(
-            tag: 'logo',
-            child: Image.asset('assets/the-associates_logo.png', width: 80),
-          ),
-          const SizedBox(width: 12),
-          Flexible(
-            child: Text(
-              'Keralites Medical Forum Kuwait',
-              style: TextStyle(
-                fontSize: 18,
-                color: ConstData.secondaryClr,
-                fontWeight: FontWeight.w900,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
+      child: Center(
+        child: ColorFiltered(
+          colorFilter: isDark
+              ? ColorFilter.mode(Colors.grey, BlendMode.srcIn)
+              : ColorFilter.mode(Colors.transparent, BlendMode.multiply),
+          child: Image.asset('assets/mainlogo2.png', width: 180),
+        ),
       ),
     );
   }
-
-
 }

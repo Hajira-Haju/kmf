@@ -24,7 +24,7 @@ class BottomNavData {
     DrawerModel(
       icn: Icons.new_releases,
       onTap: () => Get.toNamed(AppRoutes.aboutUs),
-      title: 'About KMF Kuwait',
+      title: 'About Us',
     ),
     DrawerModel(
       icn: CupertinoIcons.rectangle_on_rectangle_angled,

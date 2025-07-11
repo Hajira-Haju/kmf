@@ -14,5 +14,5 @@ class AssetsRes {
   static const String INSTA_LOGO = 'assets/insta_logo.png';
   static const String INSTAGRAM = 'assets/instagram.png';
   static const String THE_ASSOCIATES = 'assets/the-associates.png';
-  static const String THE_ASSOCIATES_LOGO = 'assets/the-associates_logo.png';
+  static const String THE_ASSOCIATES_LOGO = 'assets/mainshortlogo.png';
 }

@@ -15,7 +15,7 @@ class AboutScreen extends GetView<AboutUsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("About KMF Kuwait"),
+        title: const Text("About Us"),
         backgroundColor: ConstData.secondaryClr,
         foregroundColor: Colors.white,
         centerTitle: true,

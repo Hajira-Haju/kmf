@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: GetMaterialApp(
-        title: 'KMF',
+        title: 'Association',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(brightness: Brightness.light),
         darkTheme: ThemeData(brightness: Brightness.dark),

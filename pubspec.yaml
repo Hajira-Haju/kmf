@@ -91,6 +91,9 @@ flutter:
     - assets/instagram.png
     - assets/the-associates.png
     - assets/the-associates_logo.png
+    - assets/mainlogo.png
+    - assets/mainshortlogo.png
+    - assets/mainlogo2.png
 
 
   #   - images/a_dot_burr.jpeg

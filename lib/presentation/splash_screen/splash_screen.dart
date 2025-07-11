@@ -10,11 +10,18 @@ class SplashScreen extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       body: Center(
         child: Hero(
           tag: 'logo',
-          child: Image.asset('assets/the-associates_logo.png', width: 150.w),
+          child: ColorFiltered(
+            colorFilter: isDark
+                ? ColorFilter.mode(Colors.grey, BlendMode.srcIn)
+                : ColorFilter.mode(Colors.transparent, BlendMode.multiply),
+            child: Image.asset('assets/mainlogo2.png', width: 200.w),
+          ),
         ),
       ),
     );

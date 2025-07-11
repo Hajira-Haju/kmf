@@ -1,4 +1,4 @@
-package com.skaktech.kmf_digitalid
+package com.skaktech.association
 
 import io.flutter.embedding.android.FlutterActivity
 

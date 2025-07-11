@@ -13,28 +13,16 @@ import 'package:image_picker/image_picker.dart';
 import '../../../core/constants/const_datas.dart';
 
 class WelcomeWidget {
-  static Widget head() {
+  static Widget head(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          Hero(
-            tag: 'logo',
-            child: Image.asset('assets/the-associates_logo.png', width: 80),
-          ),
-          const SizedBox(width: 12),
-          Flexible(
-            child: Text(
-              'Keralites Medical Forum Kuwait',
-              style: TextStyle(
-                fontSize: 18,
-                color: ConstData.secondaryClr,
-                fontWeight: FontWeight.w900,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
+      child: ColorFiltered(
+        colorFilter: isDark
+            ? ColorFilter.mode(Colors.grey, BlendMode.srcIn)
+            : ColorFilter.mode(Colors.transparent, BlendMode.multiply),
+        child: Image.asset('assets/mainlogo2.png', width: 200),
       ),
     );
   }

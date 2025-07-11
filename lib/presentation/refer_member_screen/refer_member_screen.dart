@@ -79,6 +79,7 @@ class ReferMemberScreen extends GetView<ReferMemberController> {
           if (snapshot.hasData) {
             return FloatingActionButton(
               backgroundColor: ConstData.secondaryClr,
+              foregroundColor: Theme.of(context).iconTheme.color,
               onPressed: () {
                 controller.shareReferContent(snapshot.data!);
               },

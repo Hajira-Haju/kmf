@@ -23,6 +23,7 @@ class IdScreen extends StatefulWidget {
 class _IdScreenState extends State<IdScreen> {
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     IdController controller = Get.put(IdController());
     return PopScope(
       canPop: controller.canPop,
@@ -39,20 +40,13 @@ class _IdScreenState extends State<IdScreen> {
                     controller.canPop
                         ? Get.back()
                         : Get.offAllNamed(AppRoutes.bottomNavScreen),
-            child: Icon(Icons.close, color: ConstData.secondaryClr),
+            child: Icon(
+              Icons.close,
+              color: isDark ? Colors.white : ConstData.secondaryClr,
+            ),
           ),
           centerTitle: true,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Hero(
-                tag: 'logo',
-                child: Image.asset(AssetsRes.THE_ASSOCIATES_LOGO, width: 30),
-              ),
-              SizedBox(width: 5),
-              Text('MY DIGITAL ID'),
-            ],
-          ),
+          title: Text('MY DIGITAL ID'),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10.0),
@@ -62,7 +56,9 @@ class _IdScreenState extends State<IdScreen> {
                     controller.fetchCivilDataLive();
                   });
                 },
-                child: Icon(Icons.refresh, color: ConstData.secondaryClr),
+                child: Icon(
+                    Icons.refresh,
+                  color: isDark ? Colors.white : ConstData.secondaryClr,),
               ),
             ),
           ],

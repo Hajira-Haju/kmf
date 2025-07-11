@@ -18,7 +18,7 @@ class DotIndicator extends StatelessWidget {
         paintStyle: PaintingStyle.stroke,
         strokeWidth: 1.5,
         dotColor: Colors.grey,
-        activeDotColor: Colors.indigo,
+        activeDotColor: Color(0xFF0D1917),
       ), // your preferred effect
     );
   }

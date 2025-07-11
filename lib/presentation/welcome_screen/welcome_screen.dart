@@ -27,7 +27,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                 SizedBox(height: 40),
 
                 /// Header
-                WelcomeWidget.head(),
+                WelcomeWidget.head(context),
                 const SizedBox(height: 50),
 
                 /// Welcome Text

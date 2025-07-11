@@ -19,6 +19,7 @@ class BottomNavScreen extends GetView<BottomNavController> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return WillPopScope(
       onWillPop: () async {
         if (controller.lastBackPressed == null ||
@@ -35,23 +36,31 @@ class BottomNavScreen extends GetView<BottomNavController> {
         appBar: AppBar(
           leading: InkWell(
             onTap: () => controller.key.currentState!.openDrawer(),
-            child: Icon(Icons.grid_view_rounded, color: ConstData.secondaryClr),
+            child: Icon(
+              Icons.grid_view_rounded,
+              color: Theme.of(context).iconTheme.color,
+            ),
           ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Hero(
                 tag: 'logo',
-                child: Image.asset(AssetsRes.THE_ASSOCIATES_LOGO, width: 30),
-              ),
-              SizedBox(width: 5),
-              Text(
-                'K M F',
-                style: TextStyle(
-                  color: ConstData.primaryClr,
-                  fontWeight: FontWeight.bold,
+                child: ColorFiltered(
+                  colorFilter: isDark
+                      ? ColorFilter.mode(Colors.grey, BlendMode.srcIn)
+                      : ColorFilter.mode(Colors.transparent, BlendMode.multiply),
+                  child: Image.asset(AssetsRes.THE_ASSOCIATES_LOGO, width: 180),
                 ),
               ),
+              SizedBox(width: 5),
+              // Text(
+              //   'K M F',
+              //   style: TextStyle(
+              //     color: ConstData.primaryClr,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
             ],
           ),
           centerTitle: true,
@@ -74,7 +83,7 @@ class BottomNavScreen extends GetView<BottomNavController> {
                       children: [
                         Icon(
                           Icons.notifications,
-                          color: ConstData.secondaryClr,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         if (controller.isUnread.value)
                           Positioned(

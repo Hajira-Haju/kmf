@@ -33,15 +33,20 @@ class BottomNavWidgets {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(width: double.infinity, height: 60),
-                  Image.asset('assets/the-associates_logo.png', width: 100),
-                  SizedBox(height: 20),
-                  Text(
-                    'KERALITES MEDICAL\nFORUM',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    textAlign: TextAlign.center,
+                  SizedBox(width: double.infinity, height: 90),
+                  ColorFiltered(
+                    colorFilter: isDark
+                        ? ColorFilter.mode(Colors.grey, BlendMode.srcIn)
+                        : ColorFilter.mode(Colors.transparent, BlendMode.multiply),
+                    child: Image.asset('assets/mainlogo2.png', width: 200),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 20),
+                  // Text(
+                  //   'KERALITES MEDICAL\nFORUM',
+                  //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  SizedBox(height: 50),
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: BottomNavData.drawerData.length,
@@ -50,9 +55,23 @@ class BottomNavWidgets {
                     itemBuilder: (context, index) {
                       final data = BottomNavData.drawerData[index];
                       return ListTile(
-                        leading: Icon(data.icn, color: ConstData.secondaryClr),
-                        title: Text(data.title),
-                        trailing: Icon(CupertinoIcons.right_chevron),
+                        leading: Icon(
+                          data.icn,
+                          // ✅ ADD THIS TO ADAPT TO DARK MODE
+                          color: isDark ? Colors.white : ConstData.secondaryClr,
+                        ),
+                        title: Text(
+                          data.title,
+                          style: TextStyle(
+                            // ✅ TEXT COLOR FOR DARK MODE
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        trailing: Icon(
+                          CupertinoIcons.right_chevron,
+                          // ✅ ICON COLOR FOR DARK MODE
+                          color: isDark ? Colors.white54 : Colors.black54,
+                        ),
                         onTap: data.onTap,
                       );
                     },
